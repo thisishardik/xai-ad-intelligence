@@ -15,12 +15,15 @@ from concurrent.futures import ThreadPoolExecutor
 from xai_sdk import Client
 from xai_sdk.chat import user, system, tool, tool_result, image
 
-from config import XAI_API_KEY, DEFAULT_MODEL, IMAGE_MODEL, VISION_MODEL, DEFAULT_ADS
+from config import XAI_API_KEY, DEFAULT_MODEL, IMAGE_MODEL, DEFAULT_ADS
 from supabase_client import fetch_ads
 from scoring import rank_ads
 
 if TYPE_CHECKING:
     from context_agent import ContextCard
+
+# Vision model for image analysis (supports multimodal text+image)
+VISION_MODEL = "grok-2-vision-1212"
 
 
 @dataclass

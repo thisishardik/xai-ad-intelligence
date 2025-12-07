@@ -29,8 +29,7 @@ OAUTH_SCOPES = "tweet.read users.read offline.access bookmark.read like.read"
 
 # Model Configuration
 DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "grok-4-1-fast-non-reasoning")
-IMAGE_MODEL = os.getenv("IMAGE_MODEL", "grok-2-image")  # For generating images
-VISION_MODEL = os.getenv("VISION_MODEL", "grok-2-vision-1212")  # For analyzing/understanding images
+IMAGE_MODEL = os.getenv("IMAGE_MODEL", "grok-imagine-v0p9")
 
 # CTR Prediction Configuration
 CTR_ENSEMBLE_RUNS = int(os.getenv("CTR_ENSEMBLE_RUNS", "10"))
