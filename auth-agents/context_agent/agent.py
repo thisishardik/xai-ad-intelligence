@@ -73,7 +73,7 @@ class ContextAgent:
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model: str = "grok-2-1212"
+        model: str = "grok-4-1-fast-non-reasoning"
     ):
         self.api_key = api_key or os.getenv("XAI_API_KEY")
         if not self.api_key:
