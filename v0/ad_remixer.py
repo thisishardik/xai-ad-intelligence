@@ -15,15 +15,12 @@ from concurrent.futures import ThreadPoolExecutor
 from xai_sdk import Client
 from xai_sdk.chat import user, system, tool, tool_result, image
 
-from config import XAI_API_KEY, DEFAULT_MODEL, IMAGE_MODEL, DEFAULT_ADS
+from config import XAI_API_KEY, DEFAULT_MODEL, IMAGE_MODEL, VISION_MODEL, DEFAULT_ADS
 from supabase_client import fetch_ads
 from scoring import rank_ads
 
 if TYPE_CHECKING:
     from context_agent import ContextCard
-
-# Vision model for image analysis
-VISION_MODEL = "grok-imagine-v0p9"
 
 
 @dataclass
@@ -125,21 +122,13 @@ def create_image_generation_tool():
     """Create the image generation/editing tool definition."""
     return tool(
         name="generate_ad_image",
-<<<<<<< HEAD
-        description="Generate or enhance a compelling visual image for the ad. Call this AFTER you've written the ad copy. If an original image is available, describe how to improve it while preserving its core elements.",
-=======
-        description="Generate a compelling visual image for the ad. Call this AFTER you've written the ad copy to create a coherent image that complements the text. The image must be truthful - do not depict exaggerated results, fake testimonials, or misleading outcomes.",
->>>>>>> cdda50dbd2cdc53eea548bee2393f3356ab77c19
+        description="Generate or enhance a compelling visual image for the ad. Call this AFTER you've written the ad copy. If an original image is available, describe how to improve it while preserving its core elements. The image must be truthful - do not depict exaggerated results, fake testimonials, or misleading outcomes.",
         parameters={
             "type": "object",
             "properties": {
                 "image_prompt": {
                     "type": "string",
-<<<<<<< HEAD
-                    "description": "A detailed prompt describing the image to generate or how to enhance the original. Include style, mood, colors, composition, and key visual elements. If editing, specify what to keep, modify, or enhance from the original."
-=======
-                    "description": "A detailed prompt describing the image to generate. Include style, mood, colors, composition, and key visual elements that align with the ad copy. MUST be truthful - no exaggerated before/after, no fake results, no misleading representations of the product or its effects."
->>>>>>> cdda50dbd2cdc53eea548bee2393f3356ab77c19
+                    "description": "A detailed prompt describing the image to generate or how to enhance the original. Include style, mood, colors, composition, and key visual elements. If editing, specify what to keep, modify, or enhance from the original. MUST be truthful - no exaggerated before/after, no fake results, no misleading representations of the product or its effects."
                 },
                 "ad_copy": {
                     "type": "string",
@@ -542,12 +531,9 @@ Rules:
 
 When you rewrite an ad, you MUST use the generate_ad_image tool to create a visual that complements your copy.
 Think holistically - the text and image should work together as a unified creative.
-<<<<<<< HEAD
-If an original image exists, focus on enhancing it rather than creating something completely different.""")
-=======
+If an original image exists, focus on enhancing it rather than creating something completely different.
 
 The goal: Make the ad feel native to the user's voice WITHOUT deceiving them about what the product does.""")
->>>>>>> cdda50dbd2cdc53eea548bee2393f3356ab77c19
         
         ad_copy = ""
         enhanced_image_url = None

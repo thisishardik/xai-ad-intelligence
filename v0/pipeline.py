@@ -27,7 +27,7 @@ from pathlib import Path
 from config import validate_config
 from auth_client import AuthClient, UserData, interactive_auth
 from context_agent import ContextAgent, ContextCard
-from ad_remixer import AdRemixerAgent, RemixResult
+from ad_remixer import AdRemixerAgent, RemixedAdsResult
 from critic_agent import CTRCriticAgent, CTRPredictionResult
 
 
@@ -37,7 +37,7 @@ class PipelineResult:
     user_id: str
     username: str
     context_card: ContextCard
-    remixed_ads: RemixResult
+    remixed_ads: RemixedAdsResult
     ctr_prediction: CTRPredictionResult
     
     def to_dict(self) -> dict:
