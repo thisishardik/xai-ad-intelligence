@@ -10,7 +10,7 @@ import { createAdCard } from "./adCard.js";
 export async function createAd(reason = "Intelligent ad timing") {
     // Fetch ad card from server (or fallback)
     const adCard = await createAdCard();
-    
+
     // Wrap it in a container with attention tooltip
     const container = document.createElement("div");
     container.className = "xai-ad-card";
@@ -22,7 +22,7 @@ export async function createAd(reason = "Intelligent ad timing") {
     tooltipWrapper.className = "attention-tooltip";
     tooltipWrapper.style.cssText = `
         position: absolute;
-        top: 18px;
+        top: 16px;
         right: 12px;
         z-index: 10;
         cursor: help;
@@ -30,7 +30,7 @@ export async function createAd(reason = "Intelligent ad timing") {
     `;
 
     tooltipWrapper.innerHTML = `
-        <span style="font-size: 18px; color: #1d9bf0;">💡</span>
+        <span style="font-size: 22px; color: #1d9bf0;">💡</span>
         <div class="tooltip-text" style="
             visibility: hidden;
             opacity: 0;
