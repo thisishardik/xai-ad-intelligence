@@ -9,6 +9,7 @@ Performs CTR scoring to compare original vs enhanced images.
 """
 
 import json
+import re
 from typing import Optional, List, Union, Dict, Any, TYPE_CHECKING
 from dataclasses import dataclass, field
 from concurrent.futures import ThreadPoolExecutor
@@ -124,13 +125,23 @@ def create_image_generation_tool():
     """Create the image generation tool definition."""
     return tool(
         name="generate_ad_image",
-        description="Generate a compelling visual image for the ad. Call this AFTER you've written the ad copy to create a coherent image that complements the text. The image must be truthful - do not depict exaggerated results, fake testimonials, or misleading outcomes.",
+        description=(
+            "Generate a compelling visual image for the ad. Call this AFTER you've written the ad copy to create a coherent image that complements the text. "
+            "Honor the brand/company persona and avoid all items listed as strictly_against. "
+            "If an original ad image is provided, anchor the new image to its core composition, palette, and key elements instead of producing a generic stock visual. "
+            "Never include emojis, stickers, or text overlays. The image must be truthful - do not depict exaggerated results, fake testimonials, or misleading outcomes."
+        ),
         parameters={
             "type": "object",
             "properties": {
                 "image_prompt": {
                     "type": "string",
-                    "description": "A detailed prompt describing the image to generate. Include style, mood, colors, composition, and key visual elements that align with the ad copy. MUST be truthful - no exaggerated before/after, no fake results, no misleading representations of the product or its effects."
+                    "description": (
+                        "A detailed prompt describing the image to generate. Include style, mood, colors, composition, and key visual elements that align with the ad copy and brand persona. "
+                        "If an original image exists, explicitly describe how to build on it (keep recognizable elements, color palette, and layout). "
+                        "MUST be truthful - no exaggerated before/after, no fake results, no misleading representations of the product or its effects. "
+                        "Do not use emojis."
+                    )
                 },
                 "ad_copy": {
                     "type": "string",
@@ -481,7 +492,9 @@ Sort by total_score descending."""
         context_card: dict, 
         variant_num: int,
         original_image_url: Optional[str] = None,
-        image_analysis: Optional[ImageAnalysis] = None
+        image_analysis: Optional[ImageAnalysis] = None,
+        brand_persona: Optional[str] = None,
+        avoid_list: Optional[List[str]] = None
     ) -> str:
         """Prompt for rewriting an ad in user's style with coherent image generation.
         
@@ -491,8 +504,13 @@ Sort by total_score descending."""
             variant_num: Which variant (1, 2, or 3)
             original_image_url: Optional URL of the original ad image
             image_analysis: Optional analysis of the original image
+            brand_persona: Company/brand persona pulled from the ad record
+            avoid_list: Safety and brand avoid terms (company + user)
         """
         style_ref = self._build_style_reference(context_card)
+        avoid_list = avoid_list or []
+        avoid_clause = ", ".join(avoid_list) if avoid_list else "None"
+        brand_clause = brand_persona or "Not provided"
         
         variant_instructions = {
             1: "Focus on their most casual, conversational style. Use their typical slang and informal tone. Image should feel authentic and relatable.",
@@ -517,26 +535,32 @@ ORIGINAL AD IMAGE ANALYSIS:
 - Key elements to keep: {', '.join(key_elements) if key_elements else 'N/A'}
 - Suggested improvements: {', '.join(improvements) if improvements else 'N/A'}
 
-When generating the enhanced image, build upon the original's strengths, preserve key elements, and apply suggested improvements."""
+When generating the enhanced image, build upon the original's strengths, preserve key elements, and apply suggested improvements. Keep the new image visibly connected to the original (palette, composition, recognizable objects)."""
         elif original_image_url:
             image_context = f"""
 
 ORIGINAL AD IMAGE: {original_image_url}
-Enhance the original while preserving its core message and brand elements."""
+Enhance the original while preserving its core message, composition, and brand elements."""
         
         return f"""{style_ref}
+
+BRAND PERSONA / VOICE (from advertiser): {brand_clause}
+STRICTLY AVOID IN COPY OR IMAGES: {avoid_clause}
 
 ORIGINAL AD:
 "{ad}"{image_context}
 
 Your task:
 1. Rewrite this ad to match the user's style. {variation}
-   Make it sound like THEY wrote it based on the examples above.
+   Make it sound like THEY wrote it based on the examples above. Do NOT use emojis in the copy.
+   Output must be plain text only (no markdown, bullets, headers, bold/italics, links, code fences).
 
 2. After writing the ad copy, use the generate_ad_image tool to create a visual that perfectly complements your ad copy.
    - The image should reinforce the message
-   - Match the tone and style of the copy
+   - Match the tone and style of the copy and the brand persona above
    - Be visually compelling for social media
+   - If an original image is provided, visibly connect to it (palette, layout, key elements) instead of creating a generic stock visual
+   - Exclude emojis, stickers, and text overlays
 
 Think about the ad copy and image as a unified creative unit - they should work together to deliver the message.
 
@@ -563,13 +587,19 @@ You are adapting the TONE and VOICE, not the SUBSTANCE of the claims."""
     def _generate_ad_image(
         self, 
         image_prompt: str,
-        image_analysis: Optional[ImageAnalysis] = None
+        image_analysis: Optional[ImageAnalysis] = None,
+        brand_persona: Optional[str] = None,
+        avoid_list: Optional[List[str]] = None,
+        original_image_url: Optional[str] = None
     ) -> Optional[str]:
         """Generate or enhance an image using xai_sdk image generation.
         
         Args:
             image_prompt: Detailed prompt for the image
             image_analysis: Optional analysis of the original image for guided enhancement
+            brand_persona: Company persona for stylistic alignment
+            avoid_list: Safety and brand avoid terms
+            original_image_url: URL of the original ad image (if any) to anchor the new image
             
         Returns:
             Image URL if successful, None otherwise
@@ -577,6 +607,16 @@ You are adapting the TONE and VOICE, not the SUBSTANCE of the claims."""
         try:
             # Build enhanced prompt incorporating original image context
             final_prompt = image_prompt
+            guardrails = []
+            avoid_list = avoid_list or []
+            
+            if brand_persona:
+                guardrails.append(f"Match the company's persona/visual feel: {brand_persona}")
+            if avoid_list:
+                guardrails.append(f"Never depict or imply: {', '.join(avoid_list)}")
+            if original_image_url:
+                guardrails.append(f"Keep visual continuity with the original ad image at {original_image_url} (palette, layout, recognizable elements).")
+            guardrails.append("Do not include emojis, stickers, or text overlays.")
             
             if image_analysis:
                 key_elements = image_analysis.key_elements
@@ -590,6 +630,9 @@ You are adapting the TONE and VOICE, not the SUBSTANCE of the claims."""
                         enhancement_context.append(f"Original style: {style_notes}")
                     
                     final_prompt = f"{image_prompt}\n\nReference context: {' '.join(enhancement_context)}"
+            
+            if guardrails:
+                final_prompt = f"{final_prompt}\n\nBrand and safety guardrails: {' '.join(guardrails)}"
             
             response = self.client.image.sample(
                 model=self.image_model,
@@ -610,7 +653,9 @@ You are adapting the TONE and VOICE, not the SUBSTANCE of the claims."""
         context_card: dict,
         variant_num: int,
         original_image_url: Optional[str] = None,
-        image_analysis: Optional[ImageAnalysis] = None
+        image_analysis: Optional[ImageAnalysis] = None,
+        brand_persona: Optional[str] = None,
+        avoid_list: Optional[List[str]] = None
     ) -> AdVariant:
         """Rewrite an ad using xai_sdk tool calling for coherent text+image generation.
         
@@ -620,13 +665,15 @@ You are adapting the TONE and VOICE, not the SUBSTANCE of the claims."""
             variant_num: Which variant (1, 2, or 3)
             original_image_url: Optional URL of the original ad image for reference
             image_analysis: Optional analysis of the original image
+            brand_persona: Company persona for styling the image
+            avoid_list: Safety and brand avoid terms (company + user)
             
         Returns:
             AdVariant with content, images, and CTR scoring results
         """
         prompt = self._ad_rewrite_prompt(
             ad, context_card, variant_num, 
-            original_image_url, image_analysis
+            original_image_url, image_analysis, brand_persona, avoid_list
         )
         temperature = 0.5 + (variant_num * 0.2)
         
@@ -640,6 +687,7 @@ Rules:
 3. NEVER fabricate testimonial-style claims or imply personal endorsement
 4. NEVER add false urgency or scarcity (limited time, running out, etc.) unless in the original
 5. If the original is vague about specifics, your rewrite must remain vague about those same specifics
+6. Output MUST be plain text only (no markdown, bullets, headers, bold/italics, links, code fences, or emojis)
 
 When you rewrite an ad, you MUST use the generate_ad_image tool to create a visual that complements your copy.
 Think holistically - the text and image should work together as a unified creative.
@@ -691,7 +739,10 @@ The goal: Make the ad feel native to the user's voice WITHOUT deceiving them abo
                             print(f"    [Variant {variant_num}] Generating enhanced image...")
                             enhanced_image_url = self._generate_ad_image(
                                 image_prompt_used,
-                                image_analysis=image_analysis
+                                image_analysis=image_analysis,
+                                brand_persona=brand_persona,
+                                avoid_list=avoid_list,
+                                original_image_url=original_image_url
                             )
                             
                             result_content = json.dumps({
@@ -713,6 +764,8 @@ The goal: Make the ad feel native to the user's voice WITHOUT deceiving them abo
         if not ad_copy:
             ad_copy = ad
             print(f"    [Variant {variant_num}] Using original ad as fallback")
+        else:
+            ad_copy = self._strip_markdown(ad_copy)
         
         # Perform CTR scoring to compare original vs enhanced images
         best_image_url = enhanced_image_url
@@ -826,6 +879,21 @@ The goal: Make the ad feel native to the user's voice WITHOUT deceiving them abo
         top_ad = ranked_ads[0]
         selected_ad = self._compose_ad_text(top_ad)
         user_id = context_card.get("user_id") or context_card.get("username", "unknown")
+        brand_persona = top_ad.get("company_persona") or ""
+        ad_avoid_raw = top_ad.get("strictly_against") or []
+        user_avoid_raw = context_card.get("strictly_against") or []
+
+        def _normalize_list(value: Any) -> List[str]:
+            if value is None:
+                return []
+            if isinstance(value, list):
+                return [str(v).strip() for v in value if str(v).strip()]
+            if isinstance(value, str):
+                parts = [p.strip() for p in value.replace(";", ",").split(",")]
+                return [p for p in parts if p]
+            return [str(value).strip()]
+
+        avoid_list = list({*(_normalize_list(ad_avoid_raw)), *(_normalize_list(user_avoid_raw))})
 
         # Get original image from top ad if not explicitly provided
         if original_image_url is None:
@@ -856,7 +924,7 @@ The goal: Make the ad feel native to the user's voice WITHOUT deceiving them abo
                 executor.submit(
                     self._rewrite_ad_variant, 
                     selected_ad, context_card, i+1,
-                    original_image_url, image_analysis
+                    original_image_url, image_analysis, brand_persona, avoid_list
                 )
                 for i in range(3)
             ]
@@ -870,6 +938,23 @@ The goal: Make the ad feel native to the user's voice WITHOUT deceiving them abo
             image_analysis=image_analysis,
             rewritten_ads=rewritten_ads
         )
+
+    @staticmethod
+    def _strip_markdown(text: str) -> str:
+        """Remove common markdown formatting from generated ad copy."""
+        if not text:
+            return text
+        # Remove inline/code fences
+        text = re.sub(r"`{1,3}.*?`{1,3}", "", text, flags=re.S)
+        # Strip headers and bullet/numbered list prefixes
+        text = re.sub(r"^#+\s*", "", text, flags=re.M)
+        text = re.sub(r"^\s*[-*+]\s+", "", text, flags=re.M)
+        text = re.sub(r"^\s*\d+[.)]\s+", "", text, flags=re.M)
+        # Remove bold/italic markers
+        text = text.replace("**", "").replace("__", "").replace("_", "")
+        # Collapse whitespace
+        text = re.sub(r"\s+", " ", text).strip()
+        return text
 
 
 if __name__ == "__main__":

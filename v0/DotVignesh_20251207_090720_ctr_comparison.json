@@ -1,0 +1,29 @@
+[
+  {
+    "variant": 1,
+    "ad_text": "Autodesk is putting the Flex in flexibility. Pay-as-you-go product access. Let's go build with it - learn more. Image: https://imgen.x.ai/xai-imgen/xai-tmp-i...",
+    "original_score": 72,
+    "enhanced_score": 88,
+    "winner": "enhanced",
+    "winner_score": 88,
+    "winner_reasoning": "Enhanced variant boosts visual appeal with sharper details, dynamic lighting on modern workspace and architecture render, stronger relevance to pay-as-you-go flexibility for AI/ML builders; higher quality and resonance drive better engagement with enthusiastic, xAI-aligned user."
+  },
+  {
+    "variant": 2,
+    "ad_text": "Autodesk is putting the Flex in flexibility. Pay-as-you-go product access. Let's scale designs dynamically—learn more. Image: https://imgen.x.ai/xai-imgen/xa...",
+    "original_score": 72,
+    "enhanced_score": 92,
+    "winner": "enhanced",
+    "winner_score": 92,
+    "winner_reasoning": "Enhanced variant directly targets AI/ML devs & engineers with 'On-demand worktool for AI/ML developers & engineers' text overlay on modern laptop setup—perfect alignment with user's xAI/hackathon persona, high relevance to dynamic scaling, strong emotional resonance for enthusiastic builders."
+  },
+  {
+    "variant": 3,
+    "ad_text": "Autodesk is putting the Flex in flexibility. Pay-as-you-go product access for your design workflows—scale on demand without the lock-in. Let's build smarter....",
+    "original_score": 72,
+    "enhanced_score": 88,
+    "winner": "enhanced",
+    "winner_score": 88,
+    "winner_reasoning": "Enhanced image directly ties to user's hackathon passion with 'Flexibility-hackathonced' text overlay, vibrant laptop displaying design work (headphones/model), high visual appeal and emotional resonance for AI/ML builders seeking on-demand tools—strongest user alignment."
+  }
+]

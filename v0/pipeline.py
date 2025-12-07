@@ -18,10 +18,11 @@ Supabase:
 """
 
 import json
+import csv
 import argparse
 from datetime import datetime
 from dataclasses import dataclass
-from typing import Optional, List, Iterable
+from typing import Optional, List, Iterable, Union
 from pathlib import Path
 
 from config import validate_config
@@ -48,6 +49,60 @@ class PipelineResult:
             "remixed_ads": self.remixed_ads.to_dict(),
             "ctr_prediction": self.ctr_prediction.to_dict()
         }
+
+
+def build_ctr_comparison_table(remixed_ads: Union[RemixedAdsResult, dict]) -> List[dict]:
+    """
+    Extract a flat table comparing original vs enhanced CTR scores for each variant.
+    
+    Returns a list of dict rows that can be written to JSON/CSV for visualization.
+    """
+    variants = getattr(remixed_ads, "rewritten_ads", []) if not isinstance(remixed_ads, dict) \
+        else remixed_ads.get("rewritten_ads", [])
+    
+    table: List[dict] = []
+    
+    for idx, variant in enumerate(variants):
+        comparison = getattr(variant, "ctr_comparison", None) if not isinstance(variant, dict) \
+            else variant.get("ctr_comparison")
+        if not comparison:
+            continue
+        
+        comp_dict = comparison.to_dict() if hasattr(comparison, "to_dict") else comparison
+        scores = comp_dict.get("all_scores", []) or []
+        
+        scores_map = {}
+        for score in scores:
+            if hasattr(score, "image_type"):
+                scores_map[score.image_type] = {
+                    "score": getattr(score, "score", None),
+                    "reasoning": getattr(score, "reasoning", "")
+                }
+            else:
+                score_type = score.get("type")
+                if score_type:
+                    scores_map[score_type] = {
+                        "score": score.get("score"),
+                        "reasoning": score.get("reasoning", "")
+                    }
+        
+        ad_text = getattr(variant, "content", "") if not isinstance(variant, dict) \
+            else variant.get("content", "")
+        ad_text = ad_text.replace("\n", " ")
+        if len(ad_text) > 160:
+            ad_text = f"{ad_text[:157]}..."
+        
+        table.append({
+            "variant": idx + 1,
+            "ad_text": ad_text,
+            "original_score": scores_map.get("original", {}).get("score"),
+            "enhanced_score": scores_map.get("enhanced", {}).get("score"),
+            "winner": comp_dict.get("winner"),
+            "winner_score": comp_dict.get("winner_score"),
+            "winner_reasoning": comp_dict.get("winner_reasoning", "")
+        })
+    
+    return table
 
 
 class AdIntelligencePipeline:
@@ -453,6 +508,8 @@ def save_results(result: PipelineResult, output_dir: str = "."):
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     base_name = f"{result.username}_{timestamp}"
     
+    ctr_table = build_ctr_comparison_table(result.remixed_ads)
+    
     # Save individual files
     files = {
         f"{base_name}_context_card.json": result.context_card.to_dict(),
@@ -461,13 +518,36 @@ def save_results(result: PipelineResult, output_dir: str = "."):
         f"{base_name}_full_result.json": result.to_dict()
     }
     
+    if ctr_table:
+        files[f"{base_name}_ctr_comparison.json"] = ctr_table
+    
+    saved_files = []
+    
     for filename, data in files.items():
         filepath = output_path / filename
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
+        saved_files.append(filename)
+    
+    if ctr_table:
+        csv_path = output_path / f"{base_name}_ctr_comparison.csv"
+        with open(csv_path, 'w', newline='', encoding='utf-8') as f:
+            fieldnames = [
+                "variant",
+                "ad_text",
+                "original_score",
+                "enhanced_score",
+                "winner",
+                "winner_score",
+                "winner_reasoning"
+            ]
+            writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+            writer.writeheader()
+            writer.writerows(ctr_table)
+        saved_files.append(csv_path.name)
     
     print(f"\n✓ Results saved to {output_dir}/")
-    for filename in files:
+    for filename in saved_files:
         print(f"   - {filename}")
 
 
