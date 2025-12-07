@@ -208,5 +208,8 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
+.DS_Store
+
+*.json
 .DS_Storead-portal/node_modules/
 node_modules/
