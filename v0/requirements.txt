@@ -1,0 +1,14 @@
+# Core dependencies
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+requests>=2.31.0
+httpx>=0.25.0
+
+# X API SDK
+xdk>=0.1.0
+
+# xAI SDK
+xai-sdk>=0.1.0
+
+# Flask (for server.py - run separately)
+flask>=3.0.0
