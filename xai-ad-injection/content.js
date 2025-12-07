@@ -226,40 +226,47 @@ import { createTweetObserver } from "./features/observer.js";
 import { shouldInject } from "./decision.js";
 import { restoreAds } from "./features/restore.js";
 
-// ------------------------------------------------------------
-// GLOBAL STATE
-// ------------------------------------------------------------
-const state = {
-    lastScroll: window.scrollY,
-    tweetsSeen: 0,
-    adsInserted: 0,
-    lastAdTime: performance.now(),
-    lastAdPosition: 0,
-    lastAdTweet: 0
-};
+// Prevent double-initialization (SPA navigations/hot reloads can re-run the script)
+if (window.__xaiAdInjectionInitialized) {
+    console.log("[xai-ads] content script already running, skipping init");
+} else {
+    window.__xaiAdInjectionInitialized = true;
 
-const persistentAds = [];
+    // ------------------------------------------------------------
+    // GLOBAL STATE
+    // ------------------------------------------------------------
+    const state = {
+        lastScroll: window.scrollY,
+        tweetsSeen: 0,
+        adsInserted: 0,
+        lastAdTime: performance.now(),
+        lastAdPosition: 0,
+        lastAdTweet: 0
+    };
 
-// ------------------------------------------------------------
-// INIT SCROLL TELEMETRY
-// ------------------------------------------------------------
-initTelemetry();
+    const persistentAds = [];
 
-// ------------------------------------------------------------
-// CREATE OBSERVER
-// ------------------------------------------------------------
-const io = createTweetObserver(state, persistentAds);
+    // ------------------------------------------------------------
+    // INIT SCROLL TELEMETRY
+    // ------------------------------------------------------------
+    initTelemetry();
 
-// ------------------------------------------------------------
-// DOM Mutation Observer -> restore ads
-// ------------------------------------------------------------
-const mutation = new MutationObserver(() => {
-    const tweets = document.querySelectorAll("article[data-testid='tweet']");
-    tweets.forEach(t => io.observe(t));
-    restoreAds(persistentAds, tweets);
-});
+    // ------------------------------------------------------------
+    // CREATE OBSERVER
+    // ------------------------------------------------------------
+    const io = createTweetObserver(state, persistentAds);
 
-mutation.observe(document.body, {
-    childList: true,
-    subtree: true
-});
+    // ------------------------------------------------------------
+    // DOM Mutation Observer -> restore ads
+    // ------------------------------------------------------------
+    const mutation = new MutationObserver(() => {
+        const tweets = document.querySelectorAll("article[data-testid='tweet']");
+        tweets.forEach(t => io.observe(t));
+        restoreAds(persistentAds, tweets);
+    });
+
+    mutation.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
