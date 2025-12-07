@@ -77,6 +77,39 @@ POSTS:
 
 React as them. Be authentic."""
 
+    def _extract_product_prompt(self, ads: list[str]) -> str:
+        """Prompt for extracting product name from ads."""
+        ads_text = "\n".join([f"- {ad}" for ad in ads])
+        return f"""Given these ads:
+{ads_text}
+
+Extract the product name being advertised. Return ONLY the product name, nothing else."""
+
+    async def _extract_product(self, client: httpx.AsyncClient, remixed_ads: dict) -> str:
+        """Extract product name from remixed ads using Grok."""
+        ads = remixed_ads.get("rewritten_ads", [])
+        if not ads:
+            return ""
+        
+        payload = {
+            "model": self.model,
+            "messages": [
+                {"role": "user", "content": self._extract_product_prompt(ads)}
+            ],
+            "temperature": 0.3,
+            "max_tokens": 50
+        }
+        
+        try:
+            r = await client.post(self.BASE_URL, json=payload, headers=self.headers)
+            r.raise_for_status()
+            product = r.json()["choices"][0]["message"]["content"].strip()
+            # Clean up any quotes or extra formatting
+            product = product.strip('"\'')
+            return product
+        except Exception:
+            return ""
+
     def _ctr_prompt(self, ad: str, product: str) -> str:
         return f"""Ad for "{product}":
 "{ad}"
@@ -153,6 +186,10 @@ Would you click? JSON only:
         ads = remixed_ads.get("rewritten_ads", [])
         
         async with httpx.AsyncClient(timeout=60.0) as client:
+            # Extract product name if not provided
+            if not product:
+                product = await self._extract_product(client, remixed_ads)
+            
             scores = await asyncio.gather(*[
                 self._ensemble_eval(client, ad, idx, product, context_card)
                 for idx, ad in enumerate(ads)
@@ -192,11 +229,9 @@ if __name__ == "__main__":
     with open(remixed_ads_path, "r") as f:
         remixed_ads = json.load(f)
     
-    # Product name (can be extracted from remixed ads or passed separately)
-    product = "ZetaBook Pro"  # Extract from remixed ads or pass as parameter
-    
+    # Product name will be extracted automatically by Grok from remixed ads
     critic = AsyncCTRCriticAgent(ensemble_runs=10)
-    result = critic.predict(context_card, remixed_ads, product)
+    result = critic.predict(context_card, remixed_ads)
     
     print(f"\n{'='*55}")
     print(f"ENSEMBLE CTR PREDICTION | {result.total_simulations} simulations")
