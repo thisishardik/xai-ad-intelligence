@@ -3,7 +3,7 @@
 
 const XAI_API_KEY = "xai-DrStGxoc3EHG0ribsAEp0RsZOVEuww9031WKNEsSvXW8o0lXdLAWk2kyetcM5bRKjVq76eEil6YGWzBO";
 const XAI_API_URL = "https://api.x.ai/v1/chat/completions";
-const MODEL = "grok-4-1-fast-non-reasoning";
+const MODEL = "grok-4-fast-non-reasoning";
 
 /**
  * Get attention score from Grok API based on scroll telemetry features
