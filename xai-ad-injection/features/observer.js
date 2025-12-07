@@ -5,6 +5,34 @@ import { getAttentionScore } from "../model.js";
 import { shouldInject } from "../decision.js";
 import { createAd, injectAdAfter } from "../inject.js";
 
+// Feature buffer for batching
+const featureBuffer = [];
+let apiCallCount = 0;
+let lastApiCallTime = 0;
+
+/**
+ * Aggregate features from multiple tweets
+ * @param {Array} buffer - Array of feature objects
+ * @returns {Object} Aggregated features
+ */
+function aggregateFeatures(buffer) {
+    if (buffer.length === 0) return null;
+
+    const velocities = buffer.map(f => f.velocity);
+    const accelerations = buffer.map(f => f.acceleration);
+    const pauses = buffer.map(f => f.pauseDuration);
+
+    return {
+        velocity: velocities.reduce((a, b) => a + b, 0) / velocities.length,
+        acceleration: accelerations.reduce((a, b) => a + b, 0) / accelerations.length,
+        pauseDuration: Math.max(...pauses), // Use max pause (most significant)
+        reverseScroll: buffer[buffer.length - 1].reverseScroll, // Latest value
+        bounce: buffer.some(f => f.bounce), // True if any bounce detected
+        tweets_since_last_ad: buffer[buffer.length - 1].tweets_since_last_ad,
+        time_since_last_ad: buffer[buffer.length - 1].time_since_last_ad
+    };
+}
+
 export function createTweetObserver(state, persistentAds) {
     return new IntersectionObserver(async (entries) => {
         for (const entry of entries) {
@@ -22,19 +50,55 @@ export function createTweetObserver(state, persistentAds) {
                 state.tweetsSeen++;
             }
 
-            const features = {
+            // Collect current features
+            const currentFeatures = {
                 ...telemetry,
                 tweets_since_last_ad: state.tweetsSeen - (state.adsInserted * 5),
                 time_since_last_ad: performance.now() - state.lastAdTime
             };
 
-            const { attention_score, reason } = await getAttentionScore(features);
+            // Add to buffer
+            featureBuffer.push(currentFeatures);
+
+            // Determine if we should call API
+            const shouldCallApi =
+                featureBuffer.length >= 3 || // Batch of 3 tweets
+                currentFeatures.pauseDuration > 1000; // High attention moment (1s pause)
+
+            if (!shouldCallApi) {
+                console.log(`[Batching] Buffered tweet ${state.tweetsSeen} (${featureBuffer.length}/3), pause: ${currentFeatures.pauseDuration.toFixed(0)}ms`);
+                continue;
+            }
+
+            // Aggregate features from buffer
+            const aggregatedFeatures = aggregateFeatures(featureBuffer);
+
+            console.log(`[Batching] Calling API with ${featureBuffer.length} tweets buffered`, {
+                reason: featureBuffer.length >= 3 ? "Batch full" : "High attention detected",
+                avgVelocity: aggregatedFeatures.velocity.toFixed(2),
+                maxPause: `${aggregatedFeatures.pauseDuration.toFixed(0)}ms`
+            });
+
+            // Clear buffer
+            featureBuffer.length = 0;
+
+            // Call Grok API
+            apiCallCount++;
+            lastApiCallTime = performance.now();
+
+            const { attention_score, reason } = await getAttentionScore(aggregatedFeatures);
+
+            console.log(`[API Stats] Total calls: ${apiCallCount}, Last call: ${((performance.now() - lastApiCallTime) / 1000).toFixed(1)}s ago`);
+
+            // Check if this was triggered by pause
+            const pauseTriggered = currentFeatures.pauseDuration > 1000;
 
             const should = shouldInject({
                 attentionScore: attention_score,
                 scrollingDown,
                 timeSinceLastAd: performance.now() - state.lastAdTime,
-                distanceSinceLastAd: window.scrollY - state.lastAdPosition
+                distanceSinceLastAd: window.scrollY - state.lastAdPosition,
+                pauseTriggered: pauseTriggered  // Pass flag for relaxed thresholds
             });
 
             if (should) {
@@ -54,7 +118,8 @@ export function createTweetObserver(state, persistentAds) {
                     adNumber: state.adsInserted,
                     afterTweet: state.tweetsSeen,
                     reason: reason,
-                    scrollPosition: `${window.scrollY.toFixed(0)}px`
+                    scrollPosition: `${window.scrollY.toFixed(0)}px`,
+                    apiCallsTotal: apiCallCount
                 });
             }
         }
