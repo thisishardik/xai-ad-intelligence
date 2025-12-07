@@ -1,0 +1,42 @@
+{
+  "user_id": "1997090614605934592",
+  "best_ad_index": 0,
+  "best_ad_text": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-8011dc31-853a-4a15-aebf-e74305748eec.png)",
+  "confidence": 0.5755565614728818,
+  "scores": [
+    {
+      "ad_index": 0,
+      "ad_text": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-8011dc31-853a-4a15-aebf-e74305748eec.png)",
+      "click_prob_mean": 0.735,
+      "attention_mean": 0.8200000000000001,
+      "relevance_mean": 0.65,
+      "ctr_mean": 0.7435,
+      "click_prob_std": 0.057975090436420317,
+      "ctr_std": 0.05502777076672797,
+      "num_runs": 10
+    },
+    {
+      "ad_index": 2,
+      "ad_text": "**Analytical SFC  \nAs Easy As LC! 🚀**  \n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab tech effortless – level up your workflow like a hackathon sprint!  \n\nLearn More. Click here.  \n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-2be16096-064a-471d-a350-37faff6c06c1.png)",
+      "click_prob_mean": 0.725,
+      "attention_mean": 0.8200000000000001,
+      "relevance_mean": 0.62,
+      "ctr_mean": 0.7324999999999999,
+      "click_prob_std": 0.05400617248673219,
+      "ctr_std": 0.047798767999,
+      "num_runs": 10
+    },
+    {
+      "ad_index": 1,
+      "ad_text": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-a1b367f8-ebe2-4aba-a4d0-9c7a18343bd2.png)",
+      "click_prob_mean": 0.71,
+      "attention_mean": 0.79,
+      "relevance_mean": 0.63,
+      "ctr_mean": 0.718,
+      "click_prob_std": 0.03162277660168382,
+      "ctr_std": 0.0329309040939426,
+      "num_runs": 10
+    }
+  ],
+  "total_simulations": 30
+}

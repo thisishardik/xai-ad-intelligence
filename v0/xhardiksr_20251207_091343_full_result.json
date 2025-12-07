@@ -1,0 +1,336 @@
+{
+  "user_id": "1997090614605934592",
+  "username": "xhardiksr",
+  "context_card": {
+    "username": "xhardiksr",
+    "user_id": "1997090614605934592",
+    "general_topic": "AI, hackathons, xAI, Elon Musk, biotech, pro-vaccine health policy",
+    "popular_memes": null,
+    "user_persona_tone": "casual and enthusiastic, tech-savvy, motivational",
+    "top_25_reranked_posts": [
+      {
+        "post_id": "1997687585741975991",
+        "text": "24 hours hackathon isn’t enough, this guy pushing for a 36 hours hackathon! #Parsathon 😂 https://t.co/BA8vUBs0vH",
+        "source": "timeline",
+        "rank": 1,
+        "relevance_score": 1.0
+      },
+      {
+        "post_id": "1997609938261262773",
+        "text": "Absolutely electric energy!\n\nThe winners of the hackathon last time are doing phenomenal work at the company. If you missed out this time, don’t miss next time. https://t.co/1faSP9Ukb9",
+        "source": "timeline",
+        "rank": 2,
+        "relevance_score": 0.99
+      },
+      {
+        "post_id": "1997518466723750124",
+        "text": "Thank you for hosting @xai https://t.co/DwHbSa8eUq",
+        "source": "timeline",
+        "rank": 3,
+        "relevance_score": 0.98
+      },
+      {
+        "post_id": "1997683911103828266",
+        "text": "RT @forwarddeploy: Welcome to the @xai Hackathon! \n\nWe are so excited to meet you 🙌 https://t.co/HLKRpf7RAl",
+        "source": "timeline",
+        "rank": 4,
+        "relevance_score": 0.97
+      },
+      {
+        "post_id": "1997683558522249618",
+        "text": "RT @MarioNawfal: HARDCORE CODERS BUILD THE FUTURE IN xAI'S 24H HACKATHON!\n\nThe xAI hackathon ignited, packing the office with code brainiac…",
+        "source": "timeline",
+        "rank": 5,
+        "relevance_score": 0.96
+      },
+      {
+        "post_id": "1997687082299605242",
+        "text": "RT @Teslaconomics: 1st place winners at xAI hackathon get an all-paid for trip to see Starship launch! https://t.co/g3v42vYkUM",
+        "source": "timeline",
+        "rank": 6,
+        "relevance_score": 0.95
+      },
+      {
+        "post_id": "1997687051031114110",
+        "text": "RT @TonyW__: more than 2 hrs before the @xai hackathon start time and the line is already wrapping around the building! https://t.co/5PXvU4…",
+        "source": "timeline",
+        "rank": 7,
+        "relevance_score": 0.94
+      },
+      {
+        "post_id": "1997518338453618821",
+        "text": "RT @forwarddeploy: 3am and you see this…wyd? \n\n“I’m going to put grok in this” - @Kaweees1 https://t.co/tgLYPgVHud",
+        "source": "timeline",
+        "rank": 8,
+        "relevance_score": 0.93
+      },
+      {
+        "post_id": "1997546146856866016",
+        "text": "Let's go! https://t.co/CtG0hpYiG0",
+        "source": "timeline",
+        "rank": 9,
+        "relevance_score": 0.92
+      },
+      {
+        "post_id": "1997552592453562442",
+        "text": "When Elon Musk had just arrived in the Bay Area, as told by @grok, after dropping out of Stanford, carrying his resume, he walked into the Netscape office with his brother hoping to get a job—any job—because Netscape was the hot internet company at the time and symbolized the",
+        "source": "timeline",
+        "rank": 10,
+        "relevance_score": 0.91
+      },
+      {
+        "post_id": "1997552729640870198",
+        "text": "Sometimes not getting what you want can free you to build whatever comes next on your own terms.",
+        "source": "timeline",
+        "rank": 11,
+        "relevance_score": 0.9
+      },
+      {
+        "post_id": "1997660581776564447",
+        "text": "“You’ve gotta act. And you’ve gotta be willing to fail… you’ve gotta be willing to crash and burn. With people on the phone, with starting a company, with whatever. If you’re afraid of failing, you won’t get very far.” — Steve Jobs",
+        "source": "timeline",
+        "rank": 12,
+        "relevance_score": 0.89
+      },
+      {
+        "post_id": "1997714121735983257",
+        "text": "RT @YanayRosen: A key goal of Virtual Cells is to provide as much data-driven context as possible to biological queries, linking large data…",
+        "source": "timeline",
+        "rank": 13,
+        "relevance_score": 0.88
+      },
+      {
+        "post_id": "1997524104925385038",
+        "text": "RT @arcinstitute: Thank you to everyone who made the inaugural Virtual Cell Challenge a success.\n\nOver 5,000 participants from 114 countrie…",
+        "source": "timeline",
+        "rank": 14,
+        "relevance_score": 0.87
+      },
+      {
+        "post_id": "1997498339945046431",
+        "text": "RT @biorxiv_bioinfo: VUSVista: Enhancing the Curation of Variants of Uncertain Significance https://t.co/GE7BC86GZJ #biorxiv_bioinfo",
+        "source": "timeline",
+        "rank": 15,
+        "relevance_score": 0.86
+      },
+      {
+        "post_id": "1997498045806838164",
+        "text": "RT @dana_peer: Celebrating Christina Curtis and her well-deserved Paul Marks Prize! Some tumors are born bad. Christina uses math to find t…",
+        "source": "timeline",
+        "rank": 16,
+        "relevance_score": 0.85
+      },
+      {
+        "post_id": "1997523813438034314",
+        "text": "RT @kattian_: Want to learn about SAE feature sensitivity, and our new method for measuring it efficiently? Catch Claire’s spotlight talk a…",
+        "source": "timeline",
+        "rank": 17,
+        "relevance_score": 0.84
+      },
+      {
+        "post_id": "1997650608359158034",
+        "text": "RT @JeromeAdamsMD: Reminder: hepatitis B is preventable- but not curable. It can lead to liver failure, liver transplant, liver cancer, and…",
+        "source": "timeline",
+        "rank": 18,
+        "relevance_score": 0.83
+      },
+      {
+        "post_id": "1997714771416940983",
+        "text": "RT @JeromeAdamsMD: Many celebrating the ACIP HepB change seem completely unaware: the birth dose was never mandatory /parents could always…",
+        "source": "timeline",
+        "rank": 19,
+        "relevance_score": 0.82
+      },
+      {
+        "post_id": "1997553546796179745",
+        "text": "RT @elonmusk: @Austen It had to be done to shore up civilization",
+        "source": "timeline",
+        "rank": 20,
+        "relevance_score": 0.81
+      },
+      {
+        "post_id": "1997547001278550125",
+        "text": "RT @jakescottMD: @doritmi breaks down the lack of expertise, incompetence, and blatant anti-vaccine bias on full display at ACIP: \n\nVia @st…",
+        "source": "timeline",
+        "rank": 21,
+        "relevance_score": 0.8
+      },
+      {
+        "post_id": "1997644826485924030",
+        "text": "Supercharger Site Map just got a serious upgrade\n\nYou can now preview a 3D view of select Supercharger stations by tapping “View Site Map” on the charger details\n\nWhen you navigate to a pilot site, your car will show the full layout, including each stall’s live status: Available, https://t.co/O6S6DvsKmu",
+        "source": "likes",
+        "rank": 22,
+        "relevance_score": 0.79
+      },
+      {
+        "post_id": "1997704377159872852",
+        "text": "RT @EvaVlaar: If the EU actually cared about democracy they should establish a mechanism for a binding referendum on its future trajectory.…",
+        "source": "timeline",
+        "rank": 23,
+        "relevance_score": 0.78
+      },
+      {
+        "post_id": "1997546945339130358",
+        "text": "RT @michaelzlin: Screenshot from today's CNN website\n\nFor the first time in our lives, replacing our current HHS chief with the next random…",
+        "source": "timeline",
+        "rank": 24,
+        "relevance_score": 0.77
+      },
+      {
+        "post_id": "1997703635271315927",
+        "text": "RT @DdelAlamo: This is the stupidest bullshit I’ve ever seen",
+        "source": "timeline",
+        "rank": 25,
+        "relevance_score": 0.76
+      }
+    ]
+  },
+  "remixed_ads": {
+    "user_id": "1997090614605934592",
+    "selected_ad": "Analytical SFC\nAs Easy As LC\n• LC/SFC switching capability\n• Small footprint\nAutomated\nmethod\nscouti... — Analytical SFC\nAs Easy As LC\n• LC/SFC switching capability\n• Small footprint\nAutomated\nmethod\nscouting\nLearn More. Click here. SHIMADZU — Analytical SFC as easy as LC with seamless switching.",
+    "selection_reasoning": "Highest score 85",
+    "original_image_url": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/dab9cda1-c0fc-43fe-9da5-46218930fa7f.jpg",
+    "image_analysis": {
+      "description": "Ad image for Shimadzu's Analytical SFC system, featuring bold headline 'Analytical SFC As Easy As LC' with bullet points on LC/SFC switching, small footprint, and automated method scouting. Includes product images of compact lab equipment stacks and a 'Learn More. Click here.' CTA with Shimadzu logo.",
+      "strengths": [
+        "Clear, bold headline effectively simplifies complex tech concept ('As Easy As LC')",
+        "Concise bullet points highlight key benefits like switching capability and automation",
+        "Product visuals show compact, modern equipment, reinforcing 'small footprint'",
+        "Strong brand presence with logo and direct CTA"
+      ],
+      "improvement_suggestions": [
+        "Amp up enthusiasm with casual, tech-savvy phrasing like 'Switch between LC & SFC seamlessly – biotech breakthroughs made effortless!' to match user's hackathon energy and AI/biotech vibe",
+        "Add motivational hook: 'Automate method scouting like a 24-hour hackathon sprint – fast, smart, unstoppable!' tying into user's love for xAI hackathons",
+        "Incorporate sleek 3D renders or animated previews of the equipment (inspired by Tesla Supercharger maps) for a futuristic, Elon-approved tech feel",
+        "Fix text overlaps/cutoffs (e.g., 'scoutin...') for crisp readability; use bold icons next to bullets for quick-scan appeal",
+        "End with punchy CTA: 'Level up your lab – Learn More & Innovate Now!' to spark user's motivational, builder mindset"
+      ],
+      "key_elements": [
+        "Headline 'Analytical SFC As Easy As LC'",
+        "Core bullets: LC/SFC switching, small footprint, automated method scouting",
+        "Product equipment visuals",
+        "Shimadzu branding and 'Learn More' CTA"
+      ],
+      "style_notes": "Clean, professional B2B lab tech style with blue/white color scheme; functional and informative mood, but lacks high-energy excitement – could evolve to motivational, innovative vibe for tech enthusiasts"
+    },
+    "rewritten_ads": [
+      {
+        "content": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-8011dc31-853a-4a15-aebf-e74305748eec.png)",
+        "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-8011dc31-853a-4a15-aebf-e74305748eec.png",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-8011dc31-853a-4a15-aebf-e74305748eec.png",
+        "original_image_uri": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/dab9cda1-c0fc-43fe-9da5-46218930fa7f.jpg",
+        "image_prompt": "A sleek, modern social media ad graphic with a bold, energetic headline 'Analytical SFC – As Easy As LC! 🚀' in futuristic white text on a dark tech-blue gradient background evoking xAI hackathon vibes. Below, three crisp bullet points with glowing icons: a seamless switch toggle for LC/SFC switching, a compact stack of lab equipment for small footprint, and an automated scouting flowchart for method scouting. Feature high-res, realistic 3D renders of the compact Shimadzu SFC lab equipment stack looking innovative and space-efficient, like a Tesla Supercharger preview. Bottom CTA 'Learn More!' button with Shimadzu logo, enthusiastic and motivational feel – clean, high-contrast, quick-scan layout for biotech innovators, no overlaps, casual tech-savvy energy.",
+        "enhancement_notes": "",
+        "ctr_comparison": {
+          "winner": "enhanced",
+          "winner_score": 92,
+          "winner_reasoning": "Enhanced variant aligns perfectly with user's xAI/hackathon/Tesla interests via Tesla Supercharger integration and 🚀 vibe; modern icons, toggle switches add interactivity appeal, high visual quality and motivational resonance boost CTR.",
+          "all_scores": [
+            {
+              "type": "enhanced",
+              "score": 92,
+              "reasoning": "Enhanced variant aligns perfectly with user's xAI/hackathon/Tesla interests via Tesla Supercharger integration and 🚀 vibe; modern icons, toggle switches add interactivity appeal, high visual quality and motivational resonance boost CTR."
+            },
+            {
+              "type": "original",
+              "score": 75,
+              "reasoning": "Original is clean and directly relevant to lab tech message with clear equipment visuals, but lacks visual pop, tech flair, or emotional excitement for a tech-savvy, Elon/biotech enthusiast."
+            }
+          ]
+        }
+      },
+      {
+        "content": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-a1b367f8-ebe2-4aba-a4d0-9c7a18343bd2.png)",
+        "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-a1b367f8-ebe2-4aba-a4d0-9c7a18343bd2.png",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-a1b367f8-ebe2-4aba-a4d0-9c7a18343bd2.png",
+        "original_image_uri": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/dab9cda1-c0fc-43fe-9da5-46218930fa7f.jpg",
+        "image_prompt": "A sleek, modern social media ad graphic with high-energy tech vibe: bold headline 'Analytical SFC – As Easy As LC! 🚀' at top in futuristic sans-serif font. Below, three crisp bullet points with glowing icons – a smooth toggle switch for 'Seamless LC/SFC switching', a compact stack outline for 'Small footprint', and an auto-scanning graph for 'Automated method scouting'. Feature realistic 3D renders of the compact Shimadzu lab equipment stacks in a clean, bright lab setting, emphasizing small size and modern design. Bottom CTA 'Learn More!' button with Shimadzu logo. Energetic blue and white color scheme, subtle electric sparks for enthusiasm, quick-scan layout like Tesla Supercharger maps – truthful product visuals, no exaggerations.",
+        "enhancement_notes": "",
+        "ctr_comparison": {
+          "winner": "enhanced",
+          "winner_score": 88,
+          "winner_reasoning": "Enhanced Variant 2 excels with dynamic effects (lightning, rocket), vibrant colors, and bold CTA boosting visual appeal and emotional resonance; strong relevance to effortless lab tech aligns perfectly with user's biotech/motivational persona, mimicking high-energy hackathon vibe.",
+          "all_scores": [
+            {
+              "type": "enhanced",
+              "score": 88,
+              "reasoning": "Enhanced Variant 2 excels with dynamic effects (lightning, rocket), vibrant colors, and bold CTA boosting visual appeal and emotional resonance; strong relevance to effortless lab tech aligns perfectly with user's biotech/motivational persona, mimicking high-energy hackathon vibe."
+            },
+            {
+              "type": "original",
+              "score": 72,
+              "reasoning": "Original Variant 2 has solid relevance to biotech/lab tech with clear product visuals and copy integration, but static design lacks visual pop or excitement, limiting appeal to tech-savvy users despite some alignment with automation interest."
+            }
+          ]
+        }
+      },
+      {
+        "content": "**Analytical SFC  \nAs Easy As LC! 🚀**  \n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab tech effortless – level up your workflow like a hackathon sprint!  \n\nLearn More. Click here.  \n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-2be16096-064a-471d-a350-37faff6c06c1.png)",
+        "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-2be16096-064a-471d-a350-37faff6c06c1.png",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-2be16096-064a-471d-a350-37faff6c06c1.png",
+        "original_image_uri": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/dab9cda1-c0fc-43fe-9da5-46218930fa7f.jpg",
+        "image_prompt": "A sleek, modern social media ad image in a vibrant, energetic tech style with futuristic glows and bold neon accents in blue and green hues. Centered bold headline 'Analytical SFC As Easy As LC! 🚀' in large, dynamic font evoking hackathon excitement. Below, three crisp bullet points with glowing icons: a seamless switch toggle for LC/SFC switching, a compact stack icon for small footprint, and an automated robot scanner for method scouting. Feature high-res 3D renders of the compact Shimadzu lab equipment stacks in a clean, minimalist lab setting, shown from multiple angles like a Tesla Supercharger 3D preview for immersive appeal. Prominent 'Learn More. Click here.' CTA button at bottom with Shimadzu logo. High-energy composition: dynamic angles, subtle speed lines suggesting effortless switching, motivational hacker vibe without exaggeration – truthful product visuals only, no results or testimonials. Crisp, readable text, optimized for Twitter/X feed.",
+        "enhancement_notes": "",
+        "ctr_comparison": {
+          "winner": "enhanced",
+          "winner_score": 92,
+          "winner_reasoning": "Enhanced Variant 3 excels with vibrant, futuristic overlays (Tesla, robot, 3D effects) resonating with user's xAI/hackathon enthusiasm, Elon/Tesla affinity, and tech-savvy persona; high visual appeal, strong message relevance via 'effortless' innovation tie-in, superior emotional resonance and quality for max CTR.",
+          "all_scores": [
+            {
+              "type": "enhanced",
+              "score": 92,
+              "reasoning": "Enhanced Variant 3 excels with vibrant, futuristic overlays (Tesla, robot, 3D effects) resonating with user's xAI/hackathon enthusiasm, Elon/Tesla affinity, and tech-savvy persona; high visual appeal, strong message relevance via 'effortless' innovation tie-in, superior emotional resonance and quality for max CTR."
+            },
+            {
+              "type": "original",
+              "score": 75,
+              "reasoning": "Original Variant 3 has solid visual appeal with clean lab equipment imagery and direct ad copy match, but lacks excitement or user-aligned flair like hackathon energy or tech visuals; good quality and relevance to biotech interests, moderate emotional pull."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ctr_prediction": {
+    "user_id": "1997090614605934592",
+    "best_ad_index": 0,
+    "best_ad_text": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-8011dc31-853a-4a15-aebf-e74305748eec.png)",
+    "confidence": 0.5755565614728818,
+    "scores": [
+      {
+        "ad_index": 0,
+        "ad_text": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-8011dc31-853a-4a15-aebf-e74305748eec.png)",
+        "click_prob_mean": 0.735,
+        "attention_mean": 0.8200000000000001,
+        "relevance_mean": 0.65,
+        "ctr_mean": 0.7435,
+        "click_prob_std": 0.057975090436420317,
+        "ctr_std": 0.05502777076672797,
+        "num_runs": 10
+      },
+      {
+        "ad_index": 2,
+        "ad_text": "**Analytical SFC  \nAs Easy As LC! 🚀**  \n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab tech effortless – level up your workflow like a hackathon sprint!  \n\nLearn More. Click here.  \n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-2be16096-064a-471d-a350-37faff6c06c1.png)",
+        "click_prob_mean": 0.725,
+        "attention_mean": 0.8200000000000001,
+        "relevance_mean": 0.62,
+        "ctr_mean": 0.7324999999999999,
+        "click_prob_std": 0.05400617248673219,
+        "ctr_std": 0.047798767999,
+        "num_runs": 10
+      },
+      {
+        "ad_index": 1,
+        "ad_text": "Analytical SFC – As Easy As LC! 🚀\n\n• Seamless LC/SFC switching  \n• Small footprint  \n• Automated method scouting  \n\nShimadzu making lab work effortless. Learn More!\n\n![Shimadzu Analytical SFC Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-a1b367f8-ebe2-4aba-a4d0-9c7a18343bd2.png)",
+        "click_prob_mean": 0.71,
+        "attention_mean": 0.79,
+        "relevance_mean": 0.63,
+        "ctr_mean": 0.718,
+        "click_prob_std": 0.03162277660168382,
+        "ctr_std": 0.0329309040939426,
+        "num_runs": 10
+      }
+    ],
+    "total_simulations": 30
+  }
+}

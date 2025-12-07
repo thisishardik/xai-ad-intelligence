@@ -217,8 +217,13 @@
 // })();
 
 
-import { initTelemetry } from "./features/telemetry.js";
+// Import adCard.js to ensure window.createAdCard is available
+import "./adCard.js";
+
+import { createAd, injectAdAfter } from "./inject.js";
+import { initTelemetry, telemetry } from "./features/telemetry.js";
 import { createTweetObserver } from "./features/observer.js";
+import { shouldInject } from "./decision.js";
 import { restoreAds } from "./features/restore.js";
 
 // ------------------------------------------------------------

@@ -1,7 +1,5 @@
 // inject.js
 
-import { createAdCard } from "./adCard.js";
-
 /**
  * Create an ad card with attention-based timing reason
  * @param {string} reason - Reason for ad insertion (from attention model)
@@ -9,7 +7,8 @@ import { createAdCard } from "./adCard.js";
  */
 export async function createAd(reason = "Intelligent ad timing") {
     // Fetch ad card from server (or fallback)
-    const adCard = await createAdCard();
+    // Note: createAdCard is exposed globally via window.createAdCard in adCard.js
+    const adCard = await window.createAdCard();
 
     // Wrap it in a container with attention tooltip
     const container = document.createElement("div");

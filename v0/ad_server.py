@@ -61,7 +61,7 @@ prewarm_inflight = {}
 
 # Cache queue config
 QUEUE_TOP_N = 10          # how many ads to keep in the temp queue
-QUEUE_REFILL_THRESHOLD = 10  # when queue falls below this, try to top-up
+QUEUE_REFILL_THRESHOLD = 2  # when queue falls below this, try to top-up
 
 
 def _build_context_card_from_dict(context_card_dict: dict, user_id: str):

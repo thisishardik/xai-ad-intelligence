@@ -89,13 +89,13 @@ export function createTweetObserver(state, persistentAds) {
             // Add to buffer
             featureBuffer.push(currentFeatures);
 
-            // Determine if we should call API
+            // Determine if we should call API (now processes every tweet, or on pause)
             const shouldCallApi =
-                featureBuffer.length >= 3 || // Batch of 3 tweets
+                featureBuffer.length >= 1 || // Process every tweet
                 currentFeatures.pauseDuration > 1000; // High attention moment (1s pause)
 
             if (!shouldCallApi) {
-                console.log(`[Batching] Buffered tweet ${state.tweetsSeen} (${featureBuffer.length}/3), pause: ${currentFeatures.pauseDuration.toFixed(0)}ms`);
+                console.log(`[Batching] Buffered tweet ${state.tweetsSeen} (${featureBuffer.length}/1), pause: ${currentFeatures.pauseDuration.toFixed(0)}ms`);
                 continue;
             }
 
