@@ -10,6 +10,7 @@ import asyncio
 from typing import Optional, List
 import httpx
 from dotenv import load_dotenv
+from xai_sdk import Client
 
 # Load environment variables from .env file
 load_dotenv()
@@ -33,6 +34,8 @@ class AdRemixerAgent:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}"
         }
+        # Initialize image client
+        self.image_client = Client(api_key=self.api_key)
 
     def _build_style_reference(self, context_card: dict) -> str:
         """Build style reference from top_25_reranked_posts."""
@@ -164,6 +167,8 @@ Return ONLY the rewritten ad text. No quotes, no explanations."""
             "max_tokens": 500
         }
         
+        ad_description = ""
+        
         try:
             r = await client.post(self.BASE_URL, json=payload, headers=self.headers)
             r.raise_for_status()
@@ -175,10 +180,49 @@ Return ONLY the rewritten ad text. No quotes, no explanations."""
                 lines = content.split("\n")
                 content = "\n".join(lines[1:-1]) if len(lines) > 2 else content
             
-            return content.strip()
+            ad_description = content.strip()
         except Exception as e:
             print(f"Error rewriting ad variant {variant_num}: {e}")
-            return ad  # Fallback to original
+            ad_description = ad  # Fallback to original
+
+        try:
+            image_uri = self._generate_ad_image(ad_description)
+        except Exception as e:
+            print(f"Error generating ad image: {e}")
+            image_uri = ""
+        
+        return {"content": ad_description, "image_uri": image_uri}
+    
+    def _generate_ad_image(self, ad_description: str) -> Optional[str]:
+        """Generate an image for an ad using xAI image generation.
+        
+        Args:
+            ad_description: The ad text to generate an image for
+            
+        Returns:
+            Image URL if successful, None otherwise
+        """
+        try:
+            prompt = f"Generate an image based on this ad description. Description: {ad_description}"
+            
+            response = self.image_client.image.sample(
+                model="grok-2-image",
+                prompt=prompt,
+                image_format="url"
+            )
+            
+            # Extract URI from response
+            if hasattr(response, 'uri'):
+                return response.uri
+            elif hasattr(response, 'url'):
+                return response.url
+            else:
+                print(f"Warning: Could not extract image URI from response")
+                return None
+                
+        except Exception as e:
+            print(f"Error generating image for ad: {e}")
+            return None
 
     async def remix_ads_async(
         self,
@@ -205,10 +249,10 @@ Return ONLY the rewritten ad text. No quotes, no explanations."""
                 self._rewrite_ad_variant(client, selected_ad, context_card, i+1)
                 for i in range(3)
             ])
-        
+                
         return {
             "user_id": user_id,
-            "rewritten_ads": rewritten_ads
+            "rewritten_ads": rewritten_ads,
         }
 
     def remix_ads(
@@ -228,7 +272,7 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         context_card_file = sys.argv[1]
     else:
-        context_card_file = "user_data_DotVignesh_1009524384351096833_context_card.json"
+        context_card_file = "../x_auth/user_data_xhardiksr_1997090614605934592_context_card.json"
     
     print(f"Loading context card from {context_card_file}...")
     with open(context_card_file, 'r', encoding='utf-8') as f:
@@ -236,7 +280,7 @@ if __name__ == "__main__":
     
     # Example ads (in real usage, these would come from another system)
     example_ads = [
-        "Upgrade to the new ZetaBook Pro for unmatched speed and seamless multitasking.",
+        # "Upgrade to the new ZetaBook Pro for unmatched speed and seamless multitasking.",
         "Experience endless entertainment with 6 months of premium streaming for free.",
         "Save more on groceries every week with the FreshMart Rewards Card.",
         "Travel to your dream destinations—flight deals starting at just $199 round trip!",
@@ -258,9 +302,10 @@ if __name__ == "__main__":
     print(f"\nUser ID: {result['user_id']}")
     print(f"\nRewritten Ads ({len(result['rewritten_ads'])} variants):")
     print("-" * 60)
-    for i, ad in enumerate(result['rewritten_ads'], 1):
+    for i, (ad, image_uri) in enumerate(zip(result['rewritten_ads'], result.get('ad_images', [])), 1):
         print(f"\nVariant {i}:")
         print(f'"{ad}"')
+        print(f"Image URI: {image_uri if image_uri else 'None'}")
     
     # Save to JSON
     output_file = "remixed_ads_output.json"

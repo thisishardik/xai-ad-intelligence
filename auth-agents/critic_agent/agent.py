@@ -183,17 +183,17 @@ Would you click? JSON only:
 
 if __name__ == "__main__":
     # Load context card JSON file
-    context_card_path = "user_data_DotVignesh_1009524384351096833_context_card.json"
+    context_card_path = "../x_auth/user_data_xhardiksr_1997090614605934592_context_card.json"
     with open(context_card_path, "r") as f:
         context_card = json.load(f)
     
     # Load remixed ads output JSON file
-    remixed_ads_path = "remixed_ads_output.json"
+    remixed_ads_path = "../ad_remixer/remixed_ads_output.json"
     with open(remixed_ads_path, "r") as f:
         remixed_ads = json.load(f)
     
     # Product name (can be extracted from remixed ads or passed separately)
-    product = "ZetaBook Pro"  # Extract from remixed ads or pass as parameter
+    # product = "ZetaBook Pro"  # Extract from remixed ads or pass as parameter
     
     critic = AsyncCTRCriticAgent(ensemble_runs=10)
     result = critic.predict(context_card, remixed_ads, product)
