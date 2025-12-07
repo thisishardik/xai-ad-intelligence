@@ -16,6 +16,8 @@ Endpoints:
 import json
 import os
 import threading
+import hashlib
+from supabase_client import fetch_relevant_ads
 from pathlib import Path
 from datetime import datetime
 from glob import glob
@@ -44,6 +46,89 @@ ranked_ads_cache = {}
 # Avoids re-remixing the same original ad repeatedly
 best_variant_cache = {}
 
+# Tracks background pre-warm jobs so we don't duplicate work
+# Structure: user_id -> set(ad_keys currently warming)
+prewarm_inflight = {}
+
+
+def _build_context_card_from_dict(context_card_dict: dict, user_id: str):
+    """Convert context_card dict to ContextCard instance."""
+    from context_agent import ContextCard, RerankedPost
+
+    posts = [
+        RerankedPost(
+            post_id=p.get("post_id", ""),
+            text=p.get("text", ""),
+            source=p.get("source", ""),
+            rank=p.get("rank", 0),
+            relevance_score=p.get("relevance_score", 0.5)
+        )
+        for p in context_card_dict.get("top_25_reranked_posts", [])
+    ]
+    return ContextCard(
+        username=context_card_dict.get("username", user_id),
+        user_id=context_card_dict.get("user_id", user_id),
+        general_topic=context_card_dict.get("general_topic", ""),
+        popular_memes=context_card_dict.get("popular_memes"),
+        user_persona_tone=context_card_dict.get("user_persona_tone", ""),
+        top_25_reranked_posts=posts
+    )
+
+
+def warm_ranked_ads(user_id: str, refresh: bool = False):
+    """
+    Ensure ranked ads are fetched and cached for a user.
+    Returns (context_card, ranked_ads, cache_key).
+    """
+    from pipeline import AdIntelligencePipeline
+
+    # If cached and not refresh, return existing (stored by user_id alias)
+    if not refresh and user_id in ranked_ads_cache:
+        info = ranked_ads_cache[user_id]
+        cc_dict = info.get("context_card", {})
+        context_card = _build_context_card_from_dict(cc_dict, user_id) if cc_dict else None
+        cache_key = info.get("cache_key", user_id)
+        return context_card, info.get("ranked_ads", []), cache_key
+
+    # Step 1: get context card (from existing data or on-demand)
+    context_card = None
+    ad_data = load_latest_result_for_user(user_id)
+    if ad_data and ad_data.get("context_card"):
+        context_card = _build_context_card_from_dict(ad_data["context_card"], user_id)
+    else:
+        # Try to generate ads (which also builds context card)
+        ad_data = generate_ads_on_demand(user_id, run_full_pipeline=True)
+        if ad_data and ad_data.get("context_card"):
+            context_card = _build_context_card_from_dict(ad_data["context_card"], user_id)
+
+    if not context_card:
+        return None, []
+
+    # Step 2: fetch relevant ads and rank
+    ads = fetch_relevant_ads(context_card.to_dict(), limit=50)
+    pipeline = AdIntelligencePipeline(ads=ads)
+    ranked_ads = pipeline.get_ranked_ads(context_card)
+    cache_key = get_cache_key_for_user(user_id, context_card.to_dict())
+    ranked_info = {
+        "ranked_ads": ranked_ads,
+        "context_card": context_card.to_dict(),
+        "timestamp": datetime.now().isoformat(),
+        "cache_key": cache_key
+    }
+    ranked_ads_cache[cache_key] = ranked_info
+    ranked_ads_cache[user_id] = ranked_info  # alias for direct user_id access
+    # Reset rotation and best-variant cache on rebuild
+    rotation_obj = {
+        "shown_keys": set(),
+        "last_key": None,
+        "last_index": -1
+    }
+    ad_rotation[cache_key] = rotation_obj
+    ad_rotation[user_id] = rotation_obj  # alias for direct user_id access
+    best_variant_cache.pop(cache_key, None)
+
+    return context_card, ranked_ads, cache_key
+
 # Pipeline execution tracking: user_id -> {status, thread, error}
 # Tracks ongoing pipeline executions
 pipeline_status = {}
@@ -61,6 +146,52 @@ def get_cache_key_for_user(user_id: str, ad_data: dict = None) -> str:
     return user_id
 
 
+def schedule_best_variant_prewarm(user_id: str, cache_key: str, context_card, ranked_ads: list, target_index: int | None = None) -> None:
+    """
+    Kick off a background remix of the next ad so it is cached before the
+    next request. This keeps the endpoint responsive and makes caching
+    truly preemptive.
+    """
+    if not ranked_ads:
+        return
+
+    # Decide which ad to prewarm (default: the next in rotation)
+    if target_index is None:
+        target_index = get_next_original_ad_index(cache_key, ranked_ads)
+
+    if target_index is None or target_index >= len(ranked_ads):
+        return
+
+    original_ad = ranked_ads[target_index]
+    ad_key = get_ad_key(original_ad)
+
+    # Skip if already cached or currently warming
+    if best_variant_cache.get(cache_key, {}).get(ad_key):
+        return
+    if ad_key in prewarm_inflight.get(cache_key, set()):
+        return
+
+    prewarm_inflight.setdefault(cache_key, set()).add(ad_key)
+    cc_payload = context_card.to_dict() if hasattr(context_card, "to_dict") else context_card
+
+    def _worker():
+        try:
+            result = remix_and_get_best_variant(user_id, cc_payload, original_ad, target_index)
+            if result:
+                best_variant_cache.setdefault(cache_key, {})[ad_key] = result
+                print(f"[Prewarm] Cached best variant for {cache_key} ad #{target_index}")
+        except Exception as e:
+            print(f"[Prewarm] Error prewarming ad #{target_index} for {cache_key}: {e}")
+        finally:
+            inflight = prewarm_inflight.get(cache_key)
+            if inflight:
+                inflight.discard(ad_key)
+                if not inflight:
+                    prewarm_inflight.pop(cache_key, None)
+
+    threading.Thread(target=_worker, daemon=True).start()
+
+
 def get_ad_key(ad: dict) -> str:
     """Create a stable key for an original ad."""
     if not ad:
@@ -73,7 +204,8 @@ def get_ad_key(ad: dict) -> str:
     text = " — ".join([t for t in text_parts if t])
     image_url = ad.get("image_url") or ""
     key_base = f"{text}||{image_url}"
-    return f"hash:{hash(key_base)}"
+    digest = hashlib.sha256(key_base.encode("utf-8")).hexdigest()
+    return f"hash:{digest}"
 
 
 def load_latest_result_for_user(username: str) -> dict | None:
@@ -436,6 +568,9 @@ def get_next_original_ad_index(user_id: str, ranked_ads: list) -> int:
         }
     
     rotation = ad_rotation[user_id]
+    # Normalize legacy structures that used shown_indices
+    if "shown_keys" not in rotation and "shown_indices" in rotation:
+        rotation["shown_keys"] = set(rotation.get("shown_indices", set()))
     shown_keys = rotation["shown_keys"]
 
     # Build ad keys list for ranked ads
@@ -511,17 +646,20 @@ def remix_and_get_best_variant(user_id: str, context_card: dict, original_ad: di
         return None
 
 
-def mark_original_ad_as_shown(user_id: str, original_ad_index: int):
+def mark_original_ad_as_shown(user_key: str, original_ad_index: int):
     """Mark an original ad as shown (after serving its best variant)."""
-    if user_id not in ad_rotation:
-        ad_rotation[user_id] = {
+    if user_key not in ad_rotation:
+        ad_rotation[user_key] = {
             "shown_keys": set(),
             "last_key": None,
             "last_index": -1
         }
+    rotation = ad_rotation[user_key]
+    if "shown_keys" not in rotation and "shown_indices" in rotation:
+        rotation["shown_keys"] = set(rotation.get("shown_indices", set()))
     
     # Fetch current ranked ads to map index -> key
-    ranked_info = ranked_ads_cache.get(user_id)
+    ranked_info = ranked_ads_cache.get(user_key) or ranked_ads_cache.get(get_cache_key_for_user(user_key))
     ad_key = None
     if ranked_info:
         ranked_ads = ranked_info.get("ranked_ads", [])
@@ -530,9 +668,9 @@ def mark_original_ad_as_shown(user_id: str, original_ad_index: int):
     if ad_key is None:
         ad_key = f"ad_index_{original_ad_index}"
 
-    ad_rotation[user_id]["shown_keys"].add(ad_key)
-    ad_rotation[user_id]["last_key"] = ad_key
-    ad_rotation[user_id]["last_index"] = original_ad_index
+    rotation["shown_keys"].add(ad_key)
+    rotation["last_key"] = ad_key
+    rotation["last_index"] = original_ad_index
 
 
 def format_best_variant_for_extension(best_variant_result: dict, user_id: str) -> dict:
@@ -545,6 +683,13 @@ def format_best_variant_for_extension(best_variant_result: dict, user_id: str) -
     """
     best_variant = best_variant_result["best_variant"]
     content = best_variant.content
+
+    # Prefer the winning image, then enhanced, then original
+    image_uri = (
+        getattr(best_variant, "image_uri", None)
+        or getattr(best_variant, "enhanced_image_uri", None)
+        or getattr(best_variant, "original_image_uri", None)
+    )
     
     # Parse content to extract title (first line) and description
     lines = content.split('\n')
@@ -556,13 +701,14 @@ def format_best_variant_for_extension(best_variant_result: dict, user_id: str) -
         "title": title,
         "description": description,
         "full_content": content,
-        "image_uri": best_variant.image_uri,
+        "image_uri": image_uri,
         "brand": "AI Personalized",
         "avatar": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png",
         "ctr_score": best_variant_result["ctr_score"],
         "confidence": best_variant_result["confidence"],
         "ad_index": best_variant_result["ad_index"],
-        "original_ad": best_variant_result["original_ad"]
+        "original_ad": best_variant_result["original_ad"],
+        "ad_key": best_variant_result.get("ad_key")
     }
 
 
@@ -702,96 +848,25 @@ def get_ad(user_id: str):
         from pipeline import AdIntelligencePipeline
         from context_agent import ContextCard
         
-        # Step 1: Get or generate context card
-        context_card = None
-        
-        # Try loading from cache/file first
-        ad_data = None
-        if not refresh:
-            ad_data = load_latest_result_for_user(user_id)
-            if ad_data:
-                context_card_dict = ad_data.get("context_card", {})
-                if context_card_dict:
-                    # Convert to ContextCard
-                    from context_agent import RerankedPost
-                    posts = [
-                        RerankedPost(
-                            post_id=p.get("post_id", ""),
-                            text=p.get("text", ""),
-                            source=p.get("source", ""),
-                            rank=p.get("rank", 0),
-                            relevance_score=p.get("relevance_score", 0.5)
-                        )
-                        for p in context_card_dict.get("top_25_reranked_posts", [])
-                    ]
-                    context_card = ContextCard(
-                        username=context_card_dict.get("username", user_id),
-                        user_id=context_card_dict.get("user_id", user_id),
-                        general_topic=context_card_dict.get("general_topic", ""),
-                        popular_memes=context_card_dict.get("popular_memes"),
-                        user_persona_tone=context_card_dict.get("user_persona_tone", ""),
-                        top_25_reranked_posts=posts
-                    )
-        
-        # If no context card, try to generate it
+        # Step 1: Ensure ranked ads/cache is warm
+        context_card, ranked_ads, cache_key = warm_ranked_ads(user_id, refresh=refresh)
         if not context_card:
-            # Try on-demand generation to get context card
-            ad_data = generate_ads_on_demand(user_id, run_full_pipeline=True)
-            
-            if not ad_data:
-                # Check if pipeline is running
-                if user_id in pipeline_status:
-                    status_info = pipeline_status[user_id]
-                    if status_info.get("status") in ["starting", "running"]:
-                        return jsonify({
-                            "status": "generating",
-                            "message": "Pipeline is running, please check back shortly",
-                            "user_id": user_id,
-                            "started_at": status_info.get("started_at")
-                        }), 202
-                
-                return jsonify({
-                    "error": "No context card found for user",
-                    "user_id": user_id,
-                    "hint": "Run the pipeline first or ensure user data files exist"
-                }), 404
-            
-            # Extract context card from generated data
-            context_card_dict = ad_data.get("context_card", {})
-            from context_agent import RerankedPost
-            posts = [
-                RerankedPost(
-                    post_id=p.get("post_id", ""),
-                    text=p.get("text", ""),
-                    source=p.get("source", ""),
-                    rank=p.get("rank", 0),
-                    relevance_score=p.get("relevance_score", 0.5)
-                )
-                for p in context_card_dict.get("top_25_reranked_posts", [])
-            ]
-            context_card = ContextCard(
-                username=context_card_dict.get("username", user_id),
-                user_id=context_card_dict.get("user_id", user_id),
-                general_topic=context_card_dict.get("general_topic", ""),
-                popular_memes=context_card_dict.get("popular_memes"),
-                user_persona_tone=context_card_dict.get("user_persona_tone", ""),
-                top_25_reranked_posts=posts
-            )
-        
-        # Step 2: Get ranked list of original ads
-        cache_key = get_cache_key_for_user(user_id, {"username": context_card.username})
-        
-        if cache_key not in ranked_ads_cache or refresh:
-            pipeline = AdIntelligencePipeline()
-            ranked_ads = pipeline.get_ranked_ads(context_card)
-            ranked_ads_cache[cache_key] = {
-                "ranked_ads": ranked_ads,
-                "context_card": context_card.to_dict(),
-                "timestamp": datetime.now().isoformat()
-            }
-        else:
-            ranked_ads = ranked_ads_cache[cache_key]["ranked_ads"]
-        
+            # Check if pipeline is running
+            if user_id in pipeline_status:
+                status_info = pipeline_status[user_id]
+                if status_info.get("status") in ["starting", "running"]:
+                    return jsonify({
+                        "status": "generating",
+                        "message": "Pipeline is running, please check back shortly",
+                        "user_id": user_id,
+                        "started_at": status_info.get("started_at")
+                    }), 202
+            return jsonify({
+                "error": "No context card found for user",
+                "user_id": user_id,
+                "hint": "Run the pipeline first or ensure user data files exist"
+            }), 404
+
         if not ranked_ads:
             return jsonify({
                 "error": "No ads available to serve",
@@ -830,6 +905,9 @@ def get_ad(user_id: str):
         # Step 6: Mark original ad as served
         if mark_shown:
             mark_original_ad_as_shown(cache_key, next_ad_index)
+
+        # Preemptively warm the next ad remix so the following request is instant
+        schedule_best_variant_prewarm(user_id, cache_key, context_card, ranked_ads)
         
         return jsonify(formatted)
         
@@ -885,12 +963,13 @@ def get_all_ads(user_id: str):
     
     # Add rotation status to response
     rotation_status = None
-    if user_id in ad_rotation:
-        rotation = ad_rotation[user_id]
+    cache_key = get_cache_key_for_user(user_id, ad_data or {})
+    rotation = ad_rotation.get(cache_key) or ad_rotation.get(user_id)
+    if rotation:
         rotation_status = {
-            "shown_count": len(rotation["shown_indices"]),
-            "shown_indices": sorted(list(rotation["shown_indices"])),
-            "last_shown": rotation["last_index"]
+            "shown_count": len(rotation.get("shown_indices", set()) or rotation.get("shown_keys", set())),
+            "shown_indices": sorted(list(rotation.get("shown_indices", set()))),
+            "last_shown": rotation.get("last_index")
         }
     
     return jsonify({
@@ -1078,6 +1157,58 @@ def store_auth_token():
     except Exception as e:
         return jsonify({
             "error": f"Failed to store token: {str(e)}"
+        }), 500
+
+
+@app.route("/api/prefetch/<user_id>", methods=["POST", "GET"])
+def prefetch_ads(user_id: str):
+    """
+    Prefetch context card and ranked ads for a user (run on extension start).
+    Query params / body:
+        - refresh: bool (optional) - force rebuild of context/ranking
+    """
+    refresh = False
+    if request.method == "POST":
+        data = request.get_json() or {}
+        refresh = data.get("refresh", False)
+    else:
+        refresh = request.args.get("refresh", "false").lower() == "true"
+
+    try:
+        context_card, ranked_ads, cache_key = warm_ranked_ads(user_id, refresh=refresh)
+        if not context_card:
+            # Check if pipeline is running
+            if user_id in pipeline_status:
+                status_info = pipeline_status[user_id]
+                if status_info.get("status") in ["starting", "running"]:
+                    return jsonify({
+                        "status": "generating",
+                        "message": "Pipeline is running, please check back shortly",
+                        "user_id": user_id,
+                        "started_at": status_info.get("started_at")
+                    }), 202
+            return jsonify({
+                "error": "No context card found for user",
+                "user_id": user_id
+            }), 404
+
+        # Preemptively warm the first ad so the first impression is instant
+        schedule_best_variant_prewarm(user_id, cache_key, context_card, ranked_ads, target_index=0)
+
+        return jsonify({
+            "success": True,
+            "user_id": user_id,
+            "ranked_ads_count": len(ranked_ads),
+            "context_ready": True,
+            "timestamp": datetime.now().isoformat()
+        })
+    except Exception as e:
+        print(f"[Prefetch] Error: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "error": str(e),
+            "type": type(e).__name__
         }), 500
 
 

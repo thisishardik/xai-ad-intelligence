@@ -10,6 +10,9 @@ const featureBuffer = [];
 let apiCallCount = 0;
 let lastApiCallTime = 0;
 
+// Temporary deterministic insertion: show an ad every N tweets viewed
+const TWEETS_PER_AD = 15;
+
 /**
  * Aggregate features from multiple tweets
  * @param {Array} buffer - Array of feature objects
@@ -50,10 +53,36 @@ export function createTweetObserver(state, persistentAds) {
                 state.tweetsSeen++;
             }
 
+            // Deterministic ad insertion every TWEETS_PER_AD tweets
+            const tweetsSinceLastAd = state.tweetsSeen - state.lastAdTweet;
+            if (tweetsSinceLastAd >= TWEETS_PER_AD) {
+                const ad = await createAd(`Periodic placement: every ${TWEETS_PER_AD} tweets`);
+                injectAdAfter(tweet, ad);
+
+                persistentAds.push({
+                    element: ad,
+                    insertIndex: state.tweetsSeen - 1
+                });
+
+                state.adsInserted++;
+                state.lastAdTime = performance.now();
+                state.lastAdPosition = window.scrollY;
+                state.lastAdTweet = state.tweetsSeen;
+                featureBuffer.length = 0; // reset attention buffer after forced insertion
+
+                console.log("[Ad Injected - Interval]", {
+                    adNumber: state.adsInserted,
+                    afterTweet: state.tweetsSeen,
+                    reason: `Every ${TWEETS_PER_AD} tweets`
+                });
+
+                continue; // Skip attention-based logic for this tweet
+            }
+
             // Collect current features
             const currentFeatures = {
                 ...telemetry,
-                tweets_since_last_ad: state.tweetsSeen - (state.adsInserted * 5),
+                tweets_since_last_ad: state.tweetsSeen - state.lastAdTweet,
                 time_since_last_ad: performance.now() - state.lastAdTime
             };
 
@@ -113,6 +142,7 @@ export function createTweetObserver(state, persistentAds) {
                 state.adsInserted++;
                 state.lastAdTime = performance.now();
                 state.lastAdPosition = window.scrollY;
+                state.lastAdTweet = state.tweetsSeen;
 
                 console.log("[Ad Injected]", {
                     adNumber: state.adsInserted,

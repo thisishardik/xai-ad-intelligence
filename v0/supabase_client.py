@@ -55,6 +55,42 @@ def fetch_ads(limit: int = 50) -> List[Dict[str, Any]]:
     return response.data or []
 
 
+def fetch_relevant_ads(context_card: Dict[str, Any], limit: int = 50) -> List[Dict[str, Any]]:
+    """
+    Fetch ads filtered to be more relevant to the user based on context_card.
+    Filters by categories and soft-matches on general_topic in title/description.
+    """
+    supabase = get_supabase_client()
+
+    categories = context_card.get("categories") or context_card.get("general_topic")
+    if isinstance(categories, str):
+        categories = [categories]
+
+    query = supabase.table("ad_campaigns").select(
+        "id,title,description,company,tagline,image_url,company_persona,strictly_against,categories,created_at"
+    )
+
+    # Filter by categories if present
+    if categories:
+        try:
+            query = query.contains("categories", categories)
+        except Exception:
+            pass
+
+    # Soft match general_topic in title/description
+    general_topic = context_card.get("general_topic")
+    if general_topic:
+        try:
+            # Quote to allow commas in the search string (PostgREST uses comma as OR separator)
+            safe_topic = str(general_topic).replace('"', '\\"')
+            query = query.or_(f'title.ilike."%{safe_topic}%",description.ilike."%{safe_topic}%"')
+        except Exception:
+            pass
+
+    response = query.order("created_at", desc=True).limit(limit).execute()
+    return response.data or []
+
+
 if __name__ == "__main__":
     # Simple smoke test to verify env + Supabase fetch
     try:

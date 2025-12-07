@@ -347,6 +347,7 @@ class AdIntelligencePipeline:
             "ctr_std": best_score.ctr_std if best_score else 0,
             "confidence": ctr_prediction.confidence,
             "ad_index": ad_index,
+            "ad_key": original_ad.get("id") or None,
             "all_variants": rewritten_ads,  # Keep for reference but don't serve
             "ctr_prediction": ctr_prediction
         }
