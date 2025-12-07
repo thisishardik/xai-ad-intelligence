@@ -220,6 +220,137 @@ class AdIntelligencePipeline:
         
         return result
     
+    def get_ranked_ads(self, context_card: ContextCard) -> List[dict]:
+        """
+        Get ranked list of candidate ads without remixing.
+        This is used to determine which ads to serve in order.
+        
+        Returns:
+            List of ranked ads (dicts with scores)
+        """
+        # Build persona for scoring
+        persona = {
+            "persona": context_card.user_persona_tone,
+            "categories": getattr(context_card, 'categories', []) or [],
+            "strictly_against": getattr(context_card, 'strictly_against', []) or [],
+        }
+        
+        # Fetch ads from Supabase if none provided
+        ads = self.ads
+        if ads is None:
+            from supabase_client import fetch_ads
+            try:
+                ads = fetch_ads(limit=50)
+            except Exception as e:
+                print(f"  Warning: Supabase fetch failed ({e}); using DEFAULT_ADS.")
+                from config import DEFAULT_ADS
+                ads = DEFAULT_ADS
+        
+        if not ads:
+            from config import DEFAULT_ADS
+            ads = DEFAULT_ADS
+        
+        # Normalize to structured ads
+        structured_ads = []
+        for ad in ads:
+            if isinstance(ad, str):
+                structured_ads.append({"title": ad})
+            else:
+                structured_ads.append(ad)
+        
+        # Rank ads
+        ranked_ads = self.remixer_agent._rank_ads(structured_ads, persona, context_card.to_dict())
+        
+        return ranked_ads
+    
+    def remix_single_ad_and_get_best(
+        self,
+        context_card: ContextCard,
+        original_ad: dict,
+        ad_index: int = 0
+    ) -> dict:
+        """
+        Remix a single ad into 3 variants, run critic, and return only the best variant.
+        
+        Args:
+            context_card: User context card
+            original_ad: Original ad dict to remix
+            ad_index: Index of this ad in the ranked list
+            
+        Returns:
+            Dict with best variant info:
+            {
+                "original_ad": original ad text,
+                "best_variant": best AdVariant,
+                "ctr_score": best CTR score,
+                "ad_index": index in ranked list
+            }
+        """
+        from ad_remixer import RemixedAdsResult
+        
+        # Compose ad text
+        ad_text = self.remixer_agent._compose_ad_text(original_ad)
+        original_image_url = original_ad.get("image_url")
+        
+        # Remix into 3 variants
+        print(f"  Remixing ad #{ad_index + 1}: {ad_text[:60]}...")
+        
+        # Analyze original image if available
+        image_analysis = None
+        if original_image_url:
+            image_analysis = self.remixer_agent._analyze_original_image(
+                original_image_url, ad_text, context_card.to_dict()
+            )
+        
+        # Generate 3 variants
+        from concurrent.futures import ThreadPoolExecutor
+        with ThreadPoolExecutor(max_workers=3) as executor:
+            futures = [
+                executor.submit(
+                    self.remixer_agent._rewrite_ad_variant,
+                    ad_text, context_card.to_dict(), i+1,
+                    original_image_url, image_analysis
+                )
+                for i in range(3)
+            ]
+            rewritten_ads = [f.result() for f in futures]
+        
+        # Create RemixedAdsResult for critic
+        remixed_result = RemixedAdsResult(
+            user_id=context_card.user_id or context_card.username,
+            selected_ad=ad_text,
+            selection_reasoning=f"Ad #{ad_index + 1} from ranked list",
+            original_image_url=original_image_url,
+            image_analysis=image_analysis,
+            rewritten_ads=rewritten_ads
+        )
+        
+        # Run critic to get best variant
+        print(f"  Running CTR prediction for {len(rewritten_ads)} variants...")
+        ctr_prediction = self.critic_agent.predict(context_card, remixed_result)
+        
+        # Get best variant
+        best_index = ctr_prediction.best_ad_index
+        best_variant = rewritten_ads[best_index]
+        best_score = next(
+            (s for s in ctr_prediction.scores if s.ad_index == best_index),
+            None
+        )
+        
+        print(f"  ✓ Best variant selected (CTR: {best_score.ctr_mean if best_score else 0:.3f})")
+        
+        return {
+            "original_ad": ad_text,
+            "original_ad_data": original_ad,
+            "best_variant": best_variant,
+            "ctr_score": best_score.ctr_mean if best_score else 0,
+            "ctr_std": best_score.ctr_std if best_score else 0,
+            "confidence": ctr_prediction.confidence,
+            "ad_index": ad_index,
+            "all_variants": rewritten_ads,  # Keep for reference but don't serve
+            "ctr_prediction": ctr_prediction
+        }
+    
     def _print_summary(self, result: PipelineResult):
         """Print a summary of the pipeline results."""
         print("\n" + "="*60)

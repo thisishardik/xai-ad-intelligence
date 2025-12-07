@@ -15,6 +15,7 @@ Endpoints:
 
 import json
 import os
+import threading
 from pathlib import Path
 from datetime import datetime
 from glob import glob
@@ -27,8 +28,52 @@ CORS(app)  # Enable CORS for Chrome extension access
 # Directory where pipeline outputs are stored
 OUTPUT_DIR = Path(__file__).parent
 
-# In-memory cache: user_id -> {ads, ctr_prediction, timestamp}
+# In-memory cache: user_id -> {data, timestamp}
 ads_cache = {}
+
+# Ad rotation tracking: user_id -> {shown_keys: set, last_key: str, last_index: int}
+# Tracks which ORIGINAL ADS (by content key) have been shown
+# We remix each original ad, pick best variant, serve it, then move to next original ad
+ad_rotation = {}
+
+# Ranked ads cache: user_id -> {ranked_ads: list, context_card: dict}
+# Stores the ranked list of original ads for each user
+ranked_ads_cache = {}
+
+# Best variant cache: user_id -> {ad_key: best_variant_result}
+# Avoids re-remixing the same original ad repeatedly
+best_variant_cache = {}
+
+# Pipeline execution tracking: user_id -> {status, thread, error}
+# Tracks ongoing pipeline executions
+pipeline_status = {}
+
+
+def get_cache_key_for_user(user_id: str, ad_data: dict = None) -> str:
+    """
+    Get the cache key for a user (username if available, otherwise user_id).
+    Also checks ad_data if provided to extract username.
+    """
+    if ad_data:
+        username = ad_data.get("username")
+        if username:
+            return username
+    return user_id
+
+
+def get_ad_key(ad: dict) -> str:
+    """Create a stable key for an original ad."""
+    if not ad:
+        return "unknown_ad"
+    # Prefer explicit id if present
+    if ad.get("id"):
+        return f"id:{ad.get('id')}"
+    # Otherwise hash the composed ad text + image_url if present
+    text_parts = [ad.get("title") or "", ad.get("description") or "", ad.get("tagline") or "", ad.get("text") or ""]
+    text = " — ".join([t for t in text_parts if t])
+    image_url = ad.get("image_url") or ""
+    key_base = f"{text}||{image_url}"
+    return f"hash:{hash(key_base)}"
 
 
 def load_latest_result_for_user(username: str) -> dict | None:
@@ -47,23 +92,459 @@ def load_latest_result_for_user(username: str) -> dict | None:
         return json.load(f)
 
 
-def format_ad_for_extension(ad_data: dict, index: int = 0) -> dict:
-    """Format ad data for the Chrome extension."""
-    rewritten_ads = ad_data.get("remixed_ads", {}).get("rewritten_ads", [])
-    ctr_prediction = ad_data.get("ctr_prediction", {})
+def load_user_data_file(username: str) -> dict | None:
+    """Try to load user data JSON file for on-demand generation."""
+    # Try multiple patterns
+    patterns = [
+        f"{username}_*.json",
+        f"user_data_{username}_*.json",
+        f"user_data_{username}.json"
+    ]
     
-    # Get the best ad based on CTR prediction, or fallback to index
-    best_index = ctr_prediction.get("best_ad_index", index)
+    for pattern in patterns:
+        files = glob(str(OUTPUT_DIR / pattern))
+        if files:
+            # Sort by modification time, newest first
+            files.sort(key=os.path.getmtime, reverse=True)
+            try:
+                with open(files[0], 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    # Check if it looks like user data
+                    if isinstance(data, dict) and ('posts' in data or 'username' in data):
+                        return data
+            except Exception:
+                continue
     
-    if not rewritten_ads:
+    # Also check runs directory
+    runs_dir = OUTPUT_DIR / "runs"
+    if runs_dir.exists():
+        for pattern in patterns:
+            files = glob(str(runs_dir / "**" / pattern), recursive=True)
+            if files:
+                files.sort(key=os.path.getmtime, reverse=True)
+                try:
+                    with open(files[0], 'r', encoding='utf-8') as f:
+                        data = json.load(f)
+                        if isinstance(data, dict) and ('posts' in data or 'username' in data):
+                            return data
+                except Exception:
+                    continue
+    
+    return None
+
+
+def fetch_user_data_from_x_api(username: str) -> dict | None:
+    """
+    Fetch user data from X API using stored tokens.
+    
+    Requires OAuth token stored via /api/auth/token endpoint.
+    For full data (posts, likes, bookmarks), OAuth is required.
+    
+    Returns:
+        User data dict if successful, None otherwise
+    """
+    try:
+        import requests
+        
+        # Try to use stored access token if available
+        token_file = OUTPUT_DIR / f".token_{username}.json"
+        access_token = None
+        
+        if token_file.exists():
+            try:
+                with open(token_file, 'r') as f:
+                    token_data = json.load(f)
+                    access_token = token_data.get("access_token")
+            except Exception:
+                pass
+        
+        # If we have an access token, use it
+        if access_token:
+            try:
+                from auth_client import AuthClient, UserData
+                
+                # Create auth client and set token
+                client = AuthClient()
+                client.access_token = access_token
+                
+                # Create xdk client with token
+                from xdk import Client
+                client.xdk_client = Client(bearer_token=access_token)
+                
+                # Get user info
+                user_id, fetched_username = client.get_authenticated_user()
+                
+                # Fetch user data using the auth client's method
+                headers = {"Authorization": f"Bearer {access_token}"}
+                base_params = {
+                    "max_results": 25,
+                    "tweet.fields": "created_at,public_metrics,text,author_id"
+                }
+                
+                user_data = UserData(
+                    user_id=user_id,
+                    username=fetched_username or username,
+                    posts=[],
+                    timeline=[],
+                    likes=[],
+                    bookmarks=[]
+                )
+                
+                # Fetch Posts
+                posts_url = f"https://api.x.com/2/users/{user_id}/tweets"
+                posts_resp = requests.get(posts_url, headers=headers, params=base_params)
+                if posts_resp.status_code == 200:
+                    user_data.posts = posts_resp.json().get('data', [])
+                
+                # Fetch Timeline
+                timeline_url = f"https://api.x.com/2/users/{user_id}/timelines/reverse_chronological"
+                timeline_resp = requests.get(timeline_url, headers=headers, params=base_params)
+                if timeline_resp.status_code == 200:
+                    user_data.timeline = timeline_resp.json().get('data', [])
+                
+                # Fetch Likes
+                likes_url = f"https://api.x.com/2/users/{user_id}/liked_tweets"
+                likes_resp = requests.get(likes_url, headers=headers, params=base_params)
+                if likes_resp.status_code == 200:
+                    user_data.likes = likes_resp.json().get('data', [])
+                
+                # Fetch Bookmarks
+                bookmarks_url = f"https://api.x.com/2/users/{user_id}/bookmarks"
+                bookmarks_resp = requests.get(bookmarks_url, headers=headers, params=base_params)
+                if bookmarks_resp.status_code == 200:
+                    user_data.bookmarks = bookmarks_resp.json().get('data', [])
+                
+                print(f"[X API] Successfully fetched data for {username}: {len(user_data.posts)} posts, {len(user_data.likes)} likes")
+                return user_data.to_dict()
+                
+            except Exception as e:
+                print(f"[X API] Token-based fetch failed: {e}")
+                import traceback
+                traceback.print_exc()
+        
+        # No token available
+        print(f"[X API] No stored token for {username}, cannot fetch without OAuth")
+        return None
+        
+    except Exception as e:
+        print(f"[X API] Error fetching user data: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+def run_full_pipeline_async(user_id: str, user_data: dict = None):
+    """
+    Run the full pipeline asynchronously in a background thread.
+    
+    Args:
+        user_id: User identifier
+        user_data: Optional user data dict (if None, will try to fetch)
+    """
+    def pipeline_worker():
+        try:
+            from pipeline import AdIntelligencePipeline, save_results
+            
+            pipeline_status[user_id] = {
+                "status": "running",
+                "started_at": datetime.now().isoformat(),
+                "error": None
+            }
+            
+            print(f"[Pipeline] Starting full pipeline for {user_id}...")
+            
+            # Get user data if not provided
+            if not user_data:
+                # Try loading from file first
+                data = load_user_data_file(user_id)
+                if not data:
+                    # Try fetching from X API
+                    data = fetch_user_data_from_x_api(user_id)
+                
+                if not data:
+                    raise ValueError(f"Could not fetch user data for {user_id}")
+            else:
+                data = user_data
+            
+            # Run pipeline
+            pipeline = AdIntelligencePipeline()
+            result = pipeline.run_from_user_data(data)
+            
+            # Save results
+            save_results(result, str(OUTPUT_DIR))
+            
+            # Update cache
+            ad_dict = result.to_dict()
+            cache_key = get_cache_key_for_user(user_id, ad_dict)
+            ads_cache[cache_key] = {
+                "data": ad_dict,
+                "timestamp": datetime.now().isoformat()
+            }
+            if cache_key != user_id:
+                ads_cache[user_id] = ads_cache[cache_key]
+            
+            # Initialize rotation tracking
+            if cache_key not in ad_rotation:
+                ad_rotation[cache_key] = {
+                    "shown_indices": set(),
+                    "last_index": -1
+                }
+            
+            pipeline_status[user_id] = {
+                "status": "completed",
+                "started_at": pipeline_status[user_id]["started_at"],
+                "completed_at": datetime.now().isoformat(),
+                "error": None
+            }
+            
+            print(f"[Pipeline] Successfully completed pipeline for {user_id}")
+            
+        except Exception as e:
+            error_msg = str(e)
+            print(f"[Pipeline] Error in pipeline for {user_id}: {error_msg}")
+            pipeline_status[user_id] = {
+                "status": "failed",
+                "started_at": pipeline_status.get(user_id, {}).get("started_at", datetime.now().isoformat()),
+                "error": error_msg
+            }
+    
+    # Start pipeline in background thread
+    thread = threading.Thread(target=pipeline_worker, daemon=True)
+    thread.start()
+    
+    pipeline_status[user_id] = {
+        "status": "starting",
+        "started_at": datetime.now().isoformat(),
+        "thread": thread
+    }
+
+
+def generate_ads_on_demand(user_id: str, run_full_pipeline: bool = True) -> dict | None:
+    """
+    Try to generate ads on-demand for a user.
+    
+    Args:
+        user_id: User identifier
+        run_full_pipeline: If True, run full pipeline; if False, only try loading files
+    
+    Returns:
+        Ad data dict if successful, None otherwise
+    """
+    # First, try loading existing results
+    ad_data = load_latest_result_for_user(user_id)
+    if ad_data:
+        cache_key = get_cache_key_for_user(user_id, ad_data)
+        ads_cache[cache_key] = {
+            "data": ad_data,
+            "timestamp": datetime.now().isoformat()
+        }
+        if cache_key != user_id:
+            ads_cache[user_id] = ads_cache[cache_key]
+        return ad_data
+    
+    # If run_full_pipeline is False, don't try to generate
+    if not run_full_pipeline:
         return None
     
-    # Ensure index is valid
-    if best_index >= len(rewritten_ads):
-        best_index = 0
+    # Check if pipeline is already running
+    if user_id in pipeline_status:
+        status = pipeline_status[user_id].get("status")
+        if status in ["starting", "running"]:
+            print(f"[On-demand] Pipeline already running for {user_id}")
+            return None
+        elif status == "failed":
+            # Clear failed status and retry
+            del pipeline_status[user_id]
     
-    ad = rewritten_ads[best_index]
-    content = ad.get("content", "")
+    # Try to load user data from files
+    user_data = load_user_data_file(user_id)
+    
+    if user_data:
+        # Run pipeline synchronously (will take time but ensures we have data)
+        try:
+            from pipeline import AdIntelligencePipeline, save_results
+            
+            print(f"[On-demand] Running full pipeline for {user_id}...")
+            pipeline = AdIntelligencePipeline()
+            result = pipeline.run_from_user_data(user_data)
+            
+            # Save results
+            save_results(result, str(OUTPUT_DIR))
+            
+            # Update cache
+            ad_dict = result.to_dict()
+            cache_key = get_cache_key_for_user(user_id, ad_dict)
+            ads_cache[cache_key] = {
+                "data": ad_dict,
+                "timestamp": datetime.now().isoformat()
+            }
+            if cache_key != user_id:
+                ads_cache[user_id] = ads_cache[cache_key]
+            
+            # Initialize rotation tracking
+            if cache_key not in ad_rotation:
+                ad_rotation[cache_key] = {
+                    "shown_indices": set(),
+                    "last_index": -1
+                }
+            
+            print(f"[On-demand] Successfully generated ads for {user_id}")
+            return ad_dict
+            
+        except Exception as e:
+            print(f"[On-demand] Error generating ads for {user_id}: {e}")
+            # Try async execution as fallback
+            run_full_pipeline_async(user_id, user_data)
+            return None
+    else:
+        # Try fetching from X API and run async
+        print(f"[On-demand] No user data file found, attempting X API fetch for {user_id}...")
+        user_data = fetch_user_data_from_x_api(user_id)
+        if user_data:
+            run_full_pipeline_async(user_id, user_data)
+        else:
+            print(f"[On-demand] Cannot fetch user data for {user_id} without OAuth")
+    
+    return None
+
+
+def get_next_original_ad_index(user_id: str, ranked_ads: list) -> int:
+    """
+    Get the index of the next original ad to remix and serve.
+    Tracks which original ads have been served (not variants) using ad keys.
+    
+    Args:
+        user_id: User identifier
+        ranked_ads: List of ranked original ads
+        
+    Returns:
+        Index of next original ad to remix, or None if all served
+    """
+    if not ranked_ads:
+        return 0
+
+    total_ads = len(ranked_ads)
+    # If there's only one ad, always serve that one (avoid resetting)
+    if total_ads <= 1:
+        return 0
+
+    if user_id not in ad_rotation:
+        ad_rotation[user_id] = {
+            "shown_keys": set(),
+            "last_key": None,
+            "last_index": -1
+        }
+    
+    rotation = ad_rotation[user_id]
+    shown_keys = rotation["shown_keys"]
+
+    # Build ad keys list for ranked ads
+    ad_keys = []
+    for ad in ranked_ads:
+        ad_keys.append(get_ad_key(ad))
+
+    # If all original ads have been shown, reset and start over
+    if len(shown_keys) >= total_ads:
+        shown_keys.clear()
+        rotation["last_key"] = None
+        rotation["last_index"] = -1
+
+    # Find next unshown ad by key (they're already ranked, so pick first unshown)
+    for i, key in enumerate(ad_keys):
+        if key not in shown_keys:
+            return i
+
+    # Fallback: return 0
+    return 0
+
+
+def remix_and_get_best_variant(user_id: str, context_card: dict, original_ad: dict, ad_index: int) -> dict:
+    """
+    Remix a single original ad and return only the best variant.
+    
+    Args:
+        user_id: User identifier
+        context_card: User context card
+        original_ad: Original ad dict to remix
+        ad_index: Index of this ad in ranked list
+        
+    Returns:
+        Dict with best variant ready to serve
+    """
+    try:
+        from pipeline import AdIntelligencePipeline
+        from context_agent import ContextCard
+        
+        # Convert context_card dict to ContextCard if needed
+        if isinstance(context_card, dict):
+            from context_agent import RerankedPost
+            posts = [
+                RerankedPost(
+                    post_id=p.get("post_id", ""),
+                    text=p.get("text", ""),
+                    source=p.get("source", ""),
+                    rank=p.get("rank", 0),
+                    relevance_score=p.get("relevance_score", 0.5)
+                )
+                for p in context_card.get("top_25_reranked_posts", [])
+            ]
+            cc = ContextCard(
+                username=context_card.get("username", user_id),
+                user_id=context_card.get("user_id", user_id),
+                general_topic=context_card.get("general_topic", ""),
+                popular_memes=context_card.get("popular_memes"),
+                user_persona_tone=context_card.get("user_persona_tone", ""),
+                top_25_reranked_posts=posts
+            )
+        else:
+            cc = context_card
+        
+        pipeline = AdIntelligencePipeline()
+        result = pipeline.remix_single_ad_and_get_best(cc, original_ad, ad_index)
+        
+        return result
+        
+    except Exception as e:
+        print(f"[Remix] Error remixing ad: {e}")
+        import traceback
+        traceback.print_exc()
+        return None
+
+
+def mark_original_ad_as_shown(user_id: str, original_ad_index: int):
+    """Mark an original ad as shown (after serving its best variant)."""
+    if user_id not in ad_rotation:
+        ad_rotation[user_id] = {
+            "shown_keys": set(),
+            "last_key": None,
+            "last_index": -1
+        }
+    
+    # Fetch current ranked ads to map index -> key
+    ranked_info = ranked_ads_cache.get(user_id)
+    ad_key = None
+    if ranked_info:
+        ranked_ads = ranked_info.get("ranked_ads", [])
+        if 0 <= original_ad_index < len(ranked_ads):
+            ad_key = get_ad_key(ranked_ads[original_ad_index])
+    if ad_key is None:
+        ad_key = f"ad_index_{original_ad_index}"
+
+    ad_rotation[user_id]["shown_keys"].add(ad_key)
+    ad_rotation[user_id]["last_key"] = ad_key
+    ad_rotation[user_id]["last_index"] = original_ad_index
+
+
+def format_best_variant_for_extension(best_variant_result: dict, user_id: str) -> dict:
+    """
+    Format the best variant result for the Chrome extension.
+    
+    Args:
+        best_variant_result: Result from remix_single_ad_and_get_best
+        user_id: User identifier
+    """
+    best_variant = best_variant_result["best_variant"]
+    content = best_variant.content
     
     # Parse content to extract title (first line) and description
     lines = content.split('\n')
@@ -71,16 +552,70 @@ def format_ad_for_extension(ad_data: dict, index: int = 0) -> dict:
     description = lines[1].strip() if len(lines) > 1 else ""
     
     return {
-        "id": f"{ad_data.get('user_id', 'unknown')}_{best_index}",
+        "id": f"{user_id}_ad_{best_variant_result['ad_index']}",
+        "title": title,
+        "description": description,
+        "full_content": content,
+        "image_uri": best_variant.image_uri,
+        "brand": "AI Personalized",
+        "avatar": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png",
+        "ctr_score": best_variant_result["ctr_score"],
+        "confidence": best_variant_result["confidence"],
+        "ad_index": best_variant_result["ad_index"],
+        "original_ad": best_variant_result["original_ad"]
+    }
+
+
+def format_ad_for_extension(ad_data: dict, index: int = 0, use_best: bool = False) -> dict:
+    """
+    Format ad data for the Chrome extension.
+    
+    Args:
+        ad_data: Ad data dictionary
+        index: Specific ad index to format (used when use_best=False)
+        use_best: If True, use best ad from CTR prediction; otherwise use index
+    """
+    rewritten_ads = ad_data.get("remixed_ads", {}).get("rewritten_ads", [])
+    ctr_prediction = ad_data.get("ctr_prediction", {})
+    
+    if not rewritten_ads:
+        return None
+    
+    # Determine which ad index to use
+    if use_best:
+        ad_index = ctr_prediction.get("best_ad_index", index)
+    else:
+        ad_index = index
+    
+    # Ensure index is valid
+    if ad_index >= len(rewritten_ads):
+        ad_index = 0
+    
+    ad = rewritten_ads[ad_index]
+    content = ad.get("content", "")
+    
+    # Parse content to extract title (first line) and description
+    lines = content.split('\n')
+    title = lines[0].strip() if lines else "Sponsored Ad"
+    description = lines[1].strip() if len(lines) > 1 else ""
+    
+    # Get CTR score for this specific ad
+    scores = ctr_prediction.get("scores", [])
+    score_data = next((s for s in scores if s.get("ad_index") == ad_index), {})
+    ctr_score = score_data.get("ctr_mean", 0)
+    confidence = score_data.get("ctr_std", ctr_prediction.get("confidence", 0))
+    
+    return {
+        "id": f"{ad_data.get('user_id', 'unknown')}_{ad_index}",
         "title": title,
         "description": description,
         "full_content": content,
         "image_uri": ad.get("image_uri"),
         "brand": "AI Personalized",
         "avatar": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png",
-        "ctr_score": ctr_prediction.get("scores", [{}])[0].get("ctr_mean", 0),
-        "confidence": ctr_prediction.get("confidence", 0),
-        "ad_index": best_index,
+        "ctr_score": ctr_score,
+        "confidence": confidence,
+        "ad_index": ad_index,
         "total_variants": len(rewritten_ads)
     }
 
@@ -150,45 +685,162 @@ def list_users():
 @app.route("/api/ad/<user_id>")
 def get_ad(user_id: str):
     """
-    Get the best performing ad for a user.
+    Get the next ad for a user using the new flow:
+    1. Get ranked list of original ads
+    2. Find next unserved original ad
+    3. Remix it → get best variant → serve it
+    4. Mark original ad as served
     
     Query params:
-        - variant: int (optional) - specific variant index to return
-        - refresh: bool (optional) - force reload from file
+        - refresh: bool (optional) - force reload context card
+        - mark_shown: bool (optional, default true) - mark ad as shown for rotation
     """
-    variant = request.args.get("variant", type=int)
     refresh = request.args.get("refresh", "false").lower() == "true"
+    mark_shown = request.args.get("mark_shown", "true").lower() == "true"
     
-    # Check cache first (unless refresh requested)
-    if not refresh and user_id in ads_cache:
-        ad_data = ads_cache[user_id]["data"]
-    else:
-        # Load from file
-        ad_data = load_latest_result_for_user(user_id)
+    try:
+        from pipeline import AdIntelligencePipeline
+        from context_agent import ContextCard
         
-        if ad_data:
-            ads_cache[user_id] = {
-                "data": ad_data,
+        # Step 1: Get or generate context card
+        context_card = None
+        
+        # Try loading from cache/file first
+        ad_data = None
+        if not refresh:
+            ad_data = load_latest_result_for_user(user_id)
+            if ad_data:
+                context_card_dict = ad_data.get("context_card", {})
+                if context_card_dict:
+                    # Convert to ContextCard
+                    from context_agent import RerankedPost
+                    posts = [
+                        RerankedPost(
+                            post_id=p.get("post_id", ""),
+                            text=p.get("text", ""),
+                            source=p.get("source", ""),
+                            rank=p.get("rank", 0),
+                            relevance_score=p.get("relevance_score", 0.5)
+                        )
+                        for p in context_card_dict.get("top_25_reranked_posts", [])
+                    ]
+                    context_card = ContextCard(
+                        username=context_card_dict.get("username", user_id),
+                        user_id=context_card_dict.get("user_id", user_id),
+                        general_topic=context_card_dict.get("general_topic", ""),
+                        popular_memes=context_card_dict.get("popular_memes"),
+                        user_persona_tone=context_card_dict.get("user_persona_tone", ""),
+                        top_25_reranked_posts=posts
+                    )
+        
+        # If no context card, try to generate it
+        if not context_card:
+            # Try on-demand generation to get context card
+            ad_data = generate_ads_on_demand(user_id, run_full_pipeline=True)
+            
+            if not ad_data:
+                # Check if pipeline is running
+                if user_id in pipeline_status:
+                    status_info = pipeline_status[user_id]
+                    if status_info.get("status") in ["starting", "running"]:
+                        return jsonify({
+                            "status": "generating",
+                            "message": "Pipeline is running, please check back shortly",
+                            "user_id": user_id,
+                            "started_at": status_info.get("started_at")
+                        }), 202
+                
+                return jsonify({
+                    "error": "No context card found for user",
+                    "user_id": user_id,
+                    "hint": "Run the pipeline first or ensure user data files exist"
+                }), 404
+            
+            # Extract context card from generated data
+            context_card_dict = ad_data.get("context_card", {})
+            from context_agent import RerankedPost
+            posts = [
+                RerankedPost(
+                    post_id=p.get("post_id", ""),
+                    text=p.get("text", ""),
+                    source=p.get("source", ""),
+                    rank=p.get("rank", 0),
+                    relevance_score=p.get("relevance_score", 0.5)
+                )
+                for p in context_card_dict.get("top_25_reranked_posts", [])
+            ]
+            context_card = ContextCard(
+                username=context_card_dict.get("username", user_id),
+                user_id=context_card_dict.get("user_id", user_id),
+                general_topic=context_card_dict.get("general_topic", ""),
+                popular_memes=context_card_dict.get("popular_memes"),
+                user_persona_tone=context_card_dict.get("user_persona_tone", ""),
+                top_25_reranked_posts=posts
+            )
+        
+        # Step 2: Get ranked list of original ads
+        cache_key = get_cache_key_for_user(user_id, {"username": context_card.username})
+        
+        if cache_key not in ranked_ads_cache or refresh:
+            pipeline = AdIntelligencePipeline()
+            ranked_ads = pipeline.get_ranked_ads(context_card)
+            ranked_ads_cache[cache_key] = {
+                "ranked_ads": ranked_ads,
+                "context_card": context_card.to_dict(),
                 "timestamp": datetime.now().isoformat()
             }
-    
-    if not ad_data:
+        else:
+            ranked_ads = ranked_ads_cache[cache_key]["ranked_ads"]
+        
+        if not ranked_ads:
+            return jsonify({
+                "error": "No ads available to serve",
+                "user_id": user_id
+            }), 404
+        
+        # Step 3: Find next unserved original ad
+        next_ad_index = get_next_original_ad_index(cache_key, ranked_ads)
+        original_ad = ranked_ads[next_ad_index]
+        ad_key = get_ad_key(original_ad)
+        
+        # Step 4: Remix this ad and get best variant
+        # Step 4: Remix this ad (unless cached) and get best variant
+        print(f"[Ad Server] Remixing original ad #{next_ad_index + 1} for {user_id}...")
+        # Check cache first
+        best_variant_result = best_variant_cache.get(cache_key, {}).get(ad_key)
+        if not best_variant_result:
+            best_variant_result = remix_and_get_best_variant(
+                user_id, context_card.to_dict(), original_ad, next_ad_index
+            )
+            if best_variant_result:
+                # Cache it
+                if cache_key not in best_variant_cache:
+                    best_variant_cache[cache_key] = {}
+                best_variant_cache[cache_key][ad_key] = best_variant_result
+        
+        if not best_variant_result:
+            return jsonify({
+                "error": "Failed to remix ad",
+                "user_id": user_id
+            }), 500
+        
+        # Step 5: Format and return best variant
+        formatted = format_best_variant_for_extension(best_variant_result, user_id)
+        
+        # Step 6: Mark original ad as served
+        if mark_shown:
+            mark_original_ad_as_shown(cache_key, next_ad_index)
+        
+        return jsonify(formatted)
+        
+    except Exception as e:
+        print(f"[Ad Server] Error in get_ad: {e}")
+        import traceback
+        traceback.print_exc()
         return jsonify({
-            "error": "No ads found for user",
-            "user_id": user_id,
-            "hint": "Run the pipeline first: python pipeline.py"
-        }), 404
-    
-    # Format for extension
-    if variant is not None:
-        formatted = format_ad_for_extension(ad_data, index=variant)
-    else:
-        formatted = format_ad_for_extension(ad_data)
-    
-    if not formatted:
-        return jsonify({"error": "No ad variants available"}), 404
-    
-    return jsonify(formatted)
+            "error": str(e),
+            "type": type(e).__name__
+        }), 500
 
 
 @app.route("/api/ads/<user_id>")
@@ -208,13 +860,38 @@ def get_all_ads(user_id: str):
                 "timestamp": datetime.now().isoformat()
             }
     
+    # If no ads found, try on-demand generation
     if not ad_data:
-        return jsonify({
-            "error": "No ads found for user",
-            "user_id": user_id
-        }), 404
+        ad_data = generate_ads_on_demand(user_id, run_full_pipeline=True)
+        
+        if not ad_data:
+            # Check if pipeline is running
+            if user_id in pipeline_status:
+                status_info = pipeline_status[user_id]
+                if status_info.get("status") in ["starting", "running"]:
+                    return jsonify({
+                        "status": "generating",
+                        "message": "Pipeline is running, please check back shortly",
+                        "user_id": user_id,
+                        "started_at": status_info.get("started_at")
+                    }), 202
+            
+            return jsonify({
+                "error": "No ads found for user",
+                "user_id": user_id
+            }), 404
     
     formatted = format_all_ads_for_extension(ad_data)
+    
+    # Add rotation status to response
+    rotation_status = None
+    if user_id in ad_rotation:
+        rotation = ad_rotation[user_id]
+        rotation_status = {
+            "shown_count": len(rotation["shown_indices"]),
+            "shown_indices": sorted(list(rotation["shown_indices"])),
+            "last_shown": rotation["last_index"]
+        }
     
     return jsonify({
         "user_id": user_id,
@@ -224,7 +901,8 @@ def get_all_ads(user_id: str):
         "context": {
             "topic": ad_data.get("context_card", {}).get("general_topic", ""),
             "tone": ad_data.get("context_card", {}).get("user_persona_tone", "")
-        }
+        },
+        "rotation": rotation_status
     })
 
 
@@ -236,11 +914,13 @@ def generate_ads(user_id: str):
     Request body (JSON):
         - context_card: dict (optional) - existing context card to use
         - user_data: dict (optional) - user data if no context card
+        - auto_load: bool (optional, default true) - try to load user_data from files if not provided
     """
     try:
         from pipeline import AdIntelligencePipeline, save_results
         
         data = request.get_json() or {}
+        auto_load = data.get("auto_load", True)
         
         pipeline = AdIntelligencePipeline()
         
@@ -248,6 +928,16 @@ def generate_ads(user_id: str):
             result = pipeline.run_from_context_card(data["context_card"])
         elif "user_data" in data:
             result = pipeline.run_from_user_data(data["user_data"])
+        elif auto_load:
+            # Try to load user data automatically
+            user_data = load_user_data_file(user_id)
+            if user_data:
+                result = pipeline.run_from_user_data(user_data)
+            else:
+                return jsonify({
+                    "error": "No user data found. Provide context_card or user_data in request body.",
+                    "user_id": user_id
+                }), 400
         else:
             return jsonify({
                 "error": "Must provide either context_card or user_data"
@@ -257,10 +947,18 @@ def generate_ads(user_id: str):
         save_results(result, str(OUTPUT_DIR))
         
         # Update cache
-        ads_cache[result.username] = {
+        cache_key = result.username or user_id
+        ads_cache[cache_key] = {
             "data": result.to_dict(),
             "timestamp": datetime.now().isoformat()
         }
+        
+        # Reset rotation tracking for this user
+        if cache_key in ad_rotation:
+            ad_rotation[cache_key] = {
+                "shown_indices": set(),
+                "last_index": -1
+            }
         
         # Return the best ad
         formatted = format_ad_for_extension(result.to_dict())
@@ -278,6 +976,188 @@ def generate_ads(user_id: str):
             "error": str(e),
             "type": type(e).__name__
         }), 500
+
+
+@app.route("/api/ad/<user_id>/mark-shown", methods=["POST"])
+def mark_ad_shown(user_id: str):
+    """
+    Mark an ad as shown for rotation tracking.
+    
+    Request body (JSON):
+        - ad_index: int (required) - index of the ad that was shown
+    """
+    data = request.get_json() or {}
+    ad_index = data.get("ad_index")
+    
+    if ad_index is None:
+        return jsonify({
+            "error": "ad_index is required"
+        }), 400
+    
+    mark_original_ad_as_shown(user_id, ad_index)
+    
+    rotation = ad_rotation.get(user_id, {})
+    return jsonify({
+        "success": True,
+        "user_id": user_id,
+        "ad_index": ad_index,
+        "shown_count": len(rotation.get("shown_indices", set())),
+        "shown_indices": sorted(list(rotation.get("shown_indices", set())))
+    })
+
+
+@app.route("/api/ad/<user_id>/rotation", methods=["GET"])
+def get_rotation_status(user_id: str):
+    """Get rotation status for a user."""
+    if user_id not in ad_rotation:
+        return jsonify({
+            "user_id": user_id,
+            "shown_count": 0,
+            "shown_indices": [],
+            "last_shown": -1
+        })
+    
+    rotation = ad_rotation[user_id]
+    return jsonify({
+        "user_id": user_id,
+        "shown_count": len(rotation["shown_indices"]),
+        "shown_indices": sorted(list(rotation["shown_indices"])),
+        "last_shown": rotation["last_index"]
+    })
+
+
+@app.route("/api/pipeline/<user_id>/status", methods=["GET"])
+def get_pipeline_status(user_id: str):
+    """Get the status of pipeline execution for a user."""
+    if user_id not in pipeline_status:
+        return jsonify({
+            "user_id": user_id,
+            "status": "not_started"
+        })
+    
+    return jsonify(pipeline_status[user_id])
+
+
+@app.route("/api/auth/token", methods=["POST"])
+def store_auth_token():
+    """
+    Store OAuth access token for a user to enable automatic data fetching.
+    
+    Request body (JSON):
+        - username: str (required) - Username to associate token with
+        - access_token: str (required) - OAuth access token
+        - refresh_token: str (optional) - Refresh token if available
+    """
+    data = request.get_json() or {}
+    username = data.get("username")
+    access_token = data.get("access_token")
+    
+    if not username or not access_token:
+        return jsonify({
+            "error": "username and access_token are required"
+        }), 400
+    
+    # Store token securely (in production, use proper encryption)
+    token_file = OUTPUT_DIR / f".token_{username}.json"
+    token_data = {
+        "username": username,
+        "access_token": access_token,
+        "refresh_token": data.get("refresh_token"),
+        "stored_at": datetime.now().isoformat()
+    }
+    
+    try:
+        with open(token_file, 'w') as f:
+            json.dump(token_data, f, indent=2)
+        
+        return jsonify({
+            "success": True,
+            "message": f"Token stored for {username}",
+            "username": username
+        })
+    except Exception as e:
+        return jsonify({
+            "error": f"Failed to store token: {str(e)}"
+        }), 500
+
+
+@app.route("/api/pipeline/<user_id>/trigger", methods=["POST"])
+def trigger_pipeline(user_id: str):
+    """
+    Trigger full pipeline execution for a user.
+    
+    Request body (JSON, optional):
+        - user_data: dict - User data to use (if not provided, will try to fetch)
+        - async: bool (default true) - Run asynchronously
+    """
+    data = request.get_json() or {}
+    user_data = data.get("user_data")
+    run_async = data.get("async", True)
+    
+    # Check if already running
+    if user_id in pipeline_status:
+        status = pipeline_status[user_id].get("status")
+        if status in ["starting", "running"]:
+            return jsonify({
+                "status": "already_running",
+                "message": "Pipeline is already running for this user",
+                "user_id": user_id,
+                "started_at": pipeline_status[user_id].get("started_at")
+            }), 409
+    
+    if run_async:
+        # Run in background
+        run_full_pipeline_async(user_id, user_data)
+        return jsonify({
+            "status": "started",
+            "message": "Pipeline started in background",
+            "user_id": user_id,
+            "started_at": pipeline_status.get(user_id, {}).get("started_at")
+        }), 202
+    else:
+        # Run synchronously (will block)
+        try:
+            from pipeline import AdIntelligencePipeline, save_results
+            
+            # Get user data if not provided
+            if not user_data:
+                user_data = load_user_data_file(user_id)
+                if not user_data:
+                    user_data = fetch_user_data_from_x_api(user_id)
+            
+            if not user_data:
+                return jsonify({
+                    "error": "Could not fetch user data. Provide user_data in request body or ensure user data files exist."
+                }), 400
+            
+            pipeline = AdIntelligencePipeline()
+            result = pipeline.run_from_user_data(user_data)
+            
+            # Save results
+            save_results(result, str(OUTPUT_DIR))
+            
+            # Update cache
+            ad_dict = result.to_dict()
+            cache_key = get_cache_key_for_user(user_id, ad_dict)
+            ads_cache[cache_key] = {
+                "data": ad_dict,
+                "timestamp": datetime.now().isoformat()
+            }
+            if cache_key != user_id:
+                ads_cache[user_id] = ads_cache[cache_key]
+            
+            return jsonify({
+                "status": "completed",
+                "user_id": result.user_id,
+                "username": result.username,
+                "message": "Pipeline completed successfully"
+            })
+            
+        except Exception as e:
+            return jsonify({
+                "error": str(e),
+                "type": type(e).__name__
+            }), 500
 
 
 @app.route("/api/ad/random")
@@ -320,12 +1200,17 @@ if __name__ == "__main__":
     print("="*60)
     print(f"\nServing ads from: {OUTPUT_DIR}")
     print("\nEndpoints:")
-    print("  GET  /api/ad/<user_id>       - Get best ad for user")
-    print("  GET  /api/ads/<user_id>      - Get all ad variants")
-    print("  POST /api/generate/<user_id> - Generate new ads")
-    print("  GET  /api/users              - List available users")
-    print("  GET  /api/ad/random          - Get random ad (testing)")
-    print("  GET  /health                 - Health check")
+    print("  GET  /api/ad/<user_id>                  - Get next ad (with rotation)")
+    print("  GET  /api/ads/<user_id>                 - Get all ad variants")
+    print("  POST /api/generate/<user_id>            - Generate new ads")
+    print("  POST /api/pipeline/<user_id>/trigger    - Trigger full pipeline")
+    print("  GET  /api/pipeline/<user_id>/status      - Get pipeline status")
+    print("  POST /api/auth/token                      - Store OAuth token")
+    print("  POST /api/ad/<user_id>/mark-shown       - Mark ad as shown")
+    print("  GET  /api/ad/<user_id>/rotation         - Get rotation status")
+    print("  GET  /api/users                         - List available users")
+    print("  GET  /api/ad/random                      - Get random ad (testing)")
+    print("  GET  /health                             - Health check")
     print("\n" + "="*60 + "\n")
     
     # List available users on startup
