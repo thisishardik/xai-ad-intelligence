@@ -7,13 +7,13 @@ export function shouldInject({
     distanceSinceLastAd,
     pauseTriggered = false,  // NEW: flag for pause-triggered calls
     scoreThreshold = 0.50,    // 50% attention (moderate engagement)
-    minSpacing = 800,         // 600px (~2-3 tweets)
+    minSpacing = 700,         // 600px (~2-3 tweets)
     minTime = 3000            // 3 seconds between ads
 }) {
     // Relax constraints for pause-triggered insertions
     const effectiveScoreThreshold = pauseTriggered ? 0.50 : scoreThreshold;
     const effectiveMinTime = pauseTriggered ? 3000 : minTime;
-    const effectiveMinSpacing = pauseTriggered ? 800 : minSpacing;
+    const effectiveMinSpacing = pauseTriggered ? 700 : minSpacing;
 
     const checks = {
         scrollingDown: scrollingDown,
