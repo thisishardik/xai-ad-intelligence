@@ -61,7 +61,7 @@ prewarm_inflight = {}
 
 # Cache queue config
 QUEUE_TOP_N = 10          # how many ads to keep in the temp queue
-QUEUE_REFILL_THRESHOLD = 3  # when queue falls below this, try to top-up
+QUEUE_REFILL_THRESHOLD = 10  # when queue falls below this, try to top-up
 
 
 def _build_context_card_from_dict(context_card_dict: dict, user_id: str):
@@ -227,6 +227,20 @@ def maybe_top_up_queue(user_id: str):
             print(f"[Queue] Topped up {added} ads for {user_id}. Queue now {queue_size(user_id)}.")
     except Exception as e:
         print(f"[Queue] Failed to top up queue for {user_id}: {e}")
+
+
+def refresh_queue_from_latest(user_id: str):
+    """
+    Rebuild the queue immediately after a pipeline generation completes.
+    """
+    try:
+        queue = build_queue_for_user(user_id, refresh=True, top_n=QUEUE_TOP_N)
+        if queue is not None:
+            print(f"[Queue] Refreshed queue for {user_id} ({len(queue)} items)")
+        return queue
+    except Exception as e:
+        print(f"[Queue] Failed to refresh queue for {user_id}: {e}")
+        return None
 
 # Pipeline execution tracking: user_id -> {status, thread, error}
 # Tracks ongoing pipeline executions
@@ -503,6 +517,9 @@ def run_full_pipeline_async(user_id: str, user_data: dict = None):
             if cache_key != user_id:
                 ads_cache[user_id] = ads_cache[cache_key]
             
+            # Refresh temp queue so the extension gets fresh ads immediately
+            refresh_queue_from_latest(cache_key)
+
             # Initialize rotation tracking
             if cache_key not in ad_rotation:
                 ad_rotation[cache_key] = {
@@ -601,6 +618,9 @@ def generate_ads_on_demand(user_id: str, run_full_pipeline: bool = True) -> dict
             if cache_key != user_id:
                 ads_cache[user_id] = ads_cache[cache_key]
             
+            # Refresh queue with the new generation
+            refresh_queue_from_latest(cache_key)
+
             # Initialize rotation tracking
             if cache_key not in ad_rotation:
                 ad_rotation[cache_key] = {
@@ -1091,6 +1111,9 @@ def generate_ads(user_id: str):
             "timestamp": datetime.now().isoformat()
         }
         
+        # Refresh queue immediately with the new generation
+        refresh_queue_from_latest(cache_key)
+
         # Reset rotation tracking for this user
         if cache_key in ad_rotation:
             ad_rotation[cache_key] = {
