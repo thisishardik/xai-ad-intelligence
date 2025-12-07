@@ -1,0 +1,1716 @@
+{
+  "user_id": "1009524384351096833",
+  "username": "DotVignesh",
+  "posts": [
+    {
+      "public_metrics": {
+        "retweet_count": 330,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1997582761994133847",
+      "author_id": "1009524384351096833",
+      "text": "RT @chrisparkX: live at xAI hackathon!📍\n\nover 500 handpicked devs. only a few hours in &amp; many great projects built already. \n\n1st place win…",
+      "created_at": "2025-12-07T08:23:38.000Z",
+      "edit_history_tweet_ids": [
+        "1997582761994133847"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 12,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1997443091763204526",
+      "author_id": "1009524384351096833",
+      "text": "RT @forwarddeploy: Welcome to the @xai Hackathon! \n\nWe are so excited to meet you 🙌 https://t.co/HLKRpf7RAl",
+      "created_at": "2025-12-06T23:08:38.000Z",
+      "edit_history_tweet_ids": [
+        "1997443091763204526"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 1,
+        "impression_count": 522
+      },
+      "id": "1997184290741015013",
+      "author_id": "1009524384351096833",
+      "text": "@forwarddeploy @xai will we also have an @elonmusk cameo? 👀",
+      "created_at": "2025-12-06T06:00:15.000Z",
+      "edit_history_tweet_ids": [
+        "1997184290741015013"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 6,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1996214290718638390",
+      "author_id": "1009524384351096833",
+      "text": "RT @ivanfioravanti: Time to test Mistral Models again. I think we all remember the fine-tune Mistral 7B moment.",
+      "created_at": "2025-12-03T13:45:49.000Z",
+      "edit_history_tweet_ids": [
+        "1996214290718638390"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 4,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 82
+      },
+      "id": "1993672060359647601",
+      "author_id": "1009524384351096833",
+      "text": "got in - let's goo! 🚀 https://t.co/2LRQDznxxX",
+      "created_at": "2025-11-26T13:23:54.000Z",
+      "edit_history_tweet_ids": [
+        "1993672060359647601"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 54
+      },
+      "id": "1993527993084637359",
+      "author_id": "1009524384351096833",
+      "text": "@kaarelkaarelson @xai I'll be there!\ndm if you'd like to team up (i'm unable to DM lol)",
+      "created_at": "2025-11-26T03:51:26.000Z",
+      "edit_history_tweet_ids": [
+        "1993527993084637359"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 41
+      },
+      "id": "1993515876432466334",
+      "author_id": "1009524384351096833",
+      "text": "@farguney Felt the same! \nNeither Grok 4.1 nor Gemini 3.0 could steer me away from GPT",
+      "created_at": "2025-11-26T03:03:17.000Z",
+      "edit_history_tweet_ids": [
+        "1993515876432466334"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 603,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1991888058736931156",
+      "author_id": "1009524384351096833",
+      "text": "RT @MattNiessner: (1/n)\nHow to start a deep learning project? \n\nWe use a remarkably streamlined step-by-step process to set up deep learnin…",
+      "created_at": "2025-11-21T15:14:55.000Z",
+      "edit_history_tweet_ids": [
+        "1991888058736931156"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 23
+      },
+      "id": "1991503799756943859",
+      "author_id": "1009524384351096833",
+      "text": "@freddiev4 @vboykis how different is mid-training from continued-pre-training though?",
+      "created_at": "2025-11-20T13:48:00.000Z",
+      "edit_history_tweet_ids": [
+        "1991503799756943859"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 1521,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1990186380778144097",
+      "author_id": "1009524384351096833",
+      "text": "RT @karpathy: Sharing an interesting recent conversation on AI's impact on the economy.\n\nAI has been compared to various historical precede…",
+      "created_at": "2025-11-16T22:33:03.000Z",
+      "edit_history_tweet_ids": [
+        "1990186380778144097"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 54
+      },
+      "id": "1987190707832934480",
+      "author_id": "1009524384351096833",
+      "text": "@cneuralnetwork Sure thing!\nOn it - if I can find the issue or optimize further, I’ll make a PR\n\nFrom my code so far, I’m seeing around 70–80% acceptance, but still can’t get it to beat the verifier - thinking of adding KV cache to see if that reduces overhead",
+      "created_at": "2025-11-08T16:09:19.000Z",
+      "edit_history_tweet_ids": [
+        "1987190707832934480"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 111
+      },
+      "id": "1987186517320532130",
+      "author_id": "1009524384351096833",
+      "text": "@cneuralnetwork Good one!\n\nNot nitpicking, but something seems off - it’s way harder to get speedups on newer models\nI’ve been implementing my version too and can’t get past ~1.02× on the Alpaca dataset\nTried your implementation with Qwen3-1.7B and 8B -virtually no speedup anymore 🤔 https://t.co/T6TIDJL2LN",
+      "created_at": "2025-11-08T15:52:40.000Z",
+      "edit_history_tweet_ids": [
+        "1987186517320532130"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 3,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 1
+      },
+      "id": "1982422970632196393",
+      "author_id": "1009524384351096833",
+      "text": "RT @GeCoIn2025: Denis Akhiyarov  is presenting “DeepCodeSeek: Real-Time API Retrieval for Context-Aware Code Generation” https://t.co/CCqUr…",
+      "created_at": "2025-10-26T12:24:02.000Z",
+      "edit_history_tweet_ids": [
+        "1982422970632196393"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 26
+      },
+      "id": "1982231175067206013",
+      "author_id": "1009524384351096833",
+      "text": "@djsaunde @UnslothAI awesome! \ngood luck with the new role",
+      "created_at": "2025-10-25T23:41:54.000Z",
+      "edit_history_tweet_ids": [
+        "1982231175067206013"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 76
+      },
+      "id": "1982208921751236964",
+      "author_id": "1009524384351096833",
+      "text": "@djsaunde @UnslothAI Congrats!\n\nYour Git contributions are wild. How do you keep it up and ship so steadily?",
+      "created_at": "2025-10-25T22:13:29.000Z",
+      "edit_history_tweet_ids": [
+        "1982208921751236964"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 95,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1981875360774885822",
+      "author_id": "1009524384351096833",
+      "text": "RT @Hesamation: watch this 34-minutes video like your life depends on it. this is exactly why I love ML. you can work in this field for yea…",
+      "created_at": "2025-10-25T00:08:02.000Z",
+      "edit_history_tweet_ids": [
+        "1981875360774885822"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1976611043251036529",
+      "author_id": "1009524384351096833",
+      "text": "RT @den_run_ai: We open-sourced the library SnowDoc for indexing scripts with verified JSDoc definitions as part of this paper release:\n\nht…",
+      "created_at": "2025-10-10T11:29:31.000Z",
+      "edit_history_tweet_ids": [
+        "1976611043251036529"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 32
+      },
+      "id": "1976124853473472587",
+      "author_id": "1009524384351096833",
+      "text": "https://t.co/wVVBUIBgCf",
+      "created_at": "2025-10-09T03:17:34.000Z",
+      "edit_history_tweet_ids": [
+        "1976124853473472587"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 2,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 45
+      },
+      "id": "1976121753970803211",
+      "author_id": "1009524384351096833",
+      "text": "Overdue portfolio refresh.\nSimple idea: browse my work in a ChatGPT like interface. \n\nless scrolling, more answers. https://t.co/QfAhDRU3Kg",
+      "created_at": "2025-10-09T03:05:15.000Z",
+      "edit_history_tweet_ids": [
+        "1976121753970803211"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 3,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 337
+      },
+      "id": "1973428695626031190",
+      "author_id": "1009524384351096833",
+      "text": "Finally, our preprint is out!\n\nA retrieval-first approach for code generation, with a 0.6B RL-tuned reranker that beats an 8B baseline and runs ~2.5× faster. https://t.co/HasZe6ya62",
+      "created_at": "2025-10-01T16:44:00.000Z",
+      "edit_history_tweet_ids": [
+        "1973428695626031190"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 2,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1966700729352978749",
+      "author_id": "1009524384351096833",
+      "text": "RT @GeCoIn2025: The list of accepted papers is now online! A big thank you to all the authors for your contributions and to our PC for thei…",
+      "created_at": "2025-09-13T03:09:28.000Z",
+      "edit_history_tweet_ids": [
+        "1966700729352978749"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 283,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      },
+      "id": "1953713827884720176",
+      "author_id": "1009524384351096833",
+      "text": "RT @Guangxuan_Xiao: I've written the full story of Attention Sinks — a technical deep-dive into how the mechanism was developed and how our…",
+      "created_at": "2025-08-08T07:04:09.000Z",
+      "edit_history_tweet_ids": [
+        "1953713827884720176"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 2,
+        "bookmark_count": 0,
+        "impression_count": 77
+      },
+      "id": "1927580599298232656",
+      "author_id": "1009524384351096833",
+      "text": "@cory moved here 2 weeks ago, would love to attend the meetup!",
+      "created_at": "2025-05-28T04:20:02.000Z",
+      "edit_history_tweet_ids": [
+        "1927580599298232656"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 322,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 1
+      },
+      "id": "1920667471918268426",
+      "author_id": "1009524384351096833",
+      "text": "RT @deedydas: 1. Take a screen recording explaining your app\n2. Upload it to YouTube\n3. \"Build me this”\n\nGemini 2.5’s ability to comprehend…",
+      "created_at": "2025-05-09T02:29:44.000Z",
+      "edit_history_tweet_ids": [
+        "1920667471918268426"
+      ]
+    },
+    {
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 25
+      },
+      "id": "1919428528065421338",
+      "author_id": "1009524384351096833",
+      "text": "@levelsio @cursor_ai Did you try @continuedev?",
+      "created_at": "2025-05-05T16:26:37.000Z",
+      "edit_history_tweet_ids": [
+        "1919428528065421338"
+      ]
+    }
+  ],
+  "timeline": [
+    {
+      "author_id": "1778031890043400192",
+      "edit_history_tweet_ids": [
+        "1997608902339526703"
+      ],
+      "text": "@jm_alexia https://t.co/QfdMpABlu0",
+      "id": "1997608902339526703",
+      "created_at": "2025-12-07T10:07:30.000Z",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 1,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 10
+      }
+    },
+    {
+      "author_id": "1778031890043400192",
+      "edit_history_tweet_ids": [
+        "1997608880914968983"
+      ],
+      "text": "TRM(by: @jm_alexia) implementation is live on Papercode now!\n\nCheck it out :D https://t.co/OSUaC9gR3o",
+      "id": "1997608880914968983",
+      "created_at": "2025-12-07T10:07:25.000Z",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 1,
+        "like_count": 2,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 18
+      }
+    },
+    {
+      "author_id": "44196397",
+      "edit_history_tweet_ids": [
+        "1997608849910780191"
+      ],
+      "text": "RT @TRobinsonNewEra: Enoch Burke lodges an appeal from his prison cell.\n\nHe's spent over 500 days in jail.\n\nHis crime?\n\nThe young schooltea…",
+      "id": "1997608849910780191",
+      "created_at": "2025-12-07T10:07:18.000Z",
+      "public_metrics": {
+        "retweet_count": 8723,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "44196397",
+      "edit_history_tweet_ids": [
+        "1997607385649832119"
+      ],
+      "text": "RT @JennaReports: JUST IN: Twice-convicted rapist Abdimahat Mohamed gets ZERO prison time in Minnesota for gunpoint-rape of a 15 year-old &amp;…",
+      "id": "1997607385649832119",
+      "created_at": "2025-12-07T10:01:29.000Z",
+      "public_metrics": {
+        "retweet_count": 609,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 14
+      }
+    },
+    {
+      "author_id": "44196397",
+      "edit_history_tweet_ids": [
+        "1997606679001645356"
+      ],
+      "text": "RT @Timcast: Last night a vehicle approached our property and opened fire.\n\nNo one was hurt.\n\nOur security team is reviewing the incident a…",
+      "id": "1997606679001645356",
+      "created_at": "2025-12-07T09:58:40.000Z",
+      "public_metrics": {
+        "retweet_count": 8483,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 16
+      }
+    },
+    {
+      "author_id": "44196397",
+      "edit_history_tweet_ids": [
+        "1997605873913630992"
+      ],
+      "text": "RT @cb_doge: BREAKING: Elon Musk joined the xAI Hackathon today to talk with the hackathon attendees building on Grok.\n\nA 24 hour xAI hacka…",
+      "id": "1997605873913630992",
+      "created_at": "2025-12-07T09:55:28.000Z",
+      "public_metrics": {
+        "retweet_count": 242,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 24
+      }
+    },
+    {
+      "author_id": "44196397",
+      "edit_history_tweet_ids": [
+        "1997604532885344470"
+      ],
+      "text": "Good question … https://t.co/YEl2tDO7VD",
+      "id": "1997604532885344470",
+      "created_at": "2025-12-07T09:50:08.000Z",
+      "public_metrics": {
+        "retweet_count": 513,
+        "reply_count": 897,
+        "like_count": 4331,
+        "quote_count": 33,
+        "bookmark_count": 99,
+        "impression_count": 315693
+      }
+    },
+    {
+      "author_id": "32379544",
+      "edit_history_tweet_ids": [
+        "1997597550589989155"
+      ],
+      "text": "One of the best prompts, if you use LLMs often https://t.co/laupQysJ4c",
+      "id": "1997597550589989155",
+      "created_at": "2025-12-07T09:22:24.000Z",
+      "public_metrics": {
+        "retweet_count": 3,
+        "reply_count": 4,
+        "like_count": 19,
+        "quote_count": 0,
+        "bookmark_count": 21,
+        "impression_count": 2111
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597166249136219"
+      ],
+      "text": "RT @galattaplusoffl: “Being a musician is one thing, but being in the music industry is a completely different thing” says #Praveensparsh…",
+      "id": "1997597166249136219",
+      "created_at": "2025-12-07T09:20:52.000Z",
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597152638550397"
+      ],
+      "text": "RT @galattaplusoffl: #AshwathNarayanan opens up about his journey into the Carnatic industry.\n\nWatch the Carnatic Mega Round Table 2025 exc…",
+      "id": "1997597152638550397",
+      "created_at": "2025-12-07T09:20:49.000Z",
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597143109115960"
+      ],
+      "text": "RT @galattaplusoffl: “I never had a ‘clicking moment’ of wanting to be a dancer or an artist” says #Shobana.\n\nWatch the Carnatic Mega Round…",
+      "id": "1997597143109115960",
+      "created_at": "2025-12-07T09:20:47.000Z",
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597131033743566"
+      ],
+      "text": "RT @galattaplusoffl: \"#kalamkaval is basically a fun, pulpy, B-movie – unlike, say, Vidheyan and Munnariyippu\" #baradwajranganreview\n\nWatch…",
+      "id": "1997597131033743566",
+      "created_at": "2025-12-07T09:20:44.000Z",
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597116102066439"
+      ],
+      "text": "RT @galattaplusoffl: \"Malayalam movies continue to push the bar-nothing has changed in cinema\" #kalamkaval #baradwajranganreview\n\nWatch the…",
+      "id": "1997597116102066439",
+      "created_at": "2025-12-07T09:20:40.000Z",
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597106752962857"
+      ],
+      "text": "RT @galattaplusoffl: #Dhurandhar demands that quality not just from its on-screen operatives, but also from the audience.\n\nWatch the comple…",
+      "id": "1997597106752962857",
+      "created_at": "2025-12-07T09:20:38.000Z",
+      "public_metrics": {
+        "retweet_count": 157,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597091959603606"
+      ],
+      "text": "RT @galattaplusoffl: \"The second half works solidly, and the last half-hour is terrific\" #kalamkaval #baradwajranganreview\n\nWatch the compl…",
+      "id": "1997597091959603606",
+      "created_at": "2025-12-07T09:20:34.000Z",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597081436065851"
+      ],
+      "text": "RT @galattaplusoffl: \"In #Dhurandhar, Aditya Dhar has made something ambitious, something epic\" #baradwajranganreview\n\nWatch the complete R…",
+      "id": "1997597081436065851",
+      "created_at": "2025-12-07T09:20:32.000Z",
+      "public_metrics": {
+        "retweet_count": 22,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "211411783",
+      "edit_history_tweet_ids": [
+        "1997597071810203678"
+      ],
+      "text": "RT @galattaplusoffl: \"#dhurandhar gives you the brutal, bloody satisfaction you crave from action films\" #baradwajranganreview\n\nWatch the c…",
+      "id": "1997597071810203678",
+      "created_at": "2025-12-07T09:20:30.000Z",
+      "public_metrics": {
+        "retweet_count": 24,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "3429950987",
+      "edit_history_tweet_ids": [
+        "1997593603082690975"
+      ],
+      "text": "How old were you when you found out that nuclear reactors are just fancy steam engines?",
+      "id": "1997593603082690975",
+      "created_at": "2025-12-07T09:06:43.000Z",
+      "public_metrics": {
+        "retweet_count": 4,
+        "reply_count": 24,
+        "like_count": 75,
+        "quote_count": 2,
+        "bookmark_count": 3,
+        "impression_count": 13076
+      }
+    },
+    {
+      "author_id": "2931891295",
+      "edit_history_tweet_ids": [
+        "1997588635932373011"
+      ],
+      "text": "2023: Bobby in Jamal Kudu\n2025: https://t.co/5ZXwLlYew8",
+      "id": "1997588635932373011",
+      "created_at": "2025-12-07T08:46:58.000Z",
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 0,
+        "like_count": 68,
+        "quote_count": 0,
+        "bookmark_count": 3,
+        "impression_count": 2609
+      }
+    },
+    {
+      "author_id": "286064020",
+      "edit_history_tweet_ids": [
+        "1997587970812211254"
+      ],
+      "text": "All the best @Karthi_Offl and team for #VaaVaathiyaar 👍\n\nThe trailer looks interesting : https://t.co/VcTBjasvKm  \n\n#VaaVaathiyaarOnDec12",
+      "id": "1997587970812211254",
+      "created_at": "2025-12-07T08:44:20.000Z",
+      "public_metrics": {
+        "retweet_count": 29,
+        "reply_count": 3,
+        "like_count": 211,
+        "quote_count": 0,
+        "bookmark_count": 1,
+        "impression_count": 9137
+      }
+    },
+    {
+      "author_id": "149763",
+      "edit_history_tweet_ids": [
+        "1997586168435835113"
+      ],
+      "text": "loved this post by @TrungTPhan on Miyazaki\n\nhttps://t.co/KWVZFCVjG9",
+      "id": "1997586168435835113",
+      "created_at": "2025-12-07T08:37:10.000Z",
+      "public_metrics": {
+        "retweet_count": 3,
+        "reply_count": 2,
+        "like_count": 40,
+        "quote_count": 0,
+        "bookmark_count": 34,
+        "impression_count": 4586
+      }
+    },
+    {
+      "author_id": "1778031890043400192",
+      "edit_history_tweet_ids": [
+        "1997578481056788497"
+      ],
+      "text": "https://t.co/Dg7Z1TM6bH",
+      "id": "1997578481056788497",
+      "created_at": "2025-12-07T08:06:37.000Z",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 2,
+        "quote_count": 0,
+        "bookmark_count": 1,
+        "impression_count": 361
+      }
+    },
+    {
+      "author_id": "1778031890043400192",
+      "edit_history_tweet_ids": [
+        "1997578448437719279"
+      ],
+      "text": "papercode now has GOOGLE AUTH!!!!!!!!!\n\nnew version lets you register and login using google :)\n\ntry it out now https://t.co/DUDoREIC4G",
+      "id": "1997578448437719279",
+      "created_at": "2025-12-07T08:06:29.000Z",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 3,
+        "like_count": 30,
+        "quote_count": 0,
+        "bookmark_count": 3,
+        "impression_count": 676
+      }
+    },
+    {
+      "author_id": "1209960539390201864",
+      "edit_history_tweet_ids": [
+        "1997572860131541151"
+      ],
+      "text": "RT @ChrisPainterYup: The world doesn’t quite realize yet:\n1. How much AI researchers plan to give to charity over the next couple of years.…",
+      "id": "1997572860131541151",
+      "created_at": "2025-12-07T07:44:17.000Z",
+      "public_metrics": {
+        "retweet_count": 9,
+        "reply_count": 0,
+        "like_count": 0,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 0
+      }
+    },
+    {
+      "author_id": "969181169408385025",
+      "edit_history_tweet_ids": [
+        "1997572687317893324"
+      ],
+      "text": "We will also find out which professions actually benefit from \"the human touch\". Tragically, it'll be a lot fewer than people think.",
+      "id": "1997572687317893324",
+      "created_at": "2025-12-07T07:43:36.000Z",
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 0,
+        "like_count": 11,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 223
+      }
+    }
+  ],
+  "likes": [
+    {
+      "created_at": "2025-12-07T03:04:54.000Z",
+      "id": "1997502549382004923",
+      "edit_history_tweet_ids": [
+        "1997502549382004923"
+      ],
+      "public_metrics": {
+        "retweet_count": 242,
+        "reply_count": 318,
+        "like_count": 1837,
+        "quote_count": 21,
+        "bookmark_count": 77,
+        "impression_count": 109162
+      },
+      "text": "BREAKING: Elon Musk joined the xAI Hackathon today to talk with the hackathon attendees building on Grok.\n\nA 24 hour xAI hackathon is underway right now in the SF Bay Area. https://t.co/Q3vYQqXZaH",
+      "author_id": "1389913567671975937"
+    },
+    {
+      "created_at": "2025-12-07T00:12:14.000Z",
+      "id": "1997459097474789835",
+      "edit_history_tweet_ids": [
+        "1997459097474789835"
+      ],
+      "public_metrics": {
+        "retweet_count": 22,
+        "reply_count": 42,
+        "like_count": 574,
+        "quote_count": 4,
+        "bookmark_count": 18,
+        "impression_count": 11465
+      },
+      "text": "There’s 420 hackers here for @xai hackathon, can’t wait to see what you all build! https://t.co/ko1UF0wK7V",
+      "author_id": "3433971723"
+    },
+    {
+      "created_at": "2025-12-07T04:07:26.000Z",
+      "id": "1997518289006891370",
+      "edit_history_tweet_ids": [
+        "1997518289006891370"
+      ],
+      "public_metrics": {
+        "retweet_count": 330,
+        "reply_count": 293,
+        "like_count": 2942,
+        "quote_count": 32,
+        "bookmark_count": 144,
+        "impression_count": 561229
+      },
+      "text": "live at xAI hackathon!📍\n\nover 500 handpicked devs. only a few hours in &amp; many great projects built already. \n\n1st place winners for each track include an all expensed trip to starship launch. 🚀🚀🚀 https://t.co/8ApHJjU3pp",
+      "author_id": "2533341854"
+    },
+    {
+      "created_at": "2025-12-06T22:23:51.000Z",
+      "id": "1997431822838538726",
+      "edit_history_tweet_ids": [
+        "1997431822838538726"
+      ],
+      "public_metrics": {
+        "retweet_count": 12,
+        "reply_count": 15,
+        "like_count": 289,
+        "quote_count": 2,
+        "bookmark_count": 3,
+        "impression_count": 6229
+      },
+      "text": "Welcome to the @xai Hackathon! \n\nWe are so excited to meet you 🙌 https://t.co/HLKRpf7RAl",
+      "author_id": "3433971723"
+    },
+    {
+      "created_at": "2025-12-05T19:17:18.000Z",
+      "id": "1997022487603990607",
+      "edit_history_tweet_ids": [
+        "1997022487603990607"
+      ],
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 13,
+        "like_count": 109,
+        "quote_count": 0,
+        "bookmark_count": 51,
+        "impression_count": 10210
+      },
+      "text": "We're looking for awesome judges for TreeHacks\n\nif you're an ai researcher, successful founder, creator, journalist, senior in tech, etc and wanna meet the brightest students around the world\n\nDM me one sentence why hackers would love to meet you/why you'd like to judge! https://t.co/gCbhpWGMDT",
+      "author_id": "1235989037938167808"
+    },
+    {
+      "created_at": "2025-12-06T03:02:07.000Z",
+      "id": "1997139460270752020",
+      "edit_history_tweet_ids": [
+        "1997136132963029228",
+        "1997139460270752020"
+      ],
+      "public_metrics": {
+        "retweet_count": 13,
+        "reply_count": 22,
+        "like_count": 290,
+        "quote_count": 14,
+        "bookmark_count": 26,
+        "impression_count": 172853
+      },
+      "text": "Looking forward to welcoming hardcore engineers for our @xai hackathon tomorrow, 24h to build the future \n\nAlso hyped to eat the delicious dinner by 3 Michelin star chef Christopher Kostow 🙏 https://t.co/0ujFe0QGhB",
+      "author_id": "3433971723"
+    },
+    {
+      "created_at": "2025-12-05T20:10:01.000Z",
+      "id": "1997035753097064802",
+      "edit_history_tweet_ids": [
+        "1997035753097064802"
+      ],
+      "public_metrics": {
+        "retweet_count": 0,
+        "reply_count": 7,
+        "like_count": 112,
+        "quote_count": 0,
+        "bookmark_count": 12,
+        "impression_count": 3688
+      },
+      "text": "we got 200+ users today!\n\nrolling out tomorrow\n- auth\n- 2 new papers\n- leaderboard\n- new problems :D https://t.co/MfHOpzb1c0",
+      "author_id": "1778031890043400192"
+    },
+    {
+      "created_at": "2025-12-05T07:41:04.000Z",
+      "id": "1996847273888960735",
+      "edit_history_tweet_ids": [
+        "1996847273888960735"
+      ],
+      "public_metrics": {
+        "retweet_count": 43,
+        "reply_count": 17,
+        "like_count": 359,
+        "quote_count": 22,
+        "bookmark_count": 113,
+        "impression_count": 146262
+      },
+      "text": "Thrilled to share that Alibaba has 146 papers accepted at NeurIPS 2025, covering model training, datasets, foundational research, and inference optimization, one of the highest among tech companies! \n\n🚀Our winning paper, \"Gated Attention for Large Language Models: Non-linearity, https://t.co/4nfFf2jxoy",
+      "author_id": "2694564780"
+    },
+    {
+      "created_at": "2025-12-05T11:01:40.000Z",
+      "id": "1996897755693035534",
+      "edit_history_tweet_ids": [
+        "1996897755693035534"
+      ],
+      "public_metrics": {
+        "retweet_count": 3,
+        "reply_count": 17,
+        "like_count": 95,
+        "quote_count": 0,
+        "bookmark_count": 7,
+        "impression_count": 5875
+      },
+      "text": "What an exciting weekend ahead! Who’s coming? https://t.co/Pc7KtfDdlF",
+      "author_id": "2928857970"
+    },
+    {
+      "created_at": "2025-12-05T08:20:33.000Z",
+      "id": "1996857209628868659",
+      "edit_history_tweet_ids": [
+        "1996857209628868659"
+      ],
+      "public_metrics": {
+        "retweet_count": 4042,
+        "reply_count": 733,
+        "like_count": 33011,
+        "quote_count": 224,
+        "bookmark_count": 5910,
+        "impression_count": 874009
+      },
+      "text": "If you don’t commit to meaningful work, life will fill your time with busywork.",
+      "author_id": "745273"
+    },
+    {
+      "created_at": "2025-12-03T19:02:37.000Z",
+      "id": "1996294017454358623",
+      "edit_history_tweet_ids": [
+        "1996294017454358623"
+      ],
+      "public_metrics": {
+        "retweet_count": 63,
+        "reply_count": 15,
+        "like_count": 451,
+        "quote_count": 7,
+        "bookmark_count": 182,
+        "impression_count": 53542
+      },
+      "text": "\"Journalists keep saying AI is 'draining aquifers' and 'boiling oceans.'\n\nOne problem: they're citing a 2023 estimate that's now off by ~100×.\n\nGoogle just measured it. A median Gemini text query uses:\n- 5 drops of water\n- 9 seconds of TV worth of electricity\n- 0.03g of CO₂ https://t.co/HHxsoDTHmZ",
+      "author_id": "1882198073168080896"
+    },
+    {
+      "created_at": "2025-12-03T14:18:53.000Z",
+      "id": "1996222612930957628",
+      "edit_history_tweet_ids": [
+        "1996222612930957628"
+      ],
+      "public_metrics": {
+        "retweet_count": 3,
+        "reply_count": 0,
+        "like_count": 13,
+        "quote_count": 0,
+        "bookmark_count": 1,
+        "impression_count": 671
+      },
+      "text": "At NeurIPS in San Diego from today! \ngreat to catch up with old friends, and happy to chat about multimodal reasoning/ interactive RL environments.\n\nSome of us from Apriel-15B-Thinker team would be around in person as well for ideas and feedback. Pls come chat with us..",
+      "author_id": "1173652805816659968"
+    },
+    {
+      "created_at": "2025-12-02T23:44:16.000Z",
+      "id": "1996002508905611291",
+      "edit_history_tweet_ids": [
+        "1996002508905611291"
+      ],
+      "public_metrics": {
+        "retweet_count": 6,
+        "reply_count": 6,
+        "like_count": 120,
+        "quote_count": 0,
+        "bookmark_count": 6,
+        "impression_count": 6519
+      },
+      "text": "Time to test Mistral Models again. I think we all remember the fine-tune Mistral 7B moment. https://t.co/zLo9hWAGSi",
+      "author_id": "43874767"
+    },
+    {
+      "created_at": "2025-12-03T12:43:10.000Z",
+      "id": "1996198526611595351",
+      "edit_history_tweet_ids": [
+        "1996198526611595351"
+      ],
+      "public_metrics": {
+        "retweet_count": 1,
+        "reply_count": 2,
+        "like_count": 9,
+        "quote_count": 0,
+        "bookmark_count": 0,
+        "impression_count": 772
+      },
+      "text": "📣 Happening Today at NeurIPS!\n\nDon’t miss these ServiceNow AI Research presentations happening throughout the day. If you're in San Diego, come support the team and catch the latest on web agents, multimodal learning, and RL. 👇\n\n🎓 How to Train Your LLM Web Agent: A Statistical",
+      "author_id": "755877821671702528"
+    },
+    {
+      "article": {
+        "title": "📣 Today at NeurIPS!"
+      },
+      "created_at": "2025-12-01T18:30:07.000Z",
+      "id": "1995561062368731447",
+      "edit_history_tweet_ids": [
+        "1995561062368731447"
+      ],
+      "public_metrics": {
+        "retweet_count": 3,
+        "reply_count": 0,
+        "like_count": 7,
+        "quote_count": 0,
+        "bookmark_count": 1,
+        "impression_count": 761
+      },
+      "text": "https://t.co/2jK6k1UZKp",
+      "author_id": "755877821671702528"
+    },
+    {
+      "created_at": "2025-12-02T14:15:10.000Z",
+      "id": "1995859290393837905",
+      "edit_history_tweet_ids": [
+        "1995859290393837905"
+      ],
+      "public_metrics": {
+        "retweet_count": 4,
+        "reply_count": 0,
+        "like_count": 12,
+        "quote_count": 0,
+        "bookmark_count": 3,
+        "impression_count": 998
+      },
+      "text": "🚀 We’re hiring at ServiceNow AI Research!\n\nWe’re looking for a Senior Research Engineer/Scientist specializing in AI Agent Reliability to contribute to research initiatives focused on enhancing the robustness, safety, and resilience of AI agents operating in enterprise",
+      "author_id": "755877821671702528"
+    },
+    {
+      "created_at": "2025-12-01T20:46:41.000Z",
+      "id": "1995595431448121593",
+      "edit_history_tweet_ids": [
+        "1995595431448121593"
+      ],
+      "public_metrics": {
+        "retweet_count": 39,
+        "reply_count": 26,
+        "like_count": 388,
+        "quote_count": 7,
+        "bookmark_count": 246,
+        "impression_count": 88648
+      },
+      "text": "Details on the trinity architecture that we settled on! https://t.co/Ip8pEEHblZ",
+      "author_id": "1821576970465058816"
+    },
+    {
+      "created_at": "2025-12-01T21:19:06.000Z",
+      "id": "1995603585930068089",
+      "edit_history_tweet_ids": [
+        "1995603585930068089"
+      ],
+      "public_metrics": {
+        "retweet_count": 25,
+        "reply_count": 11,
+        "like_count": 587,
+        "quote_count": 1,
+        "bookmark_count": 326,
+        "impression_count": 53439
+      },
+      "text": "few people exemplify the spirit of \"just doing things\" to the degree that @stochasticchasm does. dude is 25 and has been at @arcee_ai less than a year and is driving pretraining efforts which rival the ambition of pretty much anything else in the open. this is a moneyball moment https://t.co/Q7IxQIZDnk",
+      "author_id": "3064259332"
+    },
+    {
+      "created_at": "2025-12-01T00:15:43.000Z",
+      "id": "1995285647100416103",
+      "edit_history_tweet_ids": [
+        "1995285647100416103"
+      ],
+      "public_metrics": {
+        "retweet_count": 49,
+        "reply_count": 54,
+        "like_count": 1285,
+        "quote_count": 9,
+        "bookmark_count": 76,
+        "impression_count": 143300
+      },
+      "text": "No one deserves the winners medal more than this man https://t.co/5HOLGPl045",
+      "author_id": "1446598470"
+    },
+    {
+      "created_at": "2025-11-30T23:42:19.000Z",
+      "id": "1995277243325850034",
+      "edit_history_tweet_ids": [
+        "1995277243325850034"
+      ],
+      "public_metrics": {
+        "retweet_count": 14121,
+        "reply_count": 7162,
+        "like_count": 125135,
+        "quote_count": 838,
+        "bookmark_count": 15847,
+        "impression_count": 41128470
+      },
+      "text": "Interview with Nikhil https://t.co/4mmIo9rcKw",
+      "author_id": "44196397"
+    },
+    {
+      "created_at": "2025-12-01T04:36:20.000Z",
+      "id": "1995351234555805924",
+      "edit_history_tweet_ids": [
+        "1995351234555805924"
+      ],
+      "public_metrics": {
+        "retweet_count": 9879,
+        "reply_count": 4027,
+        "like_count": 109713,
+        "quote_count": 429,
+        "bookmark_count": 6459,
+        "impression_count": 8685664
+      },
+      "text": "https://t.co/pWdaZfqCRA",
+      "author_id": "44196397"
+    },
+    {
+      "created_at": "2025-11-30T12:20:28.000Z",
+      "id": "1995105648829145385",
+      "edit_history_tweet_ids": [
+        "1995105648829145385"
+      ],
+      "public_metrics": {
+        "retweet_count": 141,
+        "reply_count": 9,
+        "like_count": 1769,
+        "quote_count": 0,
+        "bookmark_count": 150,
+        "impression_count": 85526
+      },
+      "text": "Boy am I good at that. https://t.co/Xb0F1yYiy7",
+      "author_id": "99581347"
+    },
+    {
+      "created_at": "2025-11-26T17:21:05.000Z",
+      "id": "1993731747704385905",
+      "edit_history_tweet_ids": [
+        "1993731747704385905"
+      ],
+      "public_metrics": {
+        "retweet_count": 303,
+        "reply_count": 119,
+        "like_count": 2741,
+        "quote_count": 55,
+        "bookmark_count": 4491,
+        "impression_count": 749966
+      },
+      "text": "The most capable individuals are learning and shipping 1000x faster using AI.\n\nI sat down with Gabriel Petersson (@GabrielPeterss4) - a high school dropout who self-taught Math &amp; ML with AI and is now an AI Researcher at OpenAI. \n\nWe deep dive into the most important traits to https://t.co/j99nXOBOu4",
+      "author_id": "1084142304410034177"
+    },
+    {
+      "created_at": "2025-11-30T03:11:50.000Z",
+      "id": "1994967581745439008",
+      "edit_history_tweet_ids": [
+        "1994967581745439008"
+      ],
+      "public_metrics": {
+        "retweet_count": 1589,
+        "reply_count": 897,
+        "like_count": 21791,
+        "quote_count": 502,
+        "bookmark_count": 2071,
+        "impression_count": 2076321
+      },
+      "text": "Here’s to delaying gratification. The future belongs to the patient.\n\n@elonmusk https://t.co/Z3QiunfCK3",
+      "author_id": "2708715396"
+    },
+    {
+      "created_at": "2025-11-30T01:48:22.000Z",
+      "id": "1994946577191112789",
+      "edit_history_tweet_ids": [
+        "1994946577191112789"
+      ],
+      "public_metrics": {
+        "retweet_count": 61,
+        "reply_count": 6,
+        "like_count": 949,
+        "quote_count": 0,
+        "bookmark_count": 772,
+        "impression_count": 50509
+      },
+      "text": "I formalized the red yellow green method to optimize organic learning of math in this ~14min tutorial btw https://t.co/E1F5FJ9Otr https://t.co/ZQiAOHQFKm",
+      "author_id": "1080908329289961472"
+    }
+  ],
+  "bookmarks": [
+    {
+      "created_at": "2025-11-24T17:44:59.000Z",
+      "author_id": "1540897980",
+      "edit_history_tweet_ids": [
+        "1993012989826678810"
+      ],
+      "public_metrics": {
+        "retweet_count": 508,
+        "reply_count": 330,
+        "like_count": 3409,
+        "quote_count": 17,
+        "bookmark_count": 453,
+        "impression_count": 982792
+      },
+      "text": "We are hiring &amp; rapidly grow post-training at xAI! The team is at the frontier of RLHF, agents, and reasoning efficiency—in just a few months, we climbed from nothing to #2-3 @arena, #1 Search Arena &amp; other tool use benchmarks, #1-2 in creative writing, and are Pareto-optimal on",
+      "id": "1993012989826678810"
+    },
+    {
+      "created_at": "2025-11-21T21:01:14.000Z",
+      "author_id": "910598029333467136",
+      "edit_history_tweet_ids": [
+        "1991975210749493746"
+      ],
+      "public_metrics": {
+        "retweet_count": 24,
+        "reply_count": 18,
+        "like_count": 485,
+        "quote_count": 5,
+        "bookmark_count": 556,
+        "impression_count": 197153
+      },
+      "text": "Olmo 3 afterglow - want to share how I came to join Ai2 to encourage others interested in LLM research. I found it difficult to break into the field as someone who does not hold a phd. Research roles at top labs are highly competitive and I didn’t have professional experience https://t.co/hzgnGouDJe",
+      "id": "1991975210749493746"
+    },
+    {
+      "created_at": "2025-10-26T06:48:39.000Z",
+      "author_id": "14832563",
+      "edit_history_tweet_ids": [
+        "1982338566626947337"
+      ],
+      "public_metrics": {
+        "retweet_count": 188,
+        "reply_count": 49,
+        "like_count": 2572,
+        "quote_count": 11,
+        "bookmark_count": 2902,
+        "impression_count": 153998
+      },
+      "text": "What an amazing, amazing #book!\n\nWritten by three psychiatrists, it blends science and poetry to describe how hopelessly we humans (and all mammals) are dependent on love.\n\nIn it, you’ll find many insights - how our attachment styles are formed during childhood, why reason is https://t.co/xBdtoGJfuO",
+      "id": "1982338566626947337"
+    },
+    {
+      "created_at": "2025-09-20T21:43:43.000Z",
+      "author_id": "1292002106468048896",
+      "edit_history_tweet_ids": [
+        "1969517856866934834"
+      ],
+      "public_metrics": {
+        "retweet_count": 164,
+        "reply_count": 9,
+        "like_count": 1296,
+        "quote_count": 1,
+        "bookmark_count": 2016,
+        "impression_count": 72186
+      },
+      "text": "Took me 4 days to read this blog, but totally worth it. A great detailed guide to post training. Why aren't many people talking about it. Kudos to @Han_Fang_ @karthikabinav for sharing their thoughts.\nhttps://t.co/SOlJQuHSyG",
+      "id": "1969517856866934834"
+    },
+    {
+      "created_at": "2025-06-04T14:49:12.000Z",
+      "author_id": "644863",
+      "edit_history_tweet_ids": [
+        "1930275648691376282"
+      ],
+      "public_metrics": {
+        "retweet_count": 278,
+        "reply_count": 38,
+        "like_count": 1636,
+        "quote_count": 8,
+        "bookmark_count": 3447,
+        "impression_count": 389605
+      },
+      "text": "When I meet people who are trying to get ahead in life, these are the links I send them:\n\nHow to Get Rich and the Navalmanack. If you like these, listen to the rest of the videos on Naval’s YouTube channel. The playlists are organized.\n\nhttps://t.co/pmzYWWgEF1",
+      "id": "1930275648691376282"
+    },
+    {
+      "created_at": "2025-04-28T06:18:33.000Z",
+      "author_id": "1281265455735296001",
+      "edit_history_tweet_ids": [
+        "1916738790032380155"
+      ],
+      "public_metrics": {
+        "retweet_count": 192,
+        "reply_count": 54,
+        "like_count": 4434,
+        "quote_count": 26,
+        "bookmark_count": 2398,
+        "impression_count": 271809
+      },
+      "text": "I think if you pick a really hard research problem, try to solve it in &lt;8 weeks, blog everything, shoot videos, ship good oss code and repeat it.\n\nyou can get hired by a big lab in ~1 year.",
+      "id": "1916738790032380155"
+    },
+    {
+      "created_at": "2025-03-28T16:42:38.000Z",
+      "author_id": "3006",
+      "edit_history_tweet_ids": [
+        "1905661819940696123"
+      ],
+      "public_metrics": {
+        "retweet_count": 3,
+        "reply_count": 2,
+        "like_count": 39,
+        "quote_count": 0,
+        "bookmark_count": 62,
+        "impression_count": 2517
+      },
+      "text": "@rasbt i have specific instructions in my prompts:\n- do not change anything unrelated to the task at hand\n- do not change feature functionality\n- do it in phases (break it into phases, describe what you are doing rn, implement only current phase, wait for my input before next step)\n- do",
+      "id": "1905661819940696123"
+    },
+    {
+      "created_at": "2025-03-17T16:41:30.000Z",
+      "author_id": "14832563",
+      "edit_history_tweet_ids": [
+        "1901675272103145565"
+      ],
+      "public_metrics": {
+        "retweet_count": 24,
+        "reply_count": 12,
+        "like_count": 377,
+        "quote_count": 1,
+        "bookmark_count": 834,
+        "impression_count": 23510
+      },
+      "text": "@golden_iris7 @prvkhvr Hope these help!\n\nThese are all the books in my re-read list. https://t.co/eyVi0wDRgW",
+      "id": "1901675272103145565"
+    },
+    {
+      "created_at": "2025-02-21T03:48:42.000Z",
+      "author_id": "78617337",
+      "edit_history_tweet_ids": [
+        "1892783480435855535"
+      ],
+      "public_metrics": {
+        "retweet_count": 175,
+        "reply_count": 43,
+        "like_count": 3560,
+        "quote_count": 16,
+        "bookmark_count": 6759,
+        "impression_count": 268970
+      },
+      "text": "This prompt is a fucking godsend for @cursor_ai &amp; @windsurf_ai\n\n\"Reflect on 5-7 different possible sources of the problem, distill those down to 1-2 most likely sources, and then add logs to validate your assumptions before we move onto implementing the actual code fix\"",
+      "id": "1892783480435855535"
+    },
+    {
+      "created_at": "2025-02-20T09:39:44.000Z",
+      "author_id": "55315637",
+      "edit_history_tweet_ids": [
+        "1892509431708971387"
+      ],
+      "public_metrics": {
+        "retweet_count": 36,
+        "reply_count": 23,
+        "like_count": 794,
+        "quote_count": 6,
+        "bookmark_count": 1144,
+        "impression_count": 100373
+      },
+      "text": "Introducing prompt-kit\n\nA set of high-quality, customizable components for building AI interfaces.\n\nBuilt on top of shadcn/ui, starting with PromptInput, a flexible input field for chatting with AI models.\n\nNew components coming soon! https://t.co/S9BDYRfZsm",
+      "id": "1892509431708971387"
+    },
+    {
+      "created_at": "2024-12-31T16:44:13.000Z",
+      "author_id": "361044311",
+      "edit_history_tweet_ids": [
+        "1874134475933647317"
+      ],
+      "public_metrics": {
+        "retweet_count": 134,
+        "reply_count": 40,
+        "like_count": 1244,
+        "quote_count": 12,
+        "bookmark_count": 1879,
+        "impression_count": 111666
+      },
+      "text": "I've maintained a list of 20 guiding principles for life over the last 10 years.\n\nSharing it to close out 2024.\n\n1. Read. Non-fiction and fiction both. Classics and modern. Few important people aren't voracious readers.\n\n2. Be curious. Seek truth. Learn to read a research paper.",
+      "id": "1874134475933647317"
+    },
+    {
+      "created_at": "2024-12-25T13:44:54.000Z",
+      "author_id": "39125788",
+      "edit_history_tweet_ids": [
+        "1871915022844346471"
+      ],
+      "public_metrics": {
+        "retweet_count": 433,
+        "reply_count": 29,
+        "like_count": 2559,
+        "quote_count": 20,
+        "bookmark_count": 2371,
+        "impression_count": 208029
+      },
+      "text": "If you have ever tried to read free books from sites like Project Gutenberg, you noticed that they can be uncomfortable to read, due to their layouts, type &amp; occasional errors \n\nThis project takes those free books and makes them beautiful (and still free). https://t.co/GQPFSgWXZm https://t.co/XbEtc2O95p",
+      "id": "1871915022844346471"
+    },
+    {
+      "created_at": "2024-09-23T17:31:52.000Z",
+      "author_id": "1819417154749702144",
+      "edit_history_tweet_ids": [
+        "1838270070104994237"
+      ],
+      "public_metrics": {
+        "retweet_count": 131,
+        "reply_count": 18,
+        "like_count": 2166,
+        "quote_count": 6,
+        "bookmark_count": 2628,
+        "impression_count": 101046
+      },
+      "text": "all the best people\n\nlet it rip\n\nhttps://t.co/d2iIubXDpV https://t.co/CMRkLADyqS",
+      "id": "1838270070104994237"
+    },
+    {
+      "created_at": "2024-08-30T12:15:51.000Z",
+      "author_id": "1660202983",
+      "edit_history_tweet_ids": [
+        "1829493230200836373"
+      ],
+      "public_metrics": {
+        "retweet_count": 1525,
+        "reply_count": 358,
+        "like_count": 9104,
+        "quote_count": 80,
+        "bookmark_count": 7797,
+        "impression_count": 1024394
+      },
+      "text": "Most Indians are just 1 hospitalisation away from bankruptcy. A good health insurance plan is mandatory. https://t.co/9GzKpT6EE9",
+      "id": "1829493230200836373"
+    },
+    {
+      "created_at": "2024-06-03T16:39:47.000Z",
+      "author_id": "772514015318794240",
+      "edit_history_tweet_ids": [
+        "1797669521404383348"
+      ],
+      "public_metrics": {
+        "retweet_count": 10,
+        "reply_count": 3,
+        "like_count": 147,
+        "quote_count": 0,
+        "bookmark_count": 225,
+        "impression_count": 9309
+      },
+      "text": "System design primer is a gold-mine for system design resources.\nLiterally nothing comes close and as structured as this https://t.co/bNPLaXeyIk",
+      "id": "1797669521404383348"
+    },
+    {
+      "created_at": "2024-05-25T02:16:34.000Z",
+      "author_id": "1185565057276694534",
+      "edit_history_tweet_ids": [
+        "1794190796411027791"
+      ],
+      "public_metrics": {
+        "retweet_count": 360,
+        "reply_count": 54,
+        "like_count": 2830,
+        "quote_count": 43,
+        "bookmark_count": 5371,
+        "impression_count": 631860
+      },
+      "text": "I've spent the past ~3 weeks going through the entire history of deep learning and reimplementing all the core breakthroughs.\n\nIt has completely changed my beliefs about deep learning progress and where we're headed.\n\nProgress tracker in thread (all resources at the end) 👇 https://t.co/BjcEA2iv3f",
+      "id": "1794190796411027791"
+    },
+    {
+      "created_at": "2024-04-11T21:22:33.000Z",
+      "author_id": "600563757",
+      "edit_history_tweet_ids": [
+        "1778534123138912366"
+      ],
+      "public_metrics": {
+        "retweet_count": 152,
+        "reply_count": 25,
+        "like_count": 1200,
+        "quote_count": 17,
+        "bookmark_count": 1545,
+        "impression_count": 219729
+      },
+      "text": "I wrote a blog post on going from not knowing anything about deep learning last year to training state of the art OSS models - https://t.co/pCyykffYvP .\n\nHope it helps you.\n\ntldr; read the deep learning book, implemented papers + taught, built open source tools",
+      "id": "1778534123138912366"
+    },
+    {
+      "created_at": "2024-04-08T05:14:10.000Z",
+      "author_id": "199989289",
+      "edit_history_tweet_ids": [
+        "1777203261147087336"
+      ],
+      "public_metrics": {
+        "retweet_count": 39,
+        "reply_count": 258,
+        "like_count": 682,
+        "quote_count": 12,
+        "bookmark_count": 1140,
+        "impression_count": 263878
+      },
+      "text": "Shoe people, help? I walk a lot (10K steps everyday is the norm), and also play cricket on weekends. I'm a big guy and my feet are taking a battering, mainly (I think) because of my footwear. What should I do/get?",
+      "id": "1777203261147087336"
+    },
+    {
+      "created_at": "2024-03-30T00:26:19.000Z",
+      "author_id": "1185565057276694534",
+      "edit_history_tweet_ids": [
+        "1773869330700361789"
+      ],
+      "public_metrics": {
+        "retweet_count": 59,
+        "reply_count": 29,
+        "like_count": 656,
+        "quote_count": 11,
+        "bookmark_count": 1116,
+        "impression_count": 101786
+      },
+      "text": "I was challenged to make a chip from scratch in &lt;2 weeks with no prior experience\n\nHere’s how I’m planning to speed run the entire learning process for chip design &amp; fabrication (suggestions welcome)\n\n1. Prerequisites\n&gt; Review circuits physics - (semiconductors, p-n, junctions, https://t.co/M3sHiyrdSr",
+      "id": "1773869330700361789"
+    },
+    {
+      "created_at": "2024-02-21T16:00:16.000Z",
+      "author_id": "835285522968788992",
+      "edit_history_tweet_ids": [
+        "1760333625953067095"
+      ],
+      "public_metrics": {
+        "retweet_count": 112,
+        "reply_count": 7,
+        "like_count": 659,
+        "quote_count": 4,
+        "bookmark_count": 1542,
+        "impression_count": 72993
+      },
+      "text": "If you want to learn system design and how to scale services, read these famous engineering blog posts from top companies (OpenAI, Netflix, Stripe, Airbnb)\n\nI spent hours digging for them so you don't have to: https://t.co/EU8GiIOgi2",
+      "id": "1760333625953067095"
+    },
+    {
+      "created_at": "2024-02-20T16:23:07.000Z",
+      "author_id": "2863498266",
+      "edit_history_tweet_ids": [
+        "1759976986473091168"
+      ],
+      "public_metrics": {
+        "retweet_count": 244,
+        "reply_count": 30,
+        "like_count": 1730,
+        "quote_count": 6,
+        "bookmark_count": 4315,
+        "impression_count": 316775
+      },
+      "text": "I have gotten offers from Amazon, Apple, DoorDash, and TikTok.\n\nHere are the best resources I used to prepare for coding and system design interviews: https://t.co/cBhJvVwMIp",
+      "id": "1759976986473091168"
+    },
+    {
+      "created_at": "2023-01-30T00:30:20.000Z",
+      "author_id": "28070693",
+      "edit_history_tweet_ids": [
+        "1619855495350853632"
+      ],
+      "public_metrics": {
+        "retweet_count": 165,
+        "reply_count": 32,
+        "like_count": 1113,
+        "quote_count": 37,
+        "bookmark_count": 1708,
+        "impression_count": 424394
+      },
+      "text": "People on H-1B visas getting laid off have 60 days to leave the US.\n\nMany have begun an 11 year long green card process but are 5, 10 years away from getting it. \n\nEmployer lays them off, and it’s all gone. 🙅🏼\n\nPack your bags. \n\nThere’s a solution nobody is talking about:",
+      "id": "1619855495350853632"
+    },
+    {
+      "created_at": "2023-12-25T03:40:14.000Z",
+      "author_id": "1124200304595968000",
+      "edit_history_tweet_ids": [
+        "1739128893725180198"
+      ],
+      "public_metrics": {
+        "retweet_count": 27,
+        "reply_count": 6,
+        "like_count": 263,
+        "quote_count": 1,
+        "bookmark_count": 646,
+        "impression_count": 59626
+      },
+      "text": "Job search routine: 3 cold emails, 2 tailored cover letters, 10 career site searches, 15 easy applies, career fairs biweekly, 1-hour exercise + walk, 7 hours sleep. More importantly, track your applications and send follow-ups.\n\nA brief thread: https://t.co/LEdGk66Wtv",
+      "id": "1739128893725180198"
+    },
+    {
+      "created_at": "2023-12-10T03:56:59.000Z",
+      "author_id": "361044311",
+      "edit_history_tweet_ids": [
+        "1733697290089710015"
+      ],
+      "public_metrics": {
+        "retweet_count": 12,
+        "reply_count": 11,
+        "like_count": 178,
+        "quote_count": 4,
+        "bookmark_count": 191,
+        "impression_count": 88310
+      },
+      "text": "I had 1000+ reachouts asking for a job (and other cold emails) but replied to ~10 of them.\n\nDon't make these mistakes:\n—don't ask for a referral if I haven't worked with you\n—don't tell me the classes you took, tell me that you've built\n—don't write &gt; one screen of text\n\n🧵\n\n1/6",
+      "id": "1733697290089710015"
+    },
+    {
+      "created_at": "2023-12-10T03:03:42.000Z",
+      "author_id": "375369317",
+      "edit_history_tweet_ids": [
+        "1733683881818333336"
+      ],
+      "public_metrics": {
+        "retweet_count": 2027,
+        "reply_count": 234,
+        "like_count": 8476,
+        "quote_count": 72,
+        "bookmark_count": 8636,
+        "impression_count": 1079642
+      },
+      "text": "Some basics\n\n1)    Have an emergency fund of not less than 1 year of your expenses.\n\n2)    Insure: Term, medical, personal accident and fire insurance for your house.\n\n3)    Don’t use revolving credit on your credit cards.\n\n4)    Simplify: have two bank accounts, two credit cards",
+      "id": "1733683881818333336"
+    }
+  ]
+}

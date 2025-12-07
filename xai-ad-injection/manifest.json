@@ -4,6 +4,10 @@
   "version": "2.0",
   "description": "Intelligently injects ads into X feed using Grok-powered attention prediction.",
   "permissions": [],
+  "host_permissions": [
+    "http://127.0.0.1:8001/*",
+    "http://localhost:8001/*"
+  ],
   "content_scripts": [
     {
       "matches": [
