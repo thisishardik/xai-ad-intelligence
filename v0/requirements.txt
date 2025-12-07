@@ -12,3 +12,6 @@ xai-sdk>=0.1.0
 
 # Flask (for server.py - run separately)
 flask>=3.0.0
+
+# Supabase client
+supabase>=2.3.0

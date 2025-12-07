@@ -5,12 +5,17 @@ Assumes server.py is running separately.
 """
 
 import requests
+import socket
+import threading
+import webbrowser
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from urllib.parse import urlparse, parse_qs
 from dataclasses import dataclass
 from typing import Optional
 from xdk import Client
 from xdk.oauth2_auth import OAuth2PKCEAuth
 
-from config import X_CLIENT_ID, REDIRECT_URI, OAUTH_SCOPES
+from config import X_CLIENT_ID, REDIRECT_URI, OAUTH_SCOPES, AUTH_SERVER_HOST, AUTH_SERVER_PORT
 
 
 @dataclass
@@ -152,41 +157,117 @@ class AuthClient:
 
 def interactive_auth() -> UserData:
     """
-    Run interactive OAuth flow and return user data.
+    Run OAuth flow and return user data, preferring auto-callback capture.
     
-    This function:
-    1. Prints the authorization URL
-    2. Waits for user to paste the callback URL
-    3. Completes authentication
-    4. Fetches and returns user data
+    Flow:
+    1) Start a tiny local HTTP server to catch the callback.
+    2) Open the auth URL in the default browser.
+    3) On callback, complete auth, fetch user data.
+    
+    If auto-capture fails (timeout/port busy), falls back to manual paste.
     """
     client = AuthClient()
-    
     auth_url = client.get_authorization_url()
+
+    # Attempt auto-capture via local HTTP server
+    callback_holder = {"url": None, "error": None}
+    done = threading.Event()
+
+    class CallbackHandler(BaseHTTPRequestHandler):
+        def log_message(self, format, *args):
+            return
+
+        def do_GET(self):
+            try:
+                parsed = urlparse(self.path)
+                qs = parse_qs(parsed.query)
+                if "code" in qs and "state" in qs:
+                    full_url = f"{REDIRECT_URI}?{parsed.query}"
+                    callback_holder["url"] = full_url
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/html")
+                    self.end_headers()
+                    self.wfile.write(b"<html><body><h3>Auth received. You can close this tab.</h3></body></html>")
+                    done.set()
+                else:
+                    self.send_response(400)
+                    self.end_headers()
+            except Exception as e:
+                callback_holder["error"] = e
+                done.set()
+                try:
+                    self.send_response(500)
+                    self.end_headers()
+                except Exception:
+                    pass
+
+    class ReusableHTTPServer(HTTPServer):
+        allow_reuse_address = True
+
+    def _port_available(host: str, port: int) -> bool:
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            try:
+                s.bind((host, port))
+                return True
+            except OSError:
+                return False
+
+    def run_server():
+        try:
+            server = ReusableHTTPServer((AUTH_SERVER_HOST, AUTH_SERVER_PORT), CallbackHandler)
+            server.timeout = 180
+            while not done.is_set():
+                server.handle_request()
+        except Exception as e:
+            callback_holder["error"] = e
+            done.set()
+
     print("\n" + "="*60)
-    print("X AUTHENTICATION")
+    print("X AUTHENTICATION (auto-callback)")
     print("="*60)
-    print(f"\n1. Visit this URL in your browser:\n   {auth_url}\n")
-    print("2. Authorize the app")
-    print("3. Copy the full callback URL from your browser")
-    
-    callback_url = input("\nPaste the full callback URL here: ").strip()
-    
+
+    if not _port_available(AUTH_SERVER_HOST, AUTH_SERVER_PORT):
+        raise RuntimeError(
+            f"Port {AUTH_SERVER_HOST}:{AUTH_SERVER_PORT} is already in use. "
+            "Stop the process using it or set AUTH_SERVER_PORT to a free port (and update the X app redirect URI)."
+        )
+
+    print("Opening browser for authorization... If it doesn't open, visit:")
+    print(f"{auth_url}\n")
+
+    thread = threading.Thread(target=run_server, daemon=True)
+    thread.start()
+    webbrowser.open(auth_url, new=1, autoraise=True)
+
+    if not done.wait(timeout=180):
+        callback_holder["error"] = TimeoutError("Did not receive callback within 180s")
+
+    callback_url = callback_holder["url"]
+    if callback_url:
+        print("Received callback, completing auth...")
+    else:
+        err = callback_holder["error"]
+        raise RuntimeError(
+            f"Auto-callback failed: {err or 'Unknown error'}."
+            " Ensure the browser completed auth and the redirect URI matches AUTH_SERVER_HOST/PORT."
+        )
+
     print("\nExchanging tokens...")
     client.complete_auth(callback_url)
-    
+
     user_id, username = client.get_authenticated_user()
     print(f"\n✓ Authenticated as: @{username} (ID: {user_id})")
-    
+
     print("\nFetching user data...")
     user_data = client.fetch_user_data()
-    
+
     print(f"\n✓ Data collected:")
     print(f"  Posts: {len(user_data.posts)}")
     print(f"  Timeline: {len(user_data.timeline)}")
     print(f"  Likes: {len(user_data.likes)}")
     print(f"  Bookmarks: {len(user_data.bookmarks)}")
-    
+
     return user_data
 
 
