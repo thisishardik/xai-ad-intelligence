@@ -1,0 +1,336 @@
+{
+  "user_id": "1009524384351096833",
+  "username": "DotVignesh",
+  "context_card": {
+    "username": "DotVignesh",
+    "user_id": "1009524384351096833",
+    "general_topic": "AI/ML research, code generation, xAI, hackathons, deep learning optimization",
+    "popular_memes": null,
+    "user_persona_tone": "technical and enthusiastic, research-focused with collaborative spirit",
+    "top_25_reranked_posts": [
+      {
+        "post_id": "1973428695626031190",
+        "text": "Finally, our preprint is out!\n\nA retrieval-first approach for code generation, with a 0.6B RL-tuned reranker that beats an 8B baseline and runs ~2.5× faster. https://t.co/HasZe6ya62",
+        "source": "posts",
+        "rank": 1,
+        "relevance_score": 1.0
+      },
+      {
+        "post_id": "1976121753970803211",
+        "text": "Overdue portfolio refresh.\nSimple idea: browse my work in a ChatGPT like interface. \n\nless scrolling, more answers. https://t.co/QfAhDRU3Kg",
+        "source": "posts",
+        "rank": 2,
+        "relevance_score": 0.98
+      },
+      {
+        "post_id": "1993672060359647601",
+        "text": "got in - let's goo! 🚀 https://t.co/2LRQDznxxX",
+        "source": "posts",
+        "rank": 3,
+        "relevance_score": 0.96
+      },
+      {
+        "post_id": "1993527993084637359",
+        "text": "@kaarelkaarelson @xai I'll be there!\ndm if you'd like to team up (i'm unable to DM lol)",
+        "source": "posts",
+        "rank": 4,
+        "relevance_score": 0.95
+      },
+      {
+        "post_id": "1997184290741015013",
+        "text": "@forwarddeploy @xai will we also have an @elonmusk cameo? 👀",
+        "source": "posts",
+        "rank": 5,
+        "relevance_score": 0.94
+      },
+      {
+        "post_id": "1987190707832934480",
+        "text": "@cneuralnetwork Sure thing!\nOn it - if I can find the issue or optimize further, I’ll make a PR\n\nFrom my code so far, I’m seeing around 70–80% acceptance, but still can’t get it to beat the verifier - thinking of adding KV cache to see if that reduces overhead",
+        "source": "posts",
+        "rank": 6,
+        "relevance_score": 0.93
+      },
+      {
+        "post_id": "1987186517320532130",
+        "text": "@cneuralnetwork Good one!\n\nNot nitpicking, but something seems off - it’s way harder to get speedups on newer models\nI’ve been implementing my version too and can’t get past ~1.02× on the Alpaca dataset\nTried your implementation with Qwen3-1.7B and 8B -virtually no speedup anymore 🤔 https://t.co/T6TIDJL2LN",
+        "source": "posts",
+        "rank": 7,
+        "relevance_score": 0.92
+      },
+      {
+        "post_id": "1993515876432466334",
+        "text": "@farguney Felt the same! \nNeither Grok 4.1 nor Gemini 3.0 could steer me away from GPT",
+        "source": "posts",
+        "rank": 8,
+        "relevance_score": 0.91
+      },
+      {
+        "post_id": "1991503799756943859",
+        "text": "@freddiev4 @vboykis how different is mid-training from continued-pre-training though?",
+        "source": "posts",
+        "rank": 9,
+        "relevance_score": 0.9
+      },
+      {
+        "post_id": "1997482776392847604",
+        "text": "xAI office is often quite packed. But with today's hackathon start, it's likely 3X more crowded to have so many talented hackers jamming in to BUILD.\nSuper excited to see this many great builders, let's go build great things together! https://t.co/SYa62ryB9y",
+        "source": "likes",
+        "rank": 10,
+        "relevance_score": 0.89
+      },
+      {
+        "post_id": "1997582761994133847",
+        "text": "RT @chrisparkX: live at xAI hackathon!📍\n\nover 500 handpicked devs. only a few hours in &amp; many great projects built already. \n\n1st place win…",
+        "source": "posts",
+        "rank": 11,
+        "relevance_score": 0.88
+      },
+      {
+        "post_id": "1997502549382004923",
+        "text": "BREAKING: Elon Musk joined the xAI Hackathon today to talk with the hackathon attendees building on Grok.\n\nA 24 hour xAI hackathon is underway right now in the SF Bay Area. https://t.co/Q3vYQqXZaH",
+        "source": "likes",
+        "rank": 12,
+        "relevance_score": 0.87
+      },
+      {
+        "post_id": "1982208921751236964",
+        "text": "@djsaunde @UnslothAI Congrats!\n\nYour Git contributions are wild. How do you keep it up and ship so steadily?",
+        "source": "posts",
+        "rank": 13,
+        "relevance_score": 0.86
+      },
+      {
+        "post_id": "1966700729352978749",
+        "text": "RT @GeCoIn2025: The list of accepted papers is now online! A big thank you to all the authors for your contributions and to our PC for thei…",
+        "source": "posts",
+        "rank": 14,
+        "relevance_score": 0.85
+      },
+      {
+        "post_id": "1982422970632196393",
+        "text": "RT @GeCoIn2025: Denis Akhiyarov  is presenting “DeepCodeSeek: Real-Time API Retrieval for Context-Aware Code Generation” https://t.co/CCqUr…",
+        "source": "posts",
+        "rank": 15,
+        "relevance_score": 0.84
+      },
+      {
+        "post_id": "1993012989826678810",
+        "text": "We are hiring &amp; rapidly grow post-training at xAI! The team is at the frontier of RLHF, agents, and reasoning efficiency—in just a few months, we climbed from nothing to #2-3 @arena, #1 Search Arena &amp; other tool use benchmarks, #1-2 in creative writing, and are Pareto-optimal on",
+        "source": "bookmarks",
+        "rank": 16,
+        "relevance_score": 0.83
+      },
+      {
+        "post_id": "1997022487603990607",
+        "text": "We're looking for awesome judges for TreeHacks\n\nif you're an ai researcher, successful founder, creator, journalist, senior in tech, etc and wanna meet the brightest students around the world\n\nDM me one sentence why hackers would love to meet you/why you'd like to judge! https://t.co/gCbhpWGMDT",
+        "source": "likes",
+        "rank": 17,
+        "relevance_score": 0.82
+      },
+      {
+        "post_id": "1991888058736931156",
+        "text": "RT @MattNiessner: (1/n)\nHow to start a deep learning project? \n\nWe use a remarkably streamlined step-by-step process to set up deep learnin…",
+        "source": "posts",
+        "rank": 18,
+        "relevance_score": 0.81
+      },
+      {
+        "post_id": "1997139460270752020",
+        "text": "Looking forward to welcoming hardcore engineers for our @xai hackathon tomorrow, 24h to build the future \n\nAlso hyped to eat the delicious dinner by 3 Michelin star chef Christopher Kostow 🙏 https://t.co/0ujFe0QGhB",
+        "source": "likes",
+        "rank": 19,
+        "relevance_score": 0.8
+      },
+      {
+        "post_id": "1996214290718638390",
+        "text": "RT @ivanfioravanti: Time to test Mistral Models again. I think we all remember the fine-tune Mistral 7B moment.",
+        "source": "posts",
+        "rank": 20,
+        "relevance_score": 0.79
+      },
+      {
+        "post_id": "1996847273888960735",
+        "text": "Thrilled to share that Alibaba has 146 papers accepted at NeurIPS 2025, covering model training, datasets, foundational research, and inference optimization, one of the highest among tech companies! \n\n🚀Our winning paper, \"Gated Attention for Large Language Models: Non-linearity, https://t.co/4nfFf2jxoy",
+        "source": "likes",
+        "rank": 21,
+        "relevance_score": 0.78
+      },
+      {
+        "post_id": "1969517856866934834",
+        "text": "Took me 4 days to read this blog, but totally worth it. A great detailed guide to post training. Why aren't many people talking about it. Kudos to @Han_Fang_ @karthikabinav for sharing their thoughts.\nhttps://t.co/SOlJQuHSyG",
+        "source": "bookmarks",
+        "rank": 22,
+        "relevance_score": 0.77
+      },
+      {
+        "post_id": "1996222612930957628",
+        "text": "At NeurIPS in San Diego from today! \ngreat to catch up with old friends, and happy to chat about multimodal reasoning/ interactive RL environments.\n\nSome of us from Apriel-15B-Thinker team would be around in person as well for ideas and feedback. Pls come chat with us..",
+        "source": "likes",
+        "rank": 23,
+        "relevance_score": 0.76
+      },
+      {
+        "post_id": "1982231175067206013",
+        "text": "@djsaunde @UnslothAI awesome! \ngood luck with the new role",
+        "source": "posts",
+        "rank": 24,
+        "relevance_score": 0.75
+      },
+      {
+        "post_id": "1916738790032380155",
+        "text": "I think if you pick a really hard research problem, try to solve it in &lt;8 weeks, blog everything, shoot videos, ship good oss code and repeat it.\n\nyou can get hired by a big lab in ~1 year.",
+        "source": "bookmarks",
+        "rank": 25,
+        "relevance_score": 0.74
+      }
+    ]
+  },
+  "remixed_ads": {
+    "user_id": "1009524384351096833",
+    "selected_ad": "Autodesk is putting\nthe Flex in flexibility.\nPay-as-you-go product access\nLearn more\nAUTODESK — Autodesk is putting\nthe Flex in flexibility.\nPay-as-you-go product access\nLearn more\nAUTODESK — Experience true flexibility with Autodesk's pay-as-you-go product access.",
+    "selection_reasoning": "Highest score 92",
+    "original_image_url": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/358ed0c3-7470-4676-af35-14be6dcd9f2c.jpg",
+    "image_analysis": {
+      "description": "A promotional ad for Autodesk Flex featuring a close-up overhead view of a modern white desk workspace with a laptop displaying Autodesk software, coffee mug, headphones, and stylus. Bold overlaid text reads 'Autodesk is putting the Flex in flexibility. Pay-as-you-go product access. Learn more', with the Autodesk logo at the bottom. Subtle repetition of the message appears in the background.",
+      "strengths": [
+        "Clean, professional workspace visual evokes productivity and modern creative work relevant to designers/engineers",
+        "Strong punny headline ('Flex in flexibility') is memorable and ties directly to pay-as-you-go benefits",
+        "Clear call-to-action 'Learn more' button stands out",
+        "High-quality, aspirational imagery with good use of negative space and branding"
+      ],
+      "improvement_suggestions": [
+        "Remove text duplication/repetition which feels cluttered and unpolished—streamline to single headline + CTA",
+        "Tailor for technical AI/ML audience by adding subtle tech elements like code terminals, 3D model renders, or ML visualization on the laptop screen to show Autodesk tools in code gen/design optimization workflows",
+        "Highlight quantifiable flexibility benefits e.g., 'Scale compute like cloud GPUs—pay only for what you use' to resonate with research/hackathon efficiency focus",
+        "Incorporate enthusiastic, collaborative vibe with elements like shared screens or hackathon-style setups (multiple laptops/devices) to appeal to xAI/hackathon interests",
+        "Amp up energy with dynamic visuals (e.g., animated model renders or progress bars) or tech-forward colors (neon accents on black/white) instead of generic office aesthetic"
+      ],
+      "key_elements": [
+        "Core punny headline and pay-as-you-go messaging",
+        "Productive desk setup with laptop as focal point",
+        "Autodesk branding and 'Learn more' CTA",
+        "Clean, modern composition"
+      ],
+      "style_notes": "Sleek corporate professional with a calm, flexible mood; high-end minimalist design emphasizing reliability over excitement"
+    },
+    "rewritten_ads": [
+      {
+        "content": "Autodesk is putting the Flex in flexibility. 🚀\n\nPay-as-you-go product access—super handy for scaling your workflow without the commitment.\n\nLearn more 👀\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-f5056d90-839f-4554-b4f8-42a647e7a16a.png)",
+        "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-f5056d90-839f-4554-b4f8-42a647e7a16a.png",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-f5056d90-839f-4554-b4f8-42a647e7a16a.png",
+        "original_image_uri": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/358ed0c3-7470-4676-af35-14be6dcd9f2c.jpg",
+        "image_prompt": "Clean, modern overhead view of a packed hacker workspace during an AI hackathon: two laptops side-by-side on a white desk, one screen showing Autodesk software with a 3D model render and subtle code terminal open for design optimization, the other with a progress bar and ML viz; scattered stylus, coffee mug, headphones, and shared notes. Energetic tech vibe with neon blue accents on black/white scheme, collaborative feel like team brainstorming. Overlay bold punny text 'Autodesk is putting the Flex in flexibility. Pay-as-you-go product access.' with prominent 'Learn more' button and Autodesk logo at bottom. High-quality, aspirational productivity shot with negative space, no clutter or duplication.",
+        "enhancement_notes": "Builds on original's productive desk + laptop focus and punny headline/CTA strengths by streamlining to single message (no repetition), adding subtle AI/ML hackathon elements like code terminal + 3D render on screen for technical relevance, collaborative multi-laptop setup for team energy, and vibrant neon accents for enthusiastic xAI-style hype—keeps it truthful, professional, and aspirational without exaggeration.",
+        "ctr_comparison": {
+          "winner": "enhanced",
+          "winner_score": 88,
+          "winner_reasoning": "Enhanced variant directly features Autodesk software with 3D models, charts, and neon 'Flex' accents aligning perfectly with ad copy's flexibility theme; high visual appeal, relevance to scaling workflows, and resonates with tech-savvy users via professional setup—strongest CTR potential.",
+          "all_scores": [
+            {
+              "type": "enhanced",
+              "score": 88,
+              "reasoning": "Enhanced variant directly features Autodesk software with 3D models, charts, and neon 'Flex' accents aligning perfectly with ad copy's flexibility theme; high visual appeal, relevance to scaling workflows, and resonates with tech-savvy users via professional setup—strongest CTR potential."
+            },
+            {
+              "type": "original",
+              "score": 72,
+              "reasoning": "Original variant shows a generic workspace with laptop but lacks direct Autodesk product visuals like 3D models or software interfaces; moderate relevance to technical workflow scaling but low visual excitement and emotional pull for AI/ML users focused on code/research over design tools."
+            }
+          ]
+        }
+      },
+      {
+        "content": "Aut\n\nAutodesk Flex: True flexibility with pay-as-you-go product access.\n\nScale your design workflow like compute resources—pay only for what you use. 🚀\n\nLearn more: [link]\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-af4e8327-d440-49a0-9b64-bcabdb854c5d.png)",
+        "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-af4e8327-d440-49a0-9b64-bcabdb854c5d.png",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-af4e8327-d440-49a0-9b64-bcabdb854c5d.png",
+        "original_image_uri": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/358ed0c3-7470-4676-af35-14be6dcd9f2c.jpg",
+        "image_prompt": "Clean, modern overhead view of a productive tech workspace tailored for AI/ML engineers and designers: central laptop screen showing Autodesk software with 3D model renders and subtle code terminal integration for design optimization workflows, surrounded by a stylus, coffee mug, headphones, and a second device for collaborative hackathon-style sharing. Energetic yet professional vibe with neon accent highlights on black/white desk surface, ample negative space. Bold overlaid text: 'Autodesk Flex: Pay-as-you-go product access. Learn more.' Autodesk logo at bottom. High-res, aspirational, no clutter or duplication—evokes efficient, flexible building like xAI hackathons.",
+        "enhancement_notes": "Builds on original's clean desk setup and punny flex messaging by streamlining text to single headline+CTA (removes repetition), adds subtle AI/ML-relevant elements like code terminal and 3D renders on laptop for research/hackathon audience resonance without misleading claims, amps collaborative energy with extra device while preserving professional productivity focus and branding.",
+        "ctr_comparison": {
+          "winner": "enhanced",
+          "winner_score": 92,
+          "winner_reasoning": "Enhanced variant excels with dual monitors displaying code and vibrant 3D model, directly aligning with user's code generation, optimization, and design workflow interests; high visual appeal, tech relevance, and 🚀 synergy boost resonance for research-focused devs.",
+          "all_scores": [
+            {
+              "type": "enhanced",
+              "score": 92,
+              "reasoning": "Enhanced variant excels with dual monitors displaying code and vibrant 3D model, directly aligning with user's code generation, optimization, and design workflow interests; high visual appeal, tech relevance, and 🚀 synergy boost resonance for research-focused devs."
+            },
+            {
+              "type": "original",
+              "score": 72,
+              "reasoning": "Original variant shows a clean workspace appealing to designers but lacks strong tech/dev visuals like code or 3D models; moderate relevance to user's AI/ML interests, good flexibility messaging but lower visual dynamism and emotional pull for a technical audience."
+            }
+          ]
+        }
+      },
+      {
+        "content": "Autodesk Flex: Putting the actual flex in flexibility. \n\nPay-as-you-go product access—scale your workflow without the commitment. \n\nLearn more 🚀 https://autodesk.com/flex\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-33e81184-a7c7-45d1-b27b-bf206f4c9fdf.png)",
+        "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-33e81184-a7c7-45d1-b27b-bf206f4c9fdf.png",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-33e81184-a7c7-45d1-b27b-bf206f4c9fdf.png",
+        "original_image_uri": "https://fzliedbrrzdjncanodou.supabase.co/storage/v1/object/public/ad-images/ads/358ed0c3-7470-4676-af35-14be6dcd9f2c.jpg",
+        "image_prompt": "Clean, modern overhead view of a packed hacker desk setup during an AI/ML hackathon: central laptop screen showing Autodesk software interface with 3D model renders and subtle code terminal integration for design optimization workflows, surrounded by multiple devices (second laptop with shared screen, stylus, coffee mug, headphones); enthusiastic, high-energy vibe with neon accent glows on black/white workspace, progress bars on renders adding subtle dynamism; bold overlaid text 'Autodesk Flex: Putting the flex in flexibility. Pay-as-you-go product access. Learn more 🚀' with clean Autodesk logo at bottom; professional yet collaborative, productivity-focused composition with good negative space, no clutter or duplication, tailored for technical AI researchers and builders.",
+        "enhancement_notes": "Builds on original's clean professional workspace and punny headline strengths by streamlining to single headline+CTA (removes duplication), amps energy for tech/AI audience with hackathon-style multi-device setup, code/3D renders on laptop screen tying to code gen/design interests, neon accents for research-enthusiast vibe, dynamic progress elements without exaggeration—keeps truthful focus on pay-as-you-go flexibility.",
+        "ctr_comparison": {
+          "winner": "enhanced",
+          "winner_score": 92,
+          "winner_reasoning": "Enhanced variant excels with dual monitors displaying code and 3D modeling (Autodesk-relevant), hackathon neon vibe, and dynamic setup aligning perfectly with user's xAI hackathons, code gen, and optimization interests; high visual appeal, relevance, and 🚀 excitement.",
+          "all_scores": [
+            {
+              "type": "enhanced",
+              "score": 92,
+              "reasoning": "Enhanced variant excels with dual monitors displaying code and 3D modeling (Autodesk-relevant), hackathon neon vibe, and dynamic setup aligning perfectly with user's xAI hackathons, code gen, and optimization interests; high visual appeal, relevance, and 🚀 excitement."
+            },
+            {
+              "type": "original",
+              "score": 72,
+              "reasoning": "Original variant shows a generic workspace setup that's visually clean but lacks tech-specific elements like code or 3D models; moderate relevance to user's AI/ML workflow but low emotional resonance and hackathon energy for this research enthusiast."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ctr_prediction": {
+    "user_id": "1009524384351096833",
+    "best_ad_index": 0,
+    "best_ad_text": "Autodesk is putting the Flex in flexibility. 🚀\n\nPay-as-you-go product access—super handy for scaling your workflow without the commitment.\n\nLearn more 👀\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-f5056d90-839f-4554-b4f8-42a647e7a16a.png)",
+    "confidence": 0.6060940008051531,
+    "scores": [
+      {
+        "ad_index": 0,
+        "ad_text": "Autodesk is putting the Flex in flexibility. 🚀\n\nPay-as-you-go product access—super handy for scaling your workflow without the commitment.\n\nLearn more 👀\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-f5056d90-839f-4554-b4f8-42a647e7a16a.png)",
+        "click_prob_mean": 0.11,
+        "attention_mean": 0.285,
+        "relevance_mean": 0.065,
+        "ctr_mean": 0.15350000000000003,
+        "click_prob_std": 0.03162277660168379,
+        "ctr_std": 0.022242351993937648,
+        "num_runs": 10
+      },
+      {
+        "ad_index": 1,
+        "ad_text": "Aut\n\nAutodesk Flex: True flexibility with pay-as-you-go product access.\n\nScale your design workflow like compute resources—pay only for what you use. 🚀\n\nLearn more: [link]\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-af4e8327-d440-49a0-9b64-bcabdb854c5d.png)",
+        "click_prob_mean": 0.09000000000000001,
+        "attention_mean": 0.27999999999999997,
+        "relevance_mean": 0.060000000000000005,
+        "ctr_mean": 0.14100000000000001,
+        "click_prob_std": 0.021081851067789197,
+        "ctr_std": 0.018973665961010286,
+        "num_runs": 10
+      },
+      {
+        "ad_index": 2,
+        "ad_text": "Autodesk Flex: Putting the actual flex in flexibility. \n\nPay-as-you-go product access—scale your workflow without the commitment. \n\nLearn more 🚀 https://autodesk.com/flex\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-33e81184-a7c7-45d1-b27b-bf206f4c9fdf.png)",
+        "click_prob_mean": 0.08,
+        "attention_mean": 0.26,
+        "relevance_mean": 0.08,
+        "ctr_mean": 0.134,
+        "click_prob_std": 0.03496029493900505,
+        "ctr_std": 0.027868739954771314,
+        "num_runs": 10
+      }
+    ],
+    "total_simulations": 30
+  }
+}

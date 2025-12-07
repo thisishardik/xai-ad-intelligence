@@ -229,7 +229,8 @@ const state = {
     tweetsSeen: 0,
     adsInserted: 0,
     lastAdTime: performance.now(),
-    lastAdPosition: 0
+    lastAdPosition: 0,
+    lastAdTweet: 0
 };
 
 const persistentAds = [];
