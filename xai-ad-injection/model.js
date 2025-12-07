@@ -13,7 +13,7 @@ const MODEL = "grok-4-1-fast-non-reasoning";
 export async function getAttentionScore(features) {
     try {
         // Log input features
-        console.log("🔍 [Residual Attention Model] Input Features:", {
+        console.log("[Residual Attention Model] Input Features:", {
             velocity: features.velocity.toFixed(3),
             acceleration: features.acceleration.toFixed(3),
             pauseDuration: `${features.pauseDuration.toFixed(0)}ms`,

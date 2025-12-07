@@ -18,7 +18,7 @@ export function shouldInject({
 
     const shouldInject = Object.values(checks).every(v => v);
 
-    console.log("🎯 [Decision] Should inject ad?", {
+    console.log("[Decision] Should inject ad?", {
         result: shouldInject ? "YES" : "NO",
         checks: {
             scrollingDown: checks.scrollingDown ? "" : "",
