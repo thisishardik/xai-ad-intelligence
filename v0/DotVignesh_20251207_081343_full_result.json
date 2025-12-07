@@ -1,0 +1,314 @@
+{
+  "user_id": "1009524384351096833",
+  "username": "DotVignesh",
+  "context_card": {
+    "username": "DotVignesh",
+    "user_id": "1009524384351096833",
+    "general_topic": "AI/ML Research, Code Generation, xAI Ecosystem, Hackathons",
+    "popular_memes": null,
+    "user_persona_tone": "technical and enthusiastic",
+    "top_25_reranked_posts": [
+      {
+        "post_id": "1993672060359647601",
+        "text": "got in - let's goo! 🚀 https://t.co/2LRQDznxxX",
+        "source": "posts",
+        "rank": 1,
+        "relevance_score": 0.98
+      },
+      {
+        "post_id": "1993527993084637359",
+        "text": "@kaarelkaarelson @xai I'll be there!\ndm if you'd like to team up (i'm unable to DM lol)",
+        "source": "posts",
+        "rank": 2,
+        "relevance_score": 0.97
+      },
+      {
+        "post_id": "1997582761994133847",
+        "text": "RT @chrisparkX: live at xAI hackathon!📍\n\nover 500 handpicked devs. only a few hours in &amp; many great projects built already. \n\n1st place win…",
+        "source": "posts",
+        "rank": 3,
+        "relevance_score": 0.96
+      },
+      {
+        "post_id": "1997184290741015013",
+        "text": "@forwarddeploy @xai will we also have an @elonmusk cameo? 👀",
+        "source": "posts",
+        "rank": 4,
+        "relevance_score": 0.95
+      },
+      {
+        "post_id": "1997443091763204526",
+        "text": "RT @forwarddeploy: Welcome to the @xai Hackathon! \n\nWe are so excited to meet you 🙌 https://t.co/HLKRpf7RAl",
+        "source": "posts",
+        "rank": 5,
+        "relevance_score": 0.94
+      },
+      {
+        "post_id": "1973428695626031190",
+        "text": "Finally, our preprint is out!\n\nA retrieval-first approach for code generation, with a 0.6B RL-tuned reranker that beats an 8B baseline and runs ~2.5× faster. https://t.co/HasZe6ya62",
+        "source": "posts",
+        "rank": 6,
+        "relevance_score": 0.93
+      },
+      {
+        "post_id": "1976121753970803211",
+        "text": "Overdue portfolio refresh.\nSimple idea: browse my work in a ChatGPT like interface. \n\nless scrolling, more answers. https://t.co/QfAhDRU3Kg",
+        "source": "posts",
+        "rank": 7,
+        "relevance_score": 0.92
+      },
+      {
+        "post_id": "1997482776392847604",
+        "text": "xAI office is often quite packed. But with today's hackathon start, it's likely 3X more crowded to have so many talented hackers jamming in to BUILD.\nSuper excited to see this many great builders, let's go build great things together! https://t.co/SYa62ryB9y",
+        "source": "likes",
+        "rank": 8,
+        "relevance_score": 0.91
+      },
+      {
+        "post_id": "1997502549382004923",
+        "text": "BREAKING: Elon Musk joined the xAI Hackathon today to talk with the hackathon attendees building on Grok.\n\nA 24 hour xAI hackathon is underway right now in the SF Bay Area. https://t.co/Q3vYQqXZaH",
+        "source": "likes",
+        "rank": 9,
+        "relevance_score": 0.9
+      },
+      {
+        "post_id": "1987190707832934480",
+        "text": "@cneuralnetwork Sure thing!\nOn it - if I can find the issue or optimize further, I’ll make a PR\n\nFrom my code so far, I’m seeing around 70–80% acceptance, but still can’t get it to beat the verifier - thinking of adding KV cache to see if that reduces overhead",
+        "source": "posts",
+        "rank": 10,
+        "relevance_score": 0.89
+      },
+      {
+        "post_id": "1987186517320532130",
+        "text": "@cneuralnetwork Good one!\n\nNot nitpicking, but something seems off - it’s way harder to get speedups on newer models\nI’ve been implementing my version too and can’t get past ~1.02× on the Alpaca dataset\nTried your implementation with Qwen3-1.7B and 8B -virtually no speedup anymore 🤔 https://t.co/T6TIDJL2LN",
+        "source": "posts",
+        "rank": 11,
+        "relevance_score": 0.88
+      },
+      {
+        "post_id": "1991503799756943859",
+        "text": "@freddiev4 @vboykis how different is mid-training from continued-pre-training though?",
+        "source": "posts",
+        "rank": 12,
+        "relevance_score": 0.87
+      },
+      {
+        "post_id": "1997459097474789835",
+        "text": "There’s 420 hackers here for @xai hackathon, can’t wait to see what you all build! https://t.co/ko1UF0wK7V",
+        "source": "likes",
+        "rank": 13,
+        "relevance_score": 0.86
+      },
+      {
+        "post_id": "1997139460270752020",
+        "text": "Looking forward to welcoming hardcore engineers for our @xai hackathon tomorrow, 24h to build the future \n\nAlso hyped to eat the delicious dinner by 3 Michelin star chef Christopher Kostow 🙏 https://t.co/0ujFe0QGhB",
+        "source": "likes",
+        "rank": 14,
+        "relevance_score": 0.85
+      },
+      {
+        "post_id": "1982208921751236964",
+        "text": "@djsaunde @UnslothAI Congrats!\n\nYour Git contributions are wild. How do you keep it up and ship so steadily?",
+        "source": "posts",
+        "rank": 15,
+        "relevance_score": 0.84
+      },
+      {
+        "post_id": "1993012989826678810",
+        "text": "We are hiring &amp; rapidly grow post-training at xAI! The team is at the frontier of RLHF, agents, and reasoning efficiency—in just a few months, we climbed from nothing to #2-3 @arena, #1 Search Arena &amp; other tool use benchmarks, #1-2 in creative writing, and are Pareto-optimal on",
+        "source": "bookmarks",
+        "rank": 16,
+        "relevance_score": 0.83
+      },
+      {
+        "post_id": "1997022487603990607",
+        "text": "We're looking for awesome judges for TreeHacks\n\nif you're an ai researcher, successful founder, creator, journalist, senior in tech, etc and wanna meet the brightest students around the world\n\nDM me one sentence why hackers would love to meet you/why you'd like to judge! https://t.co/gCbhpWGMDT",
+        "source": "likes",
+        "rank": 17,
+        "relevance_score": 0.82
+      },
+      {
+        "post_id": "1966700729352978749",
+        "text": "RT @GeCoIn2025: The list of accepted papers is now online! A big thank you to all the authors for your contributions and to our PC for thei…",
+        "source": "posts",
+        "rank": 18,
+        "relevance_score": 0.81
+      },
+      {
+        "post_id": "1996847273888960735",
+        "text": "Thrilled to share that Alibaba has 146 papers accepted at NeurIPS 2025, covering model training, datasets, foundational research, and inference optimization, one of the highest among tech companies! \n\n🚀Our winning paper, \"Gated Attention for Large Language Models: Non-linearity, https://t.co/4nfFf2jxoy",
+        "source": "likes",
+        "rank": 19,
+        "relevance_score": 0.8
+      },
+      {
+        "post_id": "1996214290718638390",
+        "text": "RT @ivanfioravanti: Time to test Mistral Models again. I think we all remember the fine-tune Mistral 7B moment.",
+        "source": "posts",
+        "rank": 20,
+        "relevance_score": 0.79
+      },
+      {
+        "post_id": "1996222612930957628",
+        "text": "At NeurIPS in San Diego from today! \ngreat to catch up with old friends, and happy to chat about multimodal reasoning/ interactive RL environments.\n\nSome of us from Apriel-15B-Thinker team would be around in person as well for ideas and feedback. Pls come chat with us..",
+        "source": "likes",
+        "rank": 21,
+        "relevance_score": 0.78
+      },
+      {
+        "post_id": "1969517856866934834",
+        "text": "Took me 4 days to read this blog, but totally worth it. A great detailed guide to post training. Why aren't many people talking about it. Kudos to @Han_Fang_ @karthikabinav for sharing their thoughts.\nhttps://t.co/SOlJQuHSyG",
+        "source": "bookmarks",
+        "rank": 22,
+        "relevance_score": 0.77
+      },
+      {
+        "post_id": "1997035753097064802",
+        "text": "we got 200+ users today!\n\nrolling out tomorrow\n- auth\n- 2 new papers\n- leaderboard\n- new problems :D https://t.co/MfHOpzb1c0",
+        "source": "likes",
+        "rank": 23,
+        "relevance_score": 0.76
+      },
+      {
+        "post_id": "1982422970632196393",
+        "text": "RT @GeCoIn2025: Denis Akhiyarov  is presenting “DeepCodeSeek: Real-Time API Retrieval for Context-Aware Code Generation” https://t.co/CCqUr…",
+        "source": "posts",
+        "rank": 24,
+        "relevance_score": 0.75
+      },
+      {
+        "post_id": "1995859290393837905",
+        "text": "🚀 We’re hiring at ServiceNow AI Research!\n\nWe’re looking for a Senior Research Engineer/Scientist specializing in AI Agent Reliability to contribute to research initiatives focused on enhancing the robustness, safety, and resilience of AI agents operating in enterprise",
+        "source": "likes",
+        "rank": 25,
+        "relevance_score": 0.74
+      }
+    ]
+  },
+  "remixed_ads": {
+    "user_id": "1009524384351096833",
+    "selected_ad": "Autodesk is putting\nthe Flex in flexibility.\nPay-as-you-go product access\nLearn more\nAUTODESK — Autodesk is putting\nthe Flex in flexibility.\nPay-as-you-go product access\nLearn more\nAUTODESK — Experience true flexibility with Autodesk's pay-as-you-go product access.",
+    "selection_reasoning": "Highest score 92",
+    "original_image_url": "https://datasets-server.huggingface.co/cached-assets/PeterBrendan/AdImageNet/--/8b4c9ee3abc33fcdd6ba79f0b694926374aa090a/--/default/train/37/image/image.jpg?Expires=1765123660&Signature=p7xtWFgawLnqgTS~s1A7HeNXufqHIP8bGEFYgkFxMJIA3WBxdWEW6v5ormkcMz1trNSNljtwQTtnyL-Noaqhe5qY3SAeINWnWFbwhNWV2pbzK0U1eKQX0VnEoQYCSVrrBuNNLVs~Am1q6XCfb2GOY3h3NBYXhDBqz0EQXW0c14aqGuxKVloKbrXPJpOX2R-xPcoGsr746jS-XIzboFsJrdKuxUd~tykXtitUmJp1Xw~VWXimL94ZEjveDL0sDeBtJ~Y5HzbTI3vJ2d0d5vILul37KK46Z31GJq5rZn3zRQhzytNdK5JMIa88mEe~Btqx1xNxACQKrt8r6yvtVrKpyg__&Key-Pair-Id=K3EI6M078Z3AC3",
+    "image_analysis": null,
+    "rewritten_ads": [
+      {
+        "content": "Autodesk is putting the Flex in flexibility! 🚀\n\nPay-as-you-go product access.\n\nLet's goo – learn more!\n\n![Autodesk Flex Ad Image](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-cc3fa50b-d5eb-43ce-96c6-48f3ca1e4980.png)",
+        "image_uri": "https://datasets-server.huggingface.co/cached-assets/PeterBrendan/AdImageNet/--/8b4c9ee3abc33fcdd6ba79f0b694926374aa090a/--/default/train/37/image/image.jpg?Expires=1765123660&Signature=p7xtWFgawLnqgTS~s1A7HeNXufqHIP8bGEFYgkFxMJIA3WBxdWEW6v5ormkcMz1trNSNljtwQTtnyL-Noaqhe5qY3SAeINWnWFbwhNWV2pbzK0U1eKQX0VnEoQYCSVrrBuNNLVs~Am1q6XCfb2GOY3h3NBYXhDBqz0EQXW0c14aqGuxKVloKbrXPJpOX2R-xPcoGsr746jS-XIzboFsJrdKuxUd~tykXtitUmJp1Xw~VWXimL94ZEjveDL0sDeBtJ~Y5HzbTI3vJ2d0d5vILul37KK46Z31GJq5rZn3zRQhzytNdK5JMIa88mEe~Btqx1xNxACQKrt8r6yvtVrKpyg__&Key-Pair-Id=K3EI6M078Z3AC3",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-cc3fa50b-d5eb-43ce-96c6-48f3ca1e4980.png",
+        "original_image_uri": "https://datasets-server.huggingface.co/cached-assets/PeterBrendan/AdImageNet/--/8b4c9ee3abc33fcdd6ba79f0b694926374aa090a/--/default/train/37/image/image.jpg?Expires=1765123660&Signature=p7xtWFgawLnqgTS~s1A7HeNXufqHIP8bGEFYgkFxMJIA3WBxdWEW6v5ormkcMz1trNSNljtwQTtnyL-Noaqhe5qY3SAeINWnWFbwhNWV2pbzK0U1eKQX0VnEoQYCSVrrBuNNLVs~Am1q6XCfb2GOY3h3NBYXhDBqz0EQXW0c14aqGuxKVloKbrXPJpOX2R-xPcoGsr746jS-XIzboFsJrdKuxUd~tykXtitUmJp1Xw~VWXimL94ZEjveDL0sDeBtJ~Y5HzbTI3vJ2d0d5vILul37KK46Z31GJq5rZn3zRQhzytNdK5JMIa88mEe~Btqx1xNxACQKrt8r6yvtVrKpyg__&Key-Pair-Id=K3EI6M078Z3AC3",
+        "image_prompt": "A clean, modern screenshot-style image of the Autodesk Flex pay-as-you-go interface on a laptop screen in a casual hacker workspace – think xAI hackathon vibes with a crowded desk, coffee mug, stickers on the laptop, and subtle SF Bay Area energy. Bright, energetic colors like blues and whites, enthusiastic mood with a \"let's build\" feel, simple composition focusing on the flex pricing model text \"Pay-as-you-go\" highlighted truthfully, no exaggerated elements or fake results, photorealistic social media post style for relatability.",
+        "enhancement_notes": "Makes it more dynamic and conversational to match a tech enthusiast's casual Twitter style (e.g., \"let's goo! 🚀\"), amps up the energetic hackathon vibe while staying 100% truthful to original claims; shifts from repetitive corporate to single hype post format for better social flow, keeps core brand elements intact.",
+        "ctr_comparison": {
+          "winner": "original",
+          "winner_score": 50,
+          "winner_reasoning": "Scoring unavailable",
+          "all_scores": [
+            {
+              "type": "original",
+              "score": 50,
+              "reasoning": "Scoring unavailable"
+            },
+            {
+              "type": "enhanced",
+              "score": 50,
+              "reasoning": "Scoring unavailable"
+            }
+          ]
+        }
+      },
+      {
+        "content": "Autodesk nailed flexibility with Flex! 🚀\n\nPay-as-you-go product access.\n\nLet's go build! Learn more.\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-c789054c-cb4f-4bc9-ab30-5c31e639a474.png)",
+        "image_uri": "https://datasets-server.huggingface.co/cached-assets/PeterBrendan/AdImageNet/--/8b4c9ee3abc33fcdd6ba79f0b694926374aa090a/--/default/train/37/image/image.jpg?Expires=1765123660&Signature=p7xtWFgawLnqgTS~s1A7HeNXufqHIP8bGEFYgkFxMJIA3WBxdWEW6v5ormkcMz1trNSNljtwQTtnyL-Noaqhe5qY3SAeINWnWFbwhNWV2pbzK0U1eKQX0VnEoQYCSVrrBuNNLVs~Am1q6XCfb2GOY3h3NBYXhDBqz0EQXW0c14aqGuxKVloKbrXPJpOX2R-xPcoGsr746jS-XIzboFsJrdKuxUd~tykXtitUmJp1Xw~VWXimL94ZEjveDL0sDeBtJ~Y5HzbTI3vJ2d0d5vILul37KK46Z31GJq5rZn3zRQhzytNdK5JMIa88mEe~Btqx1xNxACQKrt8r6yvtVrKpyg__&Key-Pair-Id=K3EI6M078Z3AC3",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-c789054c-cb4f-4bc9-ab30-5c31e639a474.png",
+        "original_image_uri": "https://datasets-server.huggingface.co/cached-assets/PeterBrendan/AdImageNet/--/8b4c9ee3abc33fcdd6ba79f0b694926374aa090a/--/default/train/37/image/image.jpg?Expires=1765123660&Signature=p7xtWFgawLnqgTS~s1A7HeNXufqHIP8bGEFYgkFxMJIA3WBxdWEW6v5ormkcMz1trNSNljtwQTtnyL-Noaqhe5qY3SAeINWnWFbwhNWV2pbzK0U1eKQX0VnEoQYCSVrrBuNNLVs~Am1q6XCfb2GOY3h3NBYXhDBqz0EQXW0c14aqGuxKVloKbrXPJpOX2R-xPcoGsr746jS-XIzboFsJrdKuxUd~tykXtitUmJp1Xw~VWXimL94ZEjveDL0sDeBtJ~Y5HzbTI3vJ2d0d5vILul37KK46Z31GJq5rZn3zRQhzytNdK5JMIa88mEe~Btqx1xNxACQKrt8r6yvtVrKpyg__&Key-Pair-Id=K3EI6M078Z3AC3",
+        "image_prompt": "A clean, modern digital illustration in a tech-savvy style: sleek laptop screen displaying Autodesk software icons with glowing flex arrows symbolizing pay-as-you-go access, surrounded by subtle rocket emojis and hackathon-inspired energy like code snippets and builder vibes. Vibrant blues and whites, enthusiastic and professional mood, dynamic composition focusing on flexibility without any exaggerated results or people. Social media optimized, high-contrast for engagement.",
+        "enhancement_notes": "More dynamic and tech-enthusiast vibe than original static image—adds subtle rocket and builder elements to match user's xAI/hackathon style, emphasizes pay-as-you-go flex visually with arrows/icons, keeps truthful product rep without fabrication.",
+        "ctr_comparison": {
+          "winner": "original",
+          "winner_score": 50,
+          "winner_reasoning": "Scoring unavailable",
+          "all_scores": [
+            {
+              "type": "original",
+              "score": 50,
+              "reasoning": "Scoring unavailable"
+            },
+            {
+              "type": "enhanced",
+              "score": 50,
+              "reasoning": "Scoring unavailable"
+            }
+          ]
+        }
+      },
+      {
+        "content": "Autodesk nailed flexibility with their pay-as-you-go product access. 🚀\n\nTrue flex for devs and builders – pay only for what you use.\n\nLearn more: [Autodesk Flex]\n\n![Generated Ad Image](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-65e63e9d-07e7-4022-8614-0d79df2ac273.png)",
+        "image_uri": "https://datasets-server.huggingface.co/cached-assets/PeterBrendan/AdImageNet/--/8b4c9ee3abc33fcdd6ba79f0b694926374aa090a/--/default/train/37/image/image.jpg?Expires=1765123660&Signature=p7xtWFgawLnqgTS~s1A7HeNXufqHIP8bGEFYgkFxMJIA3WBxdWEW6v5ormkcMz1trNSNljtwQTtnyL-Noaqhe5qY3SAeINWnWFbwhNWV2pbzK0U1eKQX0VnEoQYCSVrrBuNNLVs~Am1q6XCfb2GOY3h3NBYXhDBqz0EQXW0c14aqGuxKVloKbrXPJpOX2R-xPcoGsr746jS-XIzboFsJrdKuxUd~tykXtitUmJp1Xw~VWXimL94ZEjveDL0sDeBtJ~Y5HzbTI3vJ2d0d5vILul37KK46Z31GJq5rZn3zRQhzytNdK5JMIa88mEe~Btqx1xNxACQKrt8r6yvtVrKpyg__&Key-Pair-Id=K3EI6M078Z3AC3",
+        "enhanced_image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-65e63e9d-07e7-4022-8614-0d79df2ac273.png",
+        "original_image_uri": "https://datasets-server.huggingface.co/cached-assets/PeterBrendan/AdImageNet/--/8b4c9ee3abc33fcdd6ba79f0b694926374aa090a/--/default/train/37/image/image.jpg?Expires=1765123660&Signature=p7xtWFgawLnqgTS~s1A7HeNXufqHIP8bGEFYgkFxMJIA3WBxdWEW6v5ormkcMz1trNSNljtwQTtnyL-Noaqhe5qY3SAeINWnWFbwhNWV2pbzK0U1eKQX0VnEoQYCSVrrBuNNLVs~Am1q6XCfb2GOY3h3NBYXhDBqz0EQXW0c14aqGuxKVloKbrXPJpOX2R-xPcoGsr746jS-XIzboFsJrdKuxUd~tykXtitUmJp1Xw~VWXimL94ZEjveDL0sDeBtJ~Y5HzbTI3vJ2d0d5vILul37KK46Z31GJq5rZn3zRQhzytNdK5JMIa88mEe~Btqx1xNxACQKrt8r6yvtVrKpyg__&Key-Pair-Id=K3EI6M078Z3AC3",
+        "image_prompt": "A sleek, modern digital illustration in a tech-hackathon vibe: glowing holographic Autodesk logos and 3D modeling tools (like gears, blueprints, and flexing CAD interfaces) floating dynamically around a central \"Pay-as-you-go\" token on a dark futuristic background with subtle rocket emojis and neon blues/greens. Energetic composition with clean lines, no people, emphasizing flexibility through fluid, adaptable shapes. High-contrast, social-media optimized for X/Twitter, eye-catching and professional yet enthusiastic.",
+        "enhancement_notes": "More dynamic and tech-enthusiast focused than the original image – amps up the futuristic energy with holographic elements and rocket motifs to match the user's hyped AI/hackathon style, while keeping core brand visuals (CAD/tools) truthful and central. Makes it pop on social feeds without exaggeration.",
+        "ctr_comparison": {
+          "winner": "original",
+          "winner_score": 50,
+          "winner_reasoning": "Scoring unavailable",
+          "all_scores": [
+            {
+              "type": "original",
+              "score": 50,
+              "reasoning": "Scoring unavailable"
+            },
+            {
+              "type": "enhanced",
+              "score": 50,
+              "reasoning": "Scoring unavailable"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "ctr_prediction": {
+    "user_id": "1009524384351096833",
+    "best_ad_index": 1,
+    "best_ad_text": "Autodesk nailed flexibility with Flex! 🚀\n\nPay-as-you-go product access.\n\nLet's go build! Learn more.\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-c789054c-cb4f-4bc9-ab30-5c31e639a474.png)",
+    "confidence": 0.5611791927327885,
+    "scores": [
+      {
+        "ad_index": 1,
+        "ad_text": "Autodesk nailed flexibility with Flex! 🚀\n\nPay-as-you-go product access.\n\nLet's go build! Learn more.\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-c789054c-cb4f-4bc9-ab30-5c31e639a474.png)",
+        "click_prob_mean": 0.27499999999999997,
+        "attention_mean": 0.55,
+        "relevance_mean": 0.18000000000000002,
+        "ctr_mean": 0.3385,
+        "click_prob_std": 0.05400617248673217,
+        "ctr_std": 0.05953756983806294,
+        "num_runs": 10
+      },
+      {
+        "ad_index": 2,
+        "ad_text": "Autodesk nailed flexibility with their pay-as-you-go product access. 🚀\n\nTrue flex for devs and builders – pay only for what you use.\n\nLearn more: [Autodesk Flex]\n\n![Generated Ad Image](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-65e63e9d-07e7-4022-8614-0d79df2ac273.png)",
+        "click_prob_mean": 0.27499999999999997,
+        "attention_mean": 0.54,
+        "relevance_mean": 0.17,
+        "ctr_mean": 0.3335,
+        "click_prob_std": 0.0485912657903775,
+        "ctr_std": 0.060325505937925336,
+        "num_runs": 10
+      },
+      {
+        "ad_index": 0,
+        "ad_text": "Autodesk is putting the Flex in flexibility! 🚀\n\nPay-as-you-go product access.\n\nLet's goo – learn more!\n\n![Autodesk Flex Ad Image](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-cc3fa50b-d5eb-43ce-96c6-48f3ca1e4980.png)",
+        "click_prob_mean": 0.155,
+        "attention_mean": 0.35,
+        "relevance_mean": 0.08,
+        "ctr_mean": 0.1985,
+        "click_prob_std": 0.02838231060987734,
+        "ctr_std": 0.025281745720315017,
+        "num_runs": 10
+      }
+    ],
+    "total_simulations": 30
+  }
+}

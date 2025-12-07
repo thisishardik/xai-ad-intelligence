@@ -1,0 +1,42 @@
+{
+  "user_id": "1009524384351096833",
+  "best_ad_index": 1,
+  "best_ad_text": "Autodesk nailed flexibility with Flex! 🚀\n\nPay-as-you-go product access.\n\nLet's go build! Learn more.\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-c789054c-cb4f-4bc9-ab30-5c31e639a474.png)",
+  "confidence": 0.5611791927327885,
+  "scores": [
+    {
+      "ad_index": 1,
+      "ad_text": "Autodesk nailed flexibility with Flex! 🚀\n\nPay-as-you-go product access.\n\nLet's go build! Learn more.\n\n![Autodesk Flex Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-c789054c-cb4f-4bc9-ab30-5c31e639a474.png)",
+      "click_prob_mean": 0.27499999999999997,
+      "attention_mean": 0.55,
+      "relevance_mean": 0.18000000000000002,
+      "ctr_mean": 0.3385,
+      "click_prob_std": 0.05400617248673217,
+      "ctr_std": 0.05953756983806294,
+      "num_runs": 10
+    },
+    {
+      "ad_index": 2,
+      "ad_text": "Autodesk nailed flexibility with their pay-as-you-go product access. 🚀\n\nTrue flex for devs and builders – pay only for what you use.\n\nLearn more: [Autodesk Flex]\n\n![Generated Ad Image](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-65e63e9d-07e7-4022-8614-0d79df2ac273.png)",
+      "click_prob_mean": 0.27499999999999997,
+      "attention_mean": 0.54,
+      "relevance_mean": 0.17,
+      "ctr_mean": 0.3335,
+      "click_prob_std": 0.0485912657903775,
+      "ctr_std": 0.060325505937925336,
+      "num_runs": 10
+    },
+    {
+      "ad_index": 0,
+      "ad_text": "Autodesk is putting the Flex in flexibility! 🚀\n\nPay-as-you-go product access.\n\nLet's goo – learn more!\n\n![Autodesk Flex Ad Image](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-cc3fa50b-d5eb-43ce-96c6-48f3ca1e4980.png)",
+      "click_prob_mean": 0.155,
+      "attention_mean": 0.35,
+      "relevance_mean": 0.08,
+      "ctr_mean": 0.1985,
+      "click_prob_std": 0.02838231060987734,
+      "ctr_std": 0.025281745720315017,
+      "num_runs": 10
+    }
+  ],
+  "total_simulations": 30
+}

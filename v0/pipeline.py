@@ -21,7 +21,7 @@ import json
 import argparse
 from datetime import datetime
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import Optional, List, Iterable
 from pathlib import Path
 
 from config import validate_config
@@ -217,6 +217,32 @@ class AdIntelligencePipeline:
         )
         
         self._print_summary(result)
+
+        # Persist a top-N ad queue for the Chrome extension
+        try:
+            from temp_cache import load_queue_state, replace_queue
+
+            # Use a stable cache key (prefer username) so extension/user_id params match
+            cache_key = username or user_id
+
+            existing_state, _ = load_queue_state(cache_key)
+            served_keys = existing_state.get("served_keys", [])
+            queue = self.generate_top_ad_queue(
+                context_card,
+                user_id=cache_key,
+                username=username,
+                served_keys=served_keys,
+                top_n=10,
+            )
+            cache_path = replace_queue(
+                cache_key,
+                username=username,
+                queue=queue,
+                served_keys=served_keys,
+            )
+            print(f"\n🗂️  Cached {len(queue)} ads for injection at {cache_path}")
+        except Exception as e:
+            print(f"\n⚠️  Failed to write temp ad cache: {e}")
         
         return result
     
@@ -351,6 +377,44 @@ class AdIntelligencePipeline:
             "all_variants": rewritten_ads,  # Keep for reference but don't serve
             "ctr_prediction": ctr_prediction
         }
+
+    def generate_top_ad_queue(
+        self,
+        context_card: ContextCard,
+        user_id: str,
+        username: str,
+        served_keys: Iterable[str] | None = None,
+        top_n: int = 10,
+    ) -> List[dict]:
+        """
+        Build a ready-to-serve queue of best variants for the top ranked ads.
+
+        Ads that have already been served (served_keys) are skipped so the
+        extension keeps seeing fresh creatives.
+        """
+        from temp_cache import compute_ad_key, format_best_variant_for_cache
+
+        skip = set(served_keys or [])
+        ranked_ads = self.get_ranked_ads(context_card)
+        queue: List[dict] = []
+
+        for idx, ad in enumerate(ranked_ads):
+            ad_key = compute_ad_key(ad)
+            if ad_key in skip:
+                continue
+
+            best_result = self.remix_single_ad_and_get_best(context_card, ad, idx)
+            if not best_result:
+                continue
+
+            best_result["ad_key"] = ad_key
+            formatted = format_best_variant_for_cache(best_result, user_id)
+            queue.append(formatted)
+
+            if len(queue) >= top_n:
+                break
+
+        return queue
     
     def _print_summary(self, result: PipelineResult):
         """Print a summary of the pipeline results."""

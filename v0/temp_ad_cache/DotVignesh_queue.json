@@ -1,0 +1,60 @@
+{
+  "user_id": "DotVignesh",
+  "username": "DotVignesh",
+  "queue": [
+    {
+      "id": "DotVignesh_ad_7",
+      "title": "Hey folks!",
+      "description": "",
+      "full_content": "Hey folks!\n\nSTULZ manufacturing job fair tomorrow \u2013 July 22, 10AM-2PM.\n\n$3/hour differential for 2nd shift. Let's go build! \ud83d\ude80\n\n![STULZ Job Fair](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-6ec6bfa7-38d0-4838-8014-c4b1996c4f04.png)",
+      "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-6ec6bfa7-38d0-4838-8014-c4b1996c4f04.png",
+      "brand": "AI Personalized",
+      "avatar": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png",
+      "ctr_score": 0.12440000000000001,
+      "confidence": 0.6802311151304774,
+      "ad_index": 7,
+      "original_ad": "$3\nSTULZ\nDifferential for 2nd Shift\nManufacturing\nJob Fair\nJuly 22 | 10AM-2PM \u2014 $3\nSTULZ\nDifferential for 2nd Shift\nManufacturing\nJob Fair\nJuly 22 | 10AM-2PM \u2014 Join STULZ's manufacturing job fair for a $3/hour shift differential on 2nd shift.",
+      "ad_key": "id:d7802a3a-34ae-4e1a-859e-ac7576d7d1e9",
+      "total_variants": 3
+    },
+    {
+      "id": "DotVignesh_ad_8",
+      "title": "Finally got this up \u2013 Mock Draft Simulator!",
+      "description": "",
+      "full_content": "Finally got this up \u2013 Mock Draft Simulator!\n\nSimple idea: realistic NFL mock draft sim\u2014you're on the clock \u23f1\ufe0f\n\nLess scrolling, more drafting. Master your picks with the ticking clock! https://t.co/example\n\n![Mock Draft Simulator Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-9102b35a-12f6-4b35-b93a-1ca500df67b1.png)",
+      "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-9102b35a-12f6-4b35-b93a-1ca500df67b1.png",
+      "brand": "AI Personalized",
+      "avatar": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png",
+      "ctr_score": 0.16,
+      "confidence": 0.6448240214336353,
+      "ad_index": 8,
+      "original_ad": "F\nSAKA\nloro\nMOCK DRAFT\nSIMULATOR\nYOU'RE ON THE CLOCK \u2014 F\nSAKA\nloro\nMOCK DRAFT\nSIMULATOR\nYOU'RE ON THE CLOCK \u2014 Master your NFL mock draft with realistic simulation\u2014your clock is ticking!",
+      "ad_key": "id:dd4cec89-e439-43b5-9e9d-d9f16d222c07",
+      "total_variants": 3
+    },
+    {
+      "id": "DotVignesh_ad_9",
+      "title": "Protect your online financial activity \u2014 search privately with Startpage.",
+      "description": "",
+      "full_content": "Protect your online financial activity \u2014 search privately with Startpage.\n\nSimple, effective privacy for your queries and data. \ud83d\ude80\n\n![Startpage Ad](https://imgen.x.ai/xai-imgen/xai-tmp-imgen-e1e6e2a6-dfd4-4a27-9d49-41108b0f2d2e.png)",
+      "image_uri": "https://imgen.x.ai/xai-imgen/xai-tmp-imgen-e1e6e2a6-dfd4-4a27-9d49-41108b0f2d2e.png",
+      "brand": "AI Personalized",
+      "avatar": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png",
+      "ctr_score": 0.40399999999999997,
+      "confidence": 0.6679847511383548,
+      "ad_index": 9,
+      "original_ad": "Protect Your\nOnline Financial\nActivity\nStartpage\nSearch Privately \u2014 Protect Your\nOnline Financial\nActivity\nStartpage\nSearch Privately \u2014 Search privately to protect your online financial activity.",
+      "ad_key": "id:fe47d4dc-fbaa-4fc5-a22e-0a1f836e780f",
+      "total_variants": 3
+    }
+  ],
+  "served_keys": [
+    "id:cdde60d7-05d7-4d36-b834-ff8d2a78ea45",
+    "id:41230509-2e39-4c13-a0de-727cacd6fbfe",
+    "id:60a73572-8abe-41d0-88bb-0f1900147ed2",
+    "id:9d4929fd-7799-4796-b31d-3371078fe3b0",
+    "id:577f11a4-4c58-4968-8de6-41ab4b3baeed",
+    "id:a777d36d-b640-45eb-b95b-52c1c3f465fb",
+    "id:6a0205d8-82d3-48c8-9f37-69b155b02286"
+  ]
+}

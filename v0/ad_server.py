@@ -16,13 +16,22 @@ Endpoints:
 import json
 import os
 import threading
-import hashlib
 from supabase_client import fetch_relevant_ads
 from pathlib import Path
 from datetime import datetime
 from glob import glob
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from temp_cache import (
+    compute_ad_key,
+    format_best_variant_for_cache,
+    load_queue_state,
+    replace_queue,
+    append_ads_to_queue,
+    pop_next_ad,
+    queue_size,
+    cache_file_path,
+)
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for Chrome extension access
@@ -49,6 +58,10 @@ best_variant_cache = {}
 # Tracks background pre-warm jobs so we don't duplicate work
 # Structure: user_id -> set(ad_keys currently warming)
 prewarm_inflight = {}
+
+# Cache queue config
+QUEUE_TOP_N = 10          # how many ads to keep in the temp queue
+QUEUE_REFILL_THRESHOLD = 3  # when queue falls below this, try to top-up
 
 
 def _build_context_card_from_dict(context_card_dict: dict, user_id: str):
@@ -129,6 +142,92 @@ def warm_ranked_ads(user_id: str, refresh: bool = False):
 
     return context_card, ranked_ads, cache_key
 
+# -------------------------------
+# Temp queue helpers
+# -------------------------------
+
+
+def build_queue_for_user(user_id: str, refresh: bool = False, top_n: int = QUEUE_TOP_N) -> list | None:
+    """
+    Build and persist a fresh queue of ads for the user, respecting served history.
+    Returns the queue list or None if generation failed.
+    """
+    from pipeline import AdIntelligencePipeline
+
+    # Use existing served_keys to avoid repeats
+    state, _ = load_queue_state(user_id)
+    served_keys = state.get("served_keys", [])
+
+    context_card, ranked_ads, cache_key = warm_ranked_ads(user_id, refresh=refresh)
+    if not context_card:
+        return None
+
+    pipeline = AdIntelligencePipeline()
+    username = getattr(context_card, "username", user_id) or user_id
+
+    queue = pipeline.generate_top_ad_queue(
+        context_card,
+        user_id=user_id,
+        username=username,
+        served_keys=served_keys,
+        top_n=top_n,
+    )
+
+    replace_queue(
+        user_id,
+        username=username,
+        queue=queue,
+        served_keys=served_keys,
+    )
+    return queue
+
+
+def ensure_queue_has_items(user_id: str, refresh: bool = False) -> list | None:
+    """
+    Ensure the temp queue has items. If empty or refresh requested,
+    rebuild from pipeline rankings and best variants.
+    """
+    state, _ = load_queue_state(user_id)
+    queue = state.get("queue", [])
+    if queue and not refresh:
+        return queue
+    return build_queue_for_user(user_id, refresh=refresh)
+
+
+def maybe_top_up_queue(user_id: str):
+    """
+    If the queue is running low, top it up with fresh ads not yet served.
+    """
+    state, _ = load_queue_state(user_id)
+    remaining = len(state.get("queue", []))
+    if remaining >= QUEUE_REFILL_THRESHOLD:
+        return
+
+    try:
+        from pipeline import AdIntelligencePipeline
+
+        served_keys = state.get("served_keys", [])
+        context_card, ranked_ads, cache_key = warm_ranked_ads(user_id, refresh=False)
+        if not context_card:
+            return
+
+        pipeline = AdIntelligencePipeline()
+        username = getattr(context_card, "username", user_id) or user_id
+
+        new_ads = pipeline.generate_top_ad_queue(
+            context_card,
+            user_id=user_id,
+            username=username,
+            served_keys=served_keys,
+            top_n=QUEUE_TOP_N,
+        )
+
+        added = append_ads_to_queue(user_id, new_ads, username=username)
+        if added:
+            print(f"[Queue] Topped up {added} ads for {user_id}. Queue now {queue_size(user_id)}.")
+    except Exception as e:
+        print(f"[Queue] Failed to top up queue for {user_id}: {e}")
+
 # Pipeline execution tracking: user_id -> {status, thread, error}
 # Tracks ongoing pipeline executions
 pipeline_status = {}
@@ -193,19 +292,8 @@ def schedule_best_variant_prewarm(user_id: str, cache_key: str, context_card, ra
 
 
 def get_ad_key(ad: dict) -> str:
-    """Create a stable key for an original ad."""
-    if not ad:
-        return "unknown_ad"
-    # Prefer explicit id if present
-    if ad.get("id"):
-        return f"id:{ad.get('id')}"
-    # Otherwise hash the composed ad text + image_url if present
-    text_parts = [ad.get("title") or "", ad.get("description") or "", ad.get("tagline") or "", ad.get("text") or ""]
-    text = " — ".join([t for t in text_parts if t])
-    image_url = ad.get("image_url") or ""
-    key_base = f"{text}||{image_url}"
-    digest = hashlib.sha256(key_base.encode("utf-8")).hexdigest()
-    return f"hash:{digest}"
+    """Proxy to shared ad key computation."""
+    return compute_ad_key(ad)
 
 
 def load_latest_result_for_user(username: str) -> dict | None:
@@ -831,26 +919,22 @@ def list_users():
 @app.route("/api/ad/<user_id>")
 def get_ad(user_id: str):
     """
-    Get the next ad for a user using the new flow:
-    1. Get ranked list of original ads
-    2. Find next unserved original ad
-    3. Remix it → get best variant → serve it
-    4. Mark original ad as served
+    Serve the next ad for a user from the temp cache queue.
+
+    Flow:
+    1. Ensure a queue exists (build if empty or refresh requested)
+    2. Pop the next ad from the queue (removes it from cache)
+    3. If queue is low, top-up with fresh ads the user hasn't seen
     
     Query params:
-        - refresh: bool (optional) - force reload context card
-        - mark_shown: bool (optional, default true) - mark ad as shown for rotation
+        - refresh: bool (optional) - force rebuild queue/context
     """
     refresh = request.args.get("refresh", "false").lower() == "true"
-    mark_shown = request.args.get("mark_shown", "true").lower() == "true"
     
     try:
-        from pipeline import AdIntelligencePipeline
-        from context_agent import ContextCard
-        
-        # Step 1: Ensure ranked ads/cache is warm
-        context_card, ranked_ads, cache_key = warm_ranked_ads(user_id, refresh=refresh)
-        if not context_card:
+        # Ensure queue exists (build if empty or refresh requested)
+        queue = ensure_queue_has_items(user_id, refresh=refresh)
+        if not queue:
             # Check if pipeline is running
             if user_id in pipeline_status:
                 status_info = pipeline_status[user_id]
@@ -862,55 +946,30 @@ def get_ad(user_id: str):
                         "started_at": status_info.get("started_at")
                     }), 202
             return jsonify({
-                "error": "No context card found for user",
-                "user_id": user_id,
-                "hint": "Run the pipeline first or ensure user data files exist"
-            }), 404
-
-        if not ranked_ads:
-            return jsonify({
-                "error": "No ads available to serve",
+                "error": "No ads available. Run pipeline.py to generate ads first.",
                 "user_id": user_id
             }), 404
-        
-        # Step 3: Find next unserved original ad
-        next_ad_index = get_next_original_ad_index(cache_key, ranked_ads)
-        original_ad = ranked_ads[next_ad_index]
-        ad_key = get_ad_key(original_ad)
-        
-        # Step 4: Remix this ad and get best variant
-        # Step 4: Remix this ad (unless cached) and get best variant
-        print(f"[Ad Server] Remixing original ad #{next_ad_index + 1} for {user_id}...")
-        # Check cache first
-        best_variant_result = best_variant_cache.get(cache_key, {}).get(ad_key)
-        if not best_variant_result:
-            best_variant_result = remix_and_get_best_variant(
-                user_id, context_card.to_dict(), original_ad, next_ad_index
-            )
-            if best_variant_result:
-                # Cache it
-                if cache_key not in best_variant_cache:
-                    best_variant_cache[cache_key] = {}
-                best_variant_cache[cache_key][ad_key] = best_variant_result
-        
-        if not best_variant_result:
-            return jsonify({
-                "error": "Failed to remix ad",
-                "user_id": user_id
-            }), 500
-        
-        # Step 5: Format and return best variant
-        formatted = format_best_variant_for_extension(best_variant_result, user_id)
-        
-        # Step 6: Mark original ad as served
-        if mark_shown:
-            mark_original_ad_as_shown(cache_key, next_ad_index)
 
-        # Preemptively warm the next ad remix so the following request is instant
-        schedule_best_variant_prewarm(user_id, cache_key, context_card, ranked_ads)
-        
-        return jsonify(formatted)
-        
+        # Pop next ad (this also marks it served)
+        ad, state = pop_next_ad(user_id)
+
+        # If queue was empty after pop, try a forced rebuild once
+        if not ad:
+            queue = ensure_queue_has_items(user_id, refresh=True)
+            if queue:
+                ad, state = pop_next_ad(user_id)
+
+        if not ad:
+            return jsonify({
+                "error": "No ads available after refill",
+                "user_id": user_id
+            }), 404
+
+        # Top-up queue asynchronously-safe (best effort)
+        maybe_top_up_queue(user_id)
+
+        return jsonify(ad)
+
     except Exception as e:
         print(f"[Ad Server] Error in get_ad: {e}")
         import traceback
