@@ -1,186 +1,217 @@
+// // (function () {
+// //     let lastScroll = window.scrollY;
+
+// //     let tweetsSeen = 0;        // number of tweets you actually viewed
+// //     let adsInserted = 0;       // number of ads already inserted
+
+// //     const observer = new IntersectionObserver((entries) => {
+// //         entries.forEach(entry => {
+// //             if (!entry.isIntersecting) return;
+
+// //             const tweet = entry.target;
+
+// //             // Count only once
+// //             if (!tweet.dataset.viewed) {
+// //                 tweet.dataset.viewed = "true";
+// //                 tweetsSeen++;
+// //             }
+
+// //             // Only insert when scrolling down
+// //             const isScrollingDown = window.scrollY > lastScroll;
+// //             lastScroll = window.scrollY;
+
+// //             if (!isScrollingDown) return;
+
+// //             // next threshold = (adsInserted + 1) * 5
+// //             const nextThreshold = (adsInserted + 1) * 5;
+
+// //             if (tweetsSeen >= nextThreshold) {
+// //                 insertAdAfterTweet(tweet);
+// //                 adsInserted++;
+// //             }
+// //         });
+// //     }, {
+// //         threshold: 0.6  // tweet is considered "seen" when 60% visible
+// //     });
+
+// //     // Observe tweets dynamically as they appear
+// //     const mutationObserver = new MutationObserver(() => {
+// //         document.querySelectorAll("article[data-testid='tweet']")
+// //             .forEach(tweet => observer.observe(tweet));
+// //     });
+
+// //     mutationObserver.observe(document.body, {
+// //         childList: true,
+// //         subtree: true
+// //     });
+
+
+// //     function insertAdAfterTweet(tweetElement) {
+// //         const ad = createAdCard();
+// //         tweetElement.after(ad);
+// //     }
+// // })();
+
+
+// (function () {
+//     let lastScroll = window.scrollY;
+
+//     let tweetsSeen = 0;       // number of tweets actually viewed
+//     let adsInserted = 0;      // number of ads already inserted
+
+//     const persistentAds = []; // store ads forever
+
+//     // -------------------------------------------------------------
+//     // 1. IntersectionObserver → count tweets when they become visible
+//     // -------------------------------------------------------------
+//     const io = new IntersectionObserver(async (entries) => {
+//         for (const entry of entries) {
+//             if (!entry.isIntersecting) continue;
+
+//             const tweet = entry.target;
+
+//             // Count only once per tweet
+//             if (!tweet.dataset.viewed) {
+//                 tweet.dataset.viewed = "true";
+//                 tweetsSeen++;
+//             }
+
+//             // detect scroll direction
+//             const scrollingDown = window.scrollY > lastScroll;
+//             lastScroll = window.scrollY;
+
+//             if (!scrollingDown) continue;
+
+//             const nextThreshold = (adsInserted + 1) * 5;
+
+//             // ✅ time to insert a new ad
+//             if (tweetsSeen >= nextThreshold) {
+//                 const ad = await createAdCard(); // async dynamic card
+
+//                 tweet.after(ad);
+
+//                 persistentAds.push({
+//                     threshold: nextThreshold,
+//                     element: ad
+//                 });
+
+//                 adsInserted++;
+//             }
+//         }
+//     }, {
+//         threshold: 0.6 // tweet considered viewed when 60% visible
+//     });
+
+
+//     // -------------------------------------------------------------
+//     // 2. MutationObserver → observe tweets + restore ads if needed
+//     // -------------------------------------------------------------
+//     const mutation = new MutationObserver(() => {
+//         const tweets = document.querySelectorAll("article[data-testid='tweet']");
+
+//         tweets.forEach(t => io.observe(t));
+
+//         // ✅ restore persistent ads only if they disappeared
+//         persistentAds.forEach(adObj => {
+//             const idx = adObj.threshold - 1;
+
+//             if (!tweets[idx]) return;
+
+//             // if ad node disappeared due to virtualization → reinsert
+//             if (!document.body.contains(adObj.element)) {
+//                 tweets[idx].after(adObj.element);
+//             }
+//         });
+//     });
+
+//     mutation.observe(document.body, {
+//         childList: true,
+//         subtree: true
+//     });
+// })();
+
 (function () {
+    let lastScroll = window.scrollY;
 
-    // ----------------------------------------------------------
-    // ✅ Dynamic Ad Builder (returns DOM element, not string)
-    // ----------------------------------------------------------
-    function buildSponsoredAd(data) {
-        // Outer card
-        const card = document.createElement("div");
-        card.className = "css-175oi2r r-1igl3o0 r-qklmqi r-1adg3ll r-1ny4l3l";
-        card.style.padding = "12px 16px";
-        card.style.background = "#16181c";
-        card.style.borderRadius = "16px";
-        card.style.margin = "12px 0";
+    let tweetsSeen = 0;          // how many tweets viewed while scrolling down
+    let adsInserted = 0;         // how many ads already added
 
-        // Sponsored Label
-        const labelRow = document.createElement("div");
-        labelRow.style.display = "flex";
-        labelRow.style.alignItems = "center";
-        labelRow.style.gap = "8px";
-        labelRow.style.marginBottom = "6px";
+    const persistentAds = [];    // persistent storage of ads
 
-        const label = document.createElement("span");
-        label.textContent = "Sponsored";
-        label.style.color = "#8b98a5";
-        label.style.fontSize = "13px";
-        label.style.fontWeight = "600";
+    // -------------------------------------------------------------
+    // 1. Count tweets ONLY when scrolling down + insert ads
+    // -------------------------------------------------------------
+    const io = new IntersectionObserver(async (entries) => {
+        for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
 
-        labelRow.appendChild(label);
-        card.appendChild(labelRow);
+            const tweet = entry.target;
 
-        // Header Row (avatar + title + follow button)
-        const header = document.createElement("div");
-        header.style.display = "flex";
-        header.style.alignItems = "center";
-        header.style.gap = "12px";
-        header.style.marginBottom = "10px";
+            // -------------------------------------------------
+            // ✅ Determine scroll direction FIRST
+            // -------------------------------------------------
+            const scrollingDown = window.scrollY > lastScroll;
+            lastScroll = window.scrollY;
 
-        // Avatar
-        const avatar = document.createElement("div");
-        avatar.style.width = "40px";
-        avatar.style.height = "40px";
-        avatar.style.borderRadius = "50%";
-        avatar.style.background = "#333";
-        avatar.style.backgroundImage = `url(${data.avatar})`;
-        avatar.style.backgroundSize = "cover";
+            // ✅ If scrolling UP → DO NOT count → DO NOT insert
+            if (!scrollingDown) {
+                continue;
+            }
 
-        // Title + handle
-        const titleBox = document.createElement("div");
-        titleBox.style.flex = "1";
+            // -------------------------------------------------
+            // ✅ Count tweet only when scrolling DOWN
+            // -------------------------------------------------
+            if (!tweet.dataset.viewed) {
+                tweet.dataset.viewed = "true";
+                tweetsSeen++;
+            }
 
-        const title = document.createElement("div");
-        title.textContent = data.title;
-        title.style.fontSize = "15px";
-        title.style.color = "#e7e9ea";
-        title.style.fontWeight = "600";
+            // -------------------------------------------------
+            // ✅ Check whether we reached next threshold
+            // -------------------------------------------------
+            const nextThreshold = (adsInserted + 1) * 5;
 
-        const handle = document.createElement("div");
-        handle.textContent = data.handle;
-        handle.style.fontSize = "13px";
-        handle.style.color = "#8b98a5";
+            if (tweetsSeen >= nextThreshold) {
+                const ad = await createAdCard();
 
-        titleBox.appendChild(title);
-        titleBox.appendChild(handle);
+                tweet.after(ad);
 
-        // Follow button
-        const followBtn = document.createElement("button");
-        followBtn.textContent = "Follow";
-        followBtn.style.background = "#fff";
-        followBtn.style.color = "#000";
-        followBtn.style.padding = "6px 12px";
-        followBtn.style.border = "none";
-        followBtn.style.borderRadius = "20px";
-        followBtn.style.fontWeight = "600";
-        followBtn.style.fontSize = "14px";
+                persistentAds.push({
+                    threshold: nextThreshold,
+                    element: ad
+                });
 
-        header.appendChild(avatar);
-        header.appendChild(titleBox);
-        header.appendChild(followBtn);
-
-        card.appendChild(header);
-
-        // Ad text
-        const adText = document.createElement("div");
-        adText.textContent = data.text;
-        adText.style.fontSize = "15px";
-        adText.style.color = "#e7e9ea";
-        adText.style.lineHeight = "1.4";
-        adText.style.marginBottom = "10px";
-
-        card.appendChild(adText);
-
-        // Optional Image
-        if (data.image) {
-            const img = document.createElement("div");
-            img.style.width = "100%";
-            img.style.height = "220px";
-            img.style.borderRadius = "12px";
-            img.style.background = "#222";
-            img.style.backgroundImage = `url(${data.image})`;
-            img.style.backgroundSize = "cover";
-            img.style.backgroundPosition = "center";
-            img.style.marginBottom = "10px";
-
-            card.appendChild(img);
+                adsInserted++;
+            }
         }
-
-        // CTA Button
-        const cta = document.createElement("button");
-        cta.textContent = data.cta;
-        cta.style.width = "100%";
-        cta.style.padding = "10px";
-        cta.style.background = "#1d9bf0";
-        cta.style.color = "white";
-        cta.style.border = "none";
-        cta.style.borderRadius = "8px";
-        cta.style.fontSize = "15px";
-        cta.style.fontWeight = "600";
-
-        card.appendChild(cta);
-
-        return card;
-    }
-
-    // ----------------------------------------------------------
-    // ✅ Static Ad Data (replace later with dynamic API data)
-    // ----------------------------------------------------------
-    const AD_DATA = {
-        avatar: "https://pbs.twimg.com/profile_images/1498070100393754625/C2V-fbll_normal.jpg",
-        title: "AdBrand",
-        handle: "@adbrand",
-        text: "🚀 Upgrade your experience with AdBrand — tools built for creators.",
-        image: "https://pbs.twimg.com/media/G7iXzxiaYAAZvCG?format=jpg&name=large",
-        cta: "Learn More"
-    };
-
-    // Track indices where ads are already inserted
-    const inserted = new Set();
-
-    // Insert ad after tweet[index]
-    function insertAdAfter(index) {
-        const tweets = document.querySelectorAll("article");
-
-        if (index >= tweets.length) return;
-        if (inserted.has(index)) return;
-
-        const adElement = buildSponsoredAd(AD_DATA);
-        tweets[index].after(adElement);
-
-        inserted.add(index);
-        console.log("Inserted ad after tweet:", index + 1);
-    }
-
-    // Insert after every 5th tweet → indices: 4,9,14,...
-    function processTweets() {
-        const tweets = document.querySelectorAll("article");
-
-        for (let i = 4; i < tweets.length; i += 5) {
-            insertAdAfter(i);
-        }
-    }
-
-    // ----------------------------------------------------------
-    // ✅ MutationObserver → best for infinite feed on X
-    // ----------------------------------------------------------
-    const observer = new MutationObserver(() => {
-        processTweets();
+    }, {
+        threshold: 0.6
     });
 
-    function start() {
-        const feed = document.querySelector("div[data-testid='primaryColumn']");
 
-        if (!feed) {
-            setTimeout(start, 500);
-            return;
-        }
+    // -------------------------------------------------------------
+    // 2. Watch DOM → restore persistent ads (only if missing)
+    // -------------------------------------------------------------
+    const mutation = new MutationObserver(() => {
+        const tweets = document.querySelectorAll("article[data-testid='tweet']");
 
-        observer.observe(feed, {
-            childList: true,
-            subtree: true
+        // observe tweets for counting
+        tweets.forEach(t => io.observe(t));
+
+        // restore ads only when they disappeared (virtualization)
+        persistentAds.forEach(adObj => {
+            const idx = adObj.threshold - 1;
+
+            if (!tweets[idx]) return;
+
+            if (!document.body.contains(adObj.element)) {
+                tweets[idx].after(adObj.element);
+            }
         });
+    });
 
-        processTweets();
-    }
-
-    start();
+    mutation.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 })();
