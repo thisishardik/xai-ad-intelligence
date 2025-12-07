@@ -17,13 +17,12 @@ from xai_sdk.chat import user, system, tool, tool_result, image
 
 from config import XAI_API_KEY, DEFAULT_MODEL, IMAGE_MODEL, DEFAULT_ADS
 from supabase_client import fetch_ads
-from scoring import rank_ads
 
 if TYPE_CHECKING:
     from context_agent import ContextCard
 
 # Vision model for image analysis (supports multimodal text+image)
-VISION_MODEL = "grok-2-vision-1212"
+VISION_MODEL = "grok-4-1-fast-non-reasoning"
 
 
 @dataclass
@@ -122,16 +121,16 @@ class RemixedAdsResult:
 
 
 def create_image_generation_tool():
-    """Create the image generation/editing tool definition."""
+    """Create the image generation tool definition."""
     return tool(
         name="generate_ad_image",
-        description="Generate or enhance a compelling visual image for the ad. Call this AFTER you've written the ad copy. If an original image is available, describe how to improve it while preserving its core elements. The image must be truthful - do not depict exaggerated results, fake testimonials, or misleading outcomes.",
+        description="Generate a compelling visual image for the ad. Call this AFTER you've written the ad copy to create a coherent image that complements the text. The image must be truthful - do not depict exaggerated results, fake testimonials, or misleading outcomes.",
         parameters={
             "type": "object",
             "properties": {
                 "image_prompt": {
                     "type": "string",
-                    "description": "A detailed prompt describing the image to generate or how to enhance the original. Include style, mood, colors, composition, and key visual elements. If editing, specify what to keep, modify, or enhance from the original. MUST be truthful - no exaggerated before/after, no fake results, no misleading representations of the product or its effects."
+                    "description": "A detailed prompt describing the image to generate. Include style, mood, colors, composition, and key visual elements that align with the ad copy. MUST be truthful - no exaggerated before/after, no fake results, no misleading representations of the product or its effects."
                 },
                 "ad_copy": {
                     "type": "string",
@@ -205,23 +204,22 @@ INTERESTS: {context_card.get('general_topic', 'unknown')}"""
         style_ref = self._build_style_reference(context_card)
         
         chat = self.client.chat.create(model=self.vision_model)
-        chat.append(system("You are an expert at analyzing ad creatives and suggesting improvements. Analyze images with a focus on what would resonate with the target user."))
+        chat.append(system("You are an expert at analyzing ad creatives and suggesting improvements."))
         
         chat.append(
             user(
-                f"""Analyze this ad image for the following ad copy:
-"{ad_copy}"
+                f"""Analyze this ad image for: "{ad_copy}"
 
-Target user context:
+User context:
 {style_ref}
 
-Provide a JSON response with:
+Return JSON:
 {{
     "description": "Brief description of what the image shows",
-    "strengths": ["list of visual elements that work well"],
-    "improvement_suggestions": ["specific suggestions to make it more appealing to this user"],
-    "key_elements": ["core elements that should be preserved in any edit"],
-    "style_notes": "overall style and mood of the image"
+    "strengths": ["visual elements that work well"],
+    "improvement_suggestions": ["suggestions to better resonate with this user"],
+    "key_elements": ["core elements to preserve in edits"],
+    "style_notes": "overall style and mood"
 }}""",
                 image(image_url)
             )
@@ -277,7 +275,7 @@ Provide a JSON response with:
         style_ref = self._build_style_reference(context_card)
         
         chat = self.client.chat.create(model=self.vision_model)
-        chat.append(system("You are an expert at predicting ad performance and CTR based on visual and textual elements."))
+        chat.append(system("You are an expert at predicting ad performance and CTR."))
         
         # Build the user message with images
         image_refs = []
@@ -286,22 +284,16 @@ Provide a JSON response with:
             image_refs.append(image(img["url"]))
             image_labels.append(f"[Image {i+1}: {img.get('type', 'unknown')} - Variant {img.get('variant_num', 'N/A')}]")
         
-        prompt_text = f"""Score each image above for predicted Click-Through Rate (CTR) when paired with this ad copy:
-"{ad_copy}"
+        prompt_text = f"""Score each image for predicted CTR with this ad copy: "{ad_copy}"
 
-Image labels: {', '.join(image_labels)}
+Images: {', '.join(image_labels)}
 
-Target user context:
+User context:
 {style_ref}
 
-For each image, consider:
-1. Visual appeal and attention-grabbing quality
-2. Relevance to the ad message
-3. Alignment with user's interests and style preferences
-4. Professional quality and trustworthiness
-5. Emotional resonance with the target audience
+Consider: visual appeal, message relevance, user alignment, quality, emotional resonance.
 
-Return JSON array with scores (0-100) for each image:
+Return JSON array:
 [
     {{"image_index": 1, "ctr_score": 85, "reasoning": "Brief explanation"}},
     ...
@@ -361,6 +353,128 @@ Return JSON only:
     "reasoning": "<1 sentence>"
 }}"""
 
+    def _rank_ads(
+        self,
+        ads: List[Dict[str, Any]],
+        persona: Dict[str, Any],
+        context_card: dict
+    ) -> List[Dict[str, Any]]:
+        """Rank ads using Grok based on persona alignment and user context."""
+        if not ads:
+            return []
+        
+        style_ref = self._build_style_reference(context_card)
+        
+        # Build ads list with indices
+        ads_text = []
+        for i, ad in enumerate(ads):
+            ad_text = self._compose_ad_text(ad)
+            ad_info = f"{i+1}. {ad_text}"
+            if ad.get("categories"):
+                ad_info += f" [Categories: {', '.join(ad.get('categories', []))}]"
+            ads_text.append(ad_info)
+        
+        ads_list = "\n".join(ads_text)
+        
+        persona_text = persona.get("persona", "")
+        categories = persona.get("categories", [])
+        strictly_against = persona.get("strictly_against", [])
+        
+        prompt = f"""{style_ref}
+
+PERSONA: {persona_text}
+INTERESTS/CATEGORIES: {', '.join(categories) if categories else 'N/A'}
+AVOID: {', '.join(strictly_against) if strictly_against else 'None'}
+
+CANDIDATE ADS:
+{ads_list}
+
+Score and rank these ads based on:
+1. Alignment with user's persona and writing style
+2. Relevance to user's interests and categories
+3. Safety (avoid topics in "AVOID" list)
+4. Overall appeal to this specific user
+
+Return JSON array with scores (0-100) for each ad:
+[
+    {{"ad_index": 1, "total_score": 85, "persona_alignment": 90, "category_match": 80, "safety": 95, "completeness": 75, "reasoning": "Brief explanation"}},
+    ...
+]
+
+Sort by total_score descending."""
+        
+        chat = self.client.chat.create(
+            model=self.model,
+            messages=[
+                system("You are an expert at analyzing user preferences and ranking content relevance. Return only valid JSON."),
+                user(prompt)
+            ],
+            temperature=0.3,
+        )
+        
+        try:
+            response = chat.sample()
+            content = response.content.strip()
+            
+            # Extract JSON from response
+            if "```" in content:
+                content = content.split("```")[1]
+                if content.startswith("json"):
+                    content = content[4:]
+                content = content.strip()
+            
+            scores_data = json.loads(content)
+            
+            # Create scored ads list
+            scored_ads = []
+            for score_data in scores_data:
+                idx = score_data.get("ad_index", 0) - 1
+                if 0 <= idx < len(ads):
+                    ad = ads[idx].copy()
+                    ad["scores"] = {
+                        "total": round(score_data.get("total_score", 0), 1),
+                        "persona_alignment": round(score_data.get("persona_alignment", 0), 1),
+                        "category_match": round(score_data.get("category_match", 0), 1),
+                        "safety": round(score_data.get("safety", 100), 1),
+                        "completeness": round(score_data.get("completeness", 0), 1),
+                    }
+                    scored_ads.append(ad)
+            
+            # Sort by total score descending
+            scored_ads.sort(key=lambda a: a["scores"]["total"], reverse=True)
+            
+            # Add any ads that weren't scored (fallback)
+            scored_indices = {score_data.get("ad_index", 0) - 1 for score_data in scores_data}
+            for i, ad in enumerate(ads):
+                if i not in scored_indices:
+                    ad_copy = ad.copy()
+                    ad_copy["scores"] = {
+                        "total": 0.0,
+                        "persona_alignment": 0.0,
+                        "category_match": 0.0,
+                        "safety": 100.0,
+                        "completeness": 0.0,
+                    }
+                    scored_ads.append(ad_copy)
+            
+            return scored_ads
+            
+        except Exception as e:
+            print(f"Warning: Grok ranking failed ({e}); using fallback ranking.")
+            # Fallback: return ads with default scores
+            scored_ads = []
+            for ad in ads:
+                ad_copy = ad.copy()
+                ad_copy["scores"] = {
+                    "total": 50.0,
+                    "persona_alignment": 50.0,
+                    "category_match": 50.0,
+                    "safety": 100.0,
+                    "completeness": 50.0,
+                }
+                scored_ads.append(ad_copy)
+            return scored_ads
+
     def _ad_rewrite_prompt(
         self, 
         ad: str, 
@@ -403,16 +517,12 @@ ORIGINAL AD IMAGE ANALYSIS:
 - Key elements to keep: {', '.join(key_elements) if key_elements else 'N/A'}
 - Suggested improvements: {', '.join(improvements) if improvements else 'N/A'}
 
-When generating the enhanced image:
-- Build upon the original image's strengths
-- Preserve key brand/product elements
-- Apply the suggested improvements to better resonate with this user
-- The enhanced image should feel like an evolution, not a complete departure"""
+When generating the enhanced image, build upon the original's strengths, preserve key elements, and apply suggested improvements."""
         elif original_image_url:
             image_context = f"""
 
 ORIGINAL AD IMAGE: {original_image_url}
-When generating the enhanced image, consider how to improve upon the original while preserving its core message and brand elements."""
+Enhance the original while preserving its core message and brand elements."""
         
         return f"""{style_ref}
 
@@ -427,7 +537,6 @@ Your task:
    - The image should reinforce the message
    - Match the tone and style of the copy
    - Be visually compelling for social media
-   - If an original image exists, enhance it rather than creating something completely different
 
 Think about the ad copy and image as a unified creative unit - they should work together to deliver the message.
 
@@ -534,7 +643,6 @@ Rules:
 
 When you rewrite an ad, you MUST use the generate_ad_image tool to create a visual that complements your copy.
 Think holistically - the text and image should work together as a unified creative.
-If an original image exists, focus on enhancing it rather than creating something completely different.
 
 The goal: Make the ad feel native to the user's voice WITHOUT deceiving them about what the product does.""")
         
@@ -706,7 +814,7 @@ The goal: Make the ad feel native to the user's voice WITHOUT deceiving them abo
             else:
                 structured_ads.append(ad)
 
-        ranked_ads = rank_ads(structured_ads, persona)
+        ranked_ads = self._rank_ads(structured_ads, persona, context_card)
 
         if log_ranking:
             print("\n  Ranked ads (top 10):")
@@ -728,7 +836,7 @@ The goal: Make the ad feel native to the user's voice WITHOUT deceiving them abo
         else:
             print("  No original image found - will generate new images")
 
-        print("  Selecting best ad from Supabase scoring...")
+        print("  Ranking ads with Grok...")
         print(f"    Selected: {selected_ad[:80]}...")
 
         # Step 2: Analyze original image if available
