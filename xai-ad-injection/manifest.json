@@ -1,0 +1,13 @@
+{
+  "name": "X Feed Ad Injector",
+  "version": "2.0",
+  "description": "Inject static ads after every 5th tweet in X feed.",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
