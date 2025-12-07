@@ -125,13 +125,21 @@ def create_image_generation_tool():
     """Create the image generation/editing tool definition."""
     return tool(
         name="generate_ad_image",
+<<<<<<< HEAD
         description="Generate or enhance a compelling visual image for the ad. Call this AFTER you've written the ad copy. If an original image is available, describe how to improve it while preserving its core elements.",
+=======
+        description="Generate a compelling visual image for the ad. Call this AFTER you've written the ad copy to create a coherent image that complements the text. The image must be truthful - do not depict exaggerated results, fake testimonials, or misleading outcomes.",
+>>>>>>> cdda50dbd2cdc53eea548bee2393f3356ab77c19
         parameters={
             "type": "object",
             "properties": {
                 "image_prompt": {
                     "type": "string",
+<<<<<<< HEAD
                     "description": "A detailed prompt describing the image to generate or how to enhance the original. Include style, mood, colors, composition, and key visual elements. If editing, specify what to keep, modify, or enhance from the original."
+=======
+                    "description": "A detailed prompt describing the image to generate. Include style, mood, colors, composition, and key visual elements that align with the ad copy. MUST be truthful - no exaggerated before/after, no fake results, no misleading representations of the product or its effects."
+>>>>>>> cdda50dbd2cdc53eea548bee2393f3356ab77c19
                 },
                 "ad_copy": {
                     "type": "string",
@@ -429,7 +437,19 @@ Your task:
    - Be visually compelling for social media
    - If an original image exists, enhance it rather than creating something completely different
 
-Think about the ad copy and image as a unified creative unit - they should work together to deliver the message."""
+Think about the ad copy and image as a unified creative unit - they should work together to deliver the message.
+
+CRITICAL TRUTHFULNESS RULES (MUST FOLLOW):
+- ONLY state claims, features, or benefits that are EXPLICITLY in the original ad
+- DO NOT invent new benefits, features, or promises not in the original
+- DO NOT exaggerate outcomes, results, or guarantees
+- DO NOT add urgency, scarcity, or pressure tactics not in the original (e.g., "limited time", "running out", "act now")
+- DO NOT imply the user has personal experience with the product unless the original ad format requires it
+- If the original ad is vague, stay vague - do not fill in specifics you don't know
+- Style changes are allowed, FALSE PROMISES are not
+- When in doubt, understate rather than overstate
+
+You are adapting the TONE and VOICE, not the SUBSTANCE of the claims."""
 
     def _compose_ad_text(self, ad: Dict[str, Any]) -> str:
         """Compose a readable ad text from structured fields."""
@@ -509,11 +529,25 @@ Think about the ad copy and image as a unified creative unit - they should work 
         )
         temperature = 0.5 + (variant_num * 0.2)
         
-        system_msg = system("""You are an expert at rewriting content to match specific writing styles and creating compelling ad creatives.
+        system_msg = system("""You are an expert at rewriting content to match specific writing styles while maintaining strict factual accuracy.
+
+CORE PRINCIPLE: You adapt STYLE, not SUBSTANCE. The original ad's claims are the source of truth.
+
+Rules:
+1. NEVER add claims, benefits, or features not explicitly stated in the original ad
+2. NEVER exaggerate results, outcomes, or guarantees beyond what the original states
+3. NEVER fabricate testimonial-style claims or imply personal endorsement
+4. NEVER add false urgency or scarcity (limited time, running out, etc.) unless in the original
+5. If the original is vague about specifics, your rewrite must remain vague about those same specifics
 
 When you rewrite an ad, you MUST use the generate_ad_image tool to create a visual that complements your copy.
 Think holistically - the text and image should work together as a unified creative.
+<<<<<<< HEAD
 If an original image exists, focus on enhancing it rather than creating something completely different.""")
+=======
+
+The goal: Make the ad feel native to the user's voice WITHOUT deceiving them about what the product does.""")
+>>>>>>> cdda50dbd2cdc53eea548bee2393f3356ab77c19
         
         ad_copy = ""
         enhanced_image_url = None

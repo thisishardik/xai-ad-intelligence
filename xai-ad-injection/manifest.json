@@ -1,16 +1,18 @@
 {
   "manifest_version": 3,
-  "name": "X Feed Ad Injector",
-  "version": "1.0",
-
-  "description": "Injects static Twitter-style ads every 5 tweets while scrolling.",
-
+  "name": "XAI Ad Intelligence - Attention-Based Injection",
+  "version": "2.0",
+  "description": "Intelligently injects ads into X feed using Grok-powered attention prediction.",
   "permissions": [],
-
   "content_scripts": [
     {
-      "matches": ["https://x.com/*"],
-      "js": ["adCard.js", "content.js"],
+      "matches": [
+        "https://x.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": [
+        "dist/content.bundle.js"
+      ],
       "run_at": "document_idle"
     }
   ]
