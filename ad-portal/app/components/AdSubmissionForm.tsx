@@ -1,7 +1,8 @@
-"use client";
+ "use client";
 
 import React, { useState, useRef } from 'react';
 import { Upload, X, Check, Loader2, Send } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 interface AdFormData {
   companyName: string;
@@ -68,15 +69,52 @@ export default function AdSubmissionForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Placeholder for Supabase DB upload
-    // In a real app, you would upload the image to storage (e.g., Supabase Storage)
-    // and then insert the record into the database.
-    console.log("Submitting to Supabase placeholder...", formData);
-
     try {
-      // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      let imageUrl: string | null = null;
+
+      // 1) Upload image to Supabase Storage (if provided)
+      if (formData.adImage) {
+        const file = formData.adImage;
+        const fileExt = file.name.split('.').pop() || 'png';
+        const fileName = `${crypto.randomUUID()}.${fileExt}`;
+        const filePath = `ads/${fileName}`;
+
+        const { data: img, error: imgErr } = await supabase.storage
+          .from('ad-images')
+          .upload(filePath, file);
+
+        if (imgErr) {
+          console.error('Supabase upload error:', imgErr);
+          // Temporary surface for debugging
+          if (typeof window !== 'undefined') {
+            alert(`Upload error: ${imgErr.message ?? 'Unknown upload error'}`);
+          }
+          throw imgErr;
+        }
+
+        const { data: urlData } = supabase.storage
+          .from('ad-images')
+          .getPublicUrl(img.path);
+
+        imageUrl = urlData.publicUrl;
+      }
+
+      // 2) Insert metadata into ad_campaigns table
+      const { error } = await supabase
+        .from('ad_campaigns')
+        .insert({
+          title: formData.adTitle,
+          description: formData.adContent,
+          company: formData.companyName,
+          tagline: formData.companyPersona,
+          image_url: imageUrl,
+          // created_by: user?.id ?? null, // hook up when you have auth/user
+          company_persona: formData.companyPersona,
+          strictly_against: formData.strictlyAgainst,
+        });
+
+      if (error) throw error;
+
       // Reset form after success
       setIsSuccess(true);
       setTimeout(() => {
@@ -91,9 +129,12 @@ export default function AdSubmissionForm() {
         });
         setPreviewUrl(null);
       }, 3000);
-      
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error('Error submitting form:', error);
+      if (error instanceof Error && typeof window !== 'undefined') {
+        alert(`Submission error: ${error.message}`);
+      }
+      // TODO: optionally surface a toast / inline error state
     } finally {
       setIsSubmitting(false);
     }
