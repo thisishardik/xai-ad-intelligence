@@ -33,6 +33,9 @@ XAI_API_KEY=your_xai_api_key_here
 **For `ad_remixer/.env`:**
 ```env
 XAI_API_KEY=your_xai_api_key_here
+SUPABASE_URL=https://<project>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key   # preferred for server fetches
+# or SUPABASE_ANON_KEY if RLS permits
 ```
 
 **For `critic_agent/.env`:**
@@ -159,6 +162,10 @@ The script will:
 - **Remixed Ads JSON**: `remixed_ads_output.json`
   - Contains the selected ad rewritten into 3 style-matched variants
   - Includes user_id and rewritten_ads array
+
+- **Supabase ads (ad_remixer)**:
+  - Expects table `ad_campaigns` with: id,title,description,company,tagline,image_url,company_persona,strictly_against,categories,created_at
+  - Optional table `personas` with: user_id, persona, strictly_against, categories
 
 - **CTR Prediction Results**: Displayed in terminal
   - Shows best performing ad variant with confidence score
