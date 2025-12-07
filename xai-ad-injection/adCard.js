@@ -560,7 +560,7 @@ async function createAdCard() {
                         description: serverAd.description || "",
                         full_content: serverAd.full_content || "",
                         image: serverAd.image_uri || serverAd.image || null,
-                        brand: serverAd.brand || "AI Personalized",
+                        brand: serverAd.brand || "xAI AdBot",
                         avatar: serverAd.avatar || "https://w7.pngwing.com/pngs/676/1/png-transparent-x-icon-ex-twitter-tech-companies-social-media.png",
                     };
                     console.log(`[AdCard] Using server ad:`, adData);
@@ -606,7 +606,7 @@ async function createAdCard() {
 
             <div style="flex:1;">
                 <div style="font-weight:700;color:#e7e9ea;">
-                    ${adData.brand} · Sponsored
+                    ${adData.brand} · Sponsored Ad
                 </div>
 
                 <div style="color:#71767b;font-size:13px;">

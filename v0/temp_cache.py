@@ -72,7 +72,7 @@ def format_best_variant_for_cache(best_variant_result: Dict[str, Any], user_id: 
         "full_content": content,
         "image_uri": image_uri,
         "brand": "AI Personalized",
-        "avatar": "https://abs.twimg.com/icons/apple-touch-icon-192x192.png",
+        "avatar": "https://w7.pngwing.com/pngs/676/1/png-transparent-x-icon-ex-twitter-tech-companies-social-media.png",
         "ctr_score": best_variant_result.get("ctr_score", 0),
         "confidence": best_variant_result.get("confidence", 0),
         "ad_index": best_variant_result.get("ad_index", 0),
