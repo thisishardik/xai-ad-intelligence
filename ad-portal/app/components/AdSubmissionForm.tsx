@@ -11,6 +11,7 @@ interface AdFormData {
   adImage: File | null;
   companyPersona: string;
   strictlyAgainst: string;
+  categories: string[];
 }
 
 export default function AdSubmissionForm() {
@@ -21,6 +22,7 @@ export default function AdSubmissionForm() {
     adImage: null,
     companyPersona: '',
     strictlyAgainst: '',
+      categories: [],
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -52,6 +54,18 @@ export default function AdSubmissionForm() {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+  };
+
+  const toggleCategory = (category: string) => {
+    setFormData(prev => {
+      const isSelected = prev.categories.includes(category);
+      return {
+        ...prev,
+        categories: isSelected
+          ? prev.categories.filter(c => c !== category)
+          : [...prev.categories, category],
+      };
+    });
   };
 
   const removeImage = () => {
@@ -111,6 +125,7 @@ export default function AdSubmissionForm() {
           // created_by: user?.id ?? null, // hook up when you have auth/user
           company_persona: formData.companyPersona,
           strictly_against: formData.strictlyAgainst,
+          categories: formData.categories,
         });
 
       if (error) throw error;
@@ -126,6 +141,7 @@ export default function AdSubmissionForm() {
           adImage: null,
           companyPersona: '',
           strictlyAgainst: '',
+          categories: [],
         });
         setPreviewUrl(null);
       }, 3000);
@@ -319,6 +335,44 @@ export default function AdSubmissionForm() {
                   rows={3}
                   className="w-full px-4 py-3 bg-neutral-800/50 border border-red-900/30 rounded-lg focus:ring-2 focus:ring-red-500/50 focus:border-transparent outline-none transition-all text-white placeholder-neutral-500 resize-none"
                 />
+              </div>
+
+              {/* Categories */}
+              <div className="space-y-2">
+                <label className="block text-sm font-medium text-neutral-300">
+                  Categories
+                </label>
+                <p className="text-xs text-neutral-500">
+                  Select one or more categories that best describe this campaign.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    'SaaS',
+                    'E-commerce',
+                    'AI',
+                    'Fintech',
+                    'Developer Tools',
+                    'Health & Wellness',
+                    'Education',
+                    'Consumer Apps',
+                  ].map(category => {
+                    const selected = formData.categories.includes(category);
+                    return (
+                      <button
+                        key={category}
+                        type="button"
+                        onClick={() => toggleCategory(category)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                          selected
+                            ? 'bg-blue-500 text-white border-blue-500'
+                            : 'bg-neutral-800/60 text-neutral-300 border-neutral-700 hover:border-blue-500/60 hover:text-white'
+                        }`}
+                      >
+                        {category}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 

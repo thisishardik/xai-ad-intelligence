@@ -11,6 +11,10 @@ Usage:
     
     # With existing context card (skips auth and context generation)
     python pipeline.py --context context_card.json
+
+Supabase:
+- Requires SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY (or ANON key if RLS permits)
+- Ads are fetched from Supabase ad_campaigns; no default/fallback ads are used
 """
 
 import json
@@ -20,10 +24,10 @@ from dataclasses import dataclass
 from typing import Optional, List
 from pathlib import Path
 
-from config import validate_config, DEFAULT_ADS
+from config import validate_config
 from auth_client import AuthClient, UserData, interactive_auth
 from context_agent import ContextAgent, ContextCard
-from ad_remixer import AdRemixerAgent, RemixedAdsResult
+from ad_remixer import AdRemixerAgent, RemixResult
 from critic_agent import CTRCriticAgent, CTRPredictionResult
 
 
@@ -33,7 +37,7 @@ class PipelineResult:
     user_id: str
     username: str
     context_card: ContextCard
-    remixed_ads: RemixedAdsResult
+    remixed_ads: RemixResult
     ctr_prediction: CTRPredictionResult
     
     def to_dict(self) -> dict:
@@ -62,11 +66,11 @@ class AdIntelligencePipeline:
         Initialize the pipeline.
         
         Args:
-            ads: List of candidate ads (uses DEFAULT_ADS if not provided)
+            ads: Optional list of candidate ads. If None, ads are fetched from Supabase.
         """
         validate_config()
         
-        self.ads = ads or DEFAULT_ADS
+        self.ads = ads
         self.context_agent = ContextAgent()
         self.remixer_agent = AdRemixerAgent()
         self.critic_agent = CTRCriticAgent()
@@ -190,9 +194,9 @@ class AdIntelligencePipeline:
         # Step 3: Ad Remixing
         print("\n🎨 STEP 3: Ad Remixing")
         print("-"*40)
-        print(f"  Selecting from {len(self.ads)} candidate ads...")
-        remixed_ads = self.remixer_agent.remix_ads(context_card, self.ads)
-        print(f"  ✓ Selected: {remixed_ads.selected_ad[:50]}...")
+        print("  Fetching ads from Supabase and ranking against persona...")
+        remixed_ads = self.remixer_agent.remix_ads(context_card, self.ads, log_ranking=True)
+        print(f"  ✓ Selected: {remixed_ads.selected_ad[:50]}... (reason: {remixed_ads.selection_reasoning})")
         print(f"  ✓ Generated {len(remixed_ads.rewritten_ads)} variants")
         
         # Step 4: CTR Prediction

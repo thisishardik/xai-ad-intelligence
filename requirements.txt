@@ -15,3 +15,6 @@ httpx>=0.25.0
 # Web framework
 flask>=3.0.0
 
+# Supabase client
+supabase>=2.3.0
+

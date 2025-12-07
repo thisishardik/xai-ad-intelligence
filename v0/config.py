@@ -4,12 +4,15 @@ All environment variables and settings are managed here.
 """
 
 import os
-from dotenv import load_dotenv
 from pathlib import Path
+from dotenv import load_dotenv
 
-# Load environment variables from .env file in v0 directory
-_env_path = Path(__file__).parent / ".env"
-load_dotenv(_env_path)
+# Load environment variables from root .env (preferred) and then v0/.env
+_here = Path(__file__).resolve().parent
+_root_env = _here.parent / ".env"
+_local_env = _here / ".env"
+load_dotenv(_root_env, override=False)
+load_dotenv(_local_env, override=False)
 
 # API Keys
 XAI_API_KEY = os.getenv("XAI_API_KEY")

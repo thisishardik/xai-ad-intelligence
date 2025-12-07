@@ -12,8 +12,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2
 // These must be defined in your environment (e.g. .env.local) and are safe for the browser
 // NEXT_PUBLIC_SUPABASE_URL=https://xyzcompany.supabase.co
 // NEXT_PUBLIC_SUPABASE_ANON_KEY=your-public-anon-key
-const supabaseUrl = ("TURBOPACK compile-time value", "https://muokkmbrkxouyylamlex.supabase.co");
-const supabaseAnonKey = ("TURBOPACK compile-time value", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im11b2trbWJya3hvdXl5bGFtbGV4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUwNzIyNzEsImV4cCI6MjA4MDY0ODI3MX0.Y9sq1MdJ-Wo7x1SmF3_Mv6lpxDWw8DEtSq0ePqd5D4M");
+const supabaseUrl = ("TURBOPACK compile-time value", "https://fzliedbrrzdjncanodou.supabase.co");
+const supabaseAnonKey = ("TURBOPACK compile-time value", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6bGllZGJycnpkam5jYW5vZG91Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE0MzUzMDUsImV4cCI6MjA3NzAxMTMwNX0.SxsPh-TMyLcRbkbbPETicEnEFFZ7TIzI1YN5OV2oS5c");
 if ("TURBOPACK compile-time falsy", 0) //TURBOPACK unreachable
 ;
 const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$supabase$2f$supabase$2d$js$2f$dist$2f$esm$2f$wrapper$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createClient"])(supabaseUrl, supabaseAnonKey);
@@ -50,7 +50,8 @@ function AdSubmissionForm() {
         adContent: '',
         adImage: null,
         companyPersona: '',
-        strictlyAgainst: ''
+        strictlyAgainst: '',
+        categories: []
     });
     const [isSubmitting, setIsSubmitting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isSuccess, setIsSuccess] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
@@ -86,6 +87,18 @@ function AdSubmissionForm() {
     };
     const handleDragOver = (e)=>{
         e.preventDefault();
+    };
+    const toggleCategory = (category)=>{
+        setFormData((prev)=>{
+            const isSelected = prev.categories.includes(category);
+            return {
+                ...prev,
+                categories: isSelected ? prev.categories.filter((c)=>c !== category) : [
+                    ...prev.categories,
+                    category
+                ]
+            };
+        });
     };
     const removeImage = ()=>{
         setFormData((prev)=>({
@@ -132,7 +145,8 @@ function AdSubmissionForm() {
                 image_url: imageUrl,
                 // created_by: user?.id ?? null, // hook up when you have auth/user
                 company_persona: formData.companyPersona,
-                strictly_against: formData.strictlyAgainst
+                strictly_against: formData.strictlyAgainst,
+                categories: formData.categories
             });
             if (error) throw error;
             // Reset form after success
@@ -145,7 +159,8 @@ function AdSubmissionForm() {
                     adContent: '',
                     adImage: null,
                     companyPersona: '',
-                    strictlyAgainst: ''
+                    strictlyAgainst: '',
+                    categories: []
                 });
                 setPreviewUrl(null);
             }, 3000);
@@ -172,7 +187,7 @@ function AdSubmissionForm() {
                             children: "Create Campaign"
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 147,
+                            lineNumber: 163,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -180,13 +195,13 @@ function AdSubmissionForm() {
                             children: "Launch your ad on the X platform"
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 148,
+                            lineNumber: 164,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                    lineNumber: 146,
+                    lineNumber: 162,
                     columnNumber: 9
                 }, this),
                 isSuccess ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -199,12 +214,12 @@ function AdSubmissionForm() {
                                 strokeWidth: 3
                             }, void 0, false, {
                                 fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                lineNumber: 154,
+                                lineNumber: 170,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 153,
+                            lineNumber: 169,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -212,7 +227,7 @@ function AdSubmissionForm() {
                             children: "Submission Received!"
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 156,
+                            lineNumber: 172,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -220,13 +235,13 @@ function AdSubmissionForm() {
                             children: "Your campaign is being processed."
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 157,
+                            lineNumber: 173,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                    lineNumber: 152,
+                    lineNumber: 168,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
                     onSubmit: handleSubmit,
@@ -242,7 +257,7 @@ function AdSubmissionForm() {
                                         children: "Company Name"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                        lineNumber: 165,
+                                        lineNumber: 181,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -256,18 +271,18 @@ function AdSubmissionForm() {
                                         className: "w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-white placeholder-neutral-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                        lineNumber: 168,
+                                        lineNumber: 184,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                lineNumber: 164,
+                                lineNumber: 180,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 163,
+                            lineNumber: 179,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -281,7 +296,7 @@ function AdSubmissionForm() {
                                             children: "Advertisement Title"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 184,
+                                            lineNumber: 200,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -295,13 +310,13 @@ function AdSubmissionForm() {
                                             className: "w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-white placeholder-neutral-500"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 187,
+                                            lineNumber: 203,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                    lineNumber: 183,
+                                    lineNumber: 199,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -312,7 +327,7 @@ function AdSubmissionForm() {
                                             children: "Advertisement Content"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 200,
+                                            lineNumber: 216,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -326,19 +341,19 @@ function AdSubmissionForm() {
                                             className: "w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all text-white placeholder-neutral-500 resize-none"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 203,
+                                            lineNumber: 219,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                    lineNumber: 199,
+                                    lineNumber: 215,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 182,
+                            lineNumber: 198,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -348,7 +363,7 @@ function AdSubmissionForm() {
                                     children: "Ad Creative"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                    lineNumber: 218,
+                                    lineNumber: 234,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -364,7 +379,7 @@ function AdSubmissionForm() {
                                             className: "hidden"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 230,
+                                            lineNumber: 246,
                                             columnNumber: 17
                                         }, this),
                                         previewUrl ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -376,7 +391,7 @@ function AdSubmissionForm() {
                                                     className: "w-full h-48 object-cover rounded-lg"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                    lineNumber: 240,
+                                                    lineNumber: 256,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -389,23 +404,23 @@ function AdSubmissionForm() {
                                                             size: 20
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                            lineNumber: 251,
+                                                            lineNumber: 267,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                        lineNumber: 246,
+                                                        lineNumber: 262,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                    lineNumber: 245,
+                                                    lineNumber: 261,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 239,
+                                            lineNumber: 255,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex flex-col items-center justify-center py-10 cursor-pointer",
@@ -417,12 +432,12 @@ function AdSubmissionForm() {
                                                         size: 24
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                        lineNumber: 261,
+                                                        lineNumber: 277,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                    lineNumber: 260,
+                                                    lineNumber: 276,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -430,7 +445,7 @@ function AdSubmissionForm() {
                                                     children: "Click to upload or drag and drop"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                    lineNumber: 263,
+                                                    lineNumber: 279,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -438,32 +453,32 @@ function AdSubmissionForm() {
                                                     children: "SVG, PNG, JPG or GIF (max. 5MB)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                    lineNumber: 266,
+                                                    lineNumber: 282,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 256,
+                                            lineNumber: 272,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                    lineNumber: 221,
+                                    lineNumber: 237,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 217,
+                            lineNumber: 233,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "border-t border-neutral-800 my-6"
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 274,
+                            lineNumber: 290,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -477,7 +492,7 @@ function AdSubmissionForm() {
                                             children: "AI Configuration"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 279,
+                                            lineNumber: 295,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -485,13 +500,13 @@ function AdSubmissionForm() {
                                             children: "Generator Settings"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 280,
+                                            lineNumber: 296,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                    lineNumber: 278,
+                                    lineNumber: 294,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -502,7 +517,7 @@ function AdSubmissionForm() {
                                             children: "Company Persona"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 286,
+                                            lineNumber: 302,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -519,7 +534,7 @@ function AdSubmissionForm() {
                                                     className: "w-full px-4 py-3 bg-neutral-800/50 border border-neutral-700 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all text-white placeholder-neutral-500 resize-none"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                    lineNumber: 290,
+                                                    lineNumber: 306,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -538,38 +553,38 @@ function AdSubmissionForm() {
                                                                 d: "M12 2a10 10 0 1 0 10 10H12V2z"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                                lineNumber: 301,
+                                                                lineNumber: 317,
                                                                 columnNumber: 164
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
                                                                 d: "M12 2a10 10 0 0 1 10 10"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                                lineNumber: 301,
+                                                                lineNumber: 317,
                                                                 columnNumber: 211
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
                                                                 d: "M2 12h10"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                                lineNumber: 301,
+                                                                lineNumber: 317,
                                                                 columnNumber: 252
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                        lineNumber: 301,
+                                                        lineNumber: 317,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                                    lineNumber: 300,
+                                                    lineNumber: 316,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 289,
+                                            lineNumber: 305,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -577,13 +592,13 @@ function AdSubmissionForm() {
                                             children: "Tip: Be specific about your target audience and key value propositions."
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 304,
+                                            lineNumber: 320,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                    lineNumber: 285,
+                                    lineNumber: 301,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -594,7 +609,7 @@ function AdSubmissionForm() {
                                             children: "Strictly Against"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 310,
+                                            lineNumber: 326,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -607,19 +622,73 @@ function AdSubmissionForm() {
                                             className: "w-full px-4 py-3 bg-neutral-800/50 border border-red-900/30 rounded-lg focus:ring-2 focus:ring-red-500/50 focus:border-transparent outline-none transition-all text-white placeholder-neutral-500 resize-none"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 313,
+                                            lineNumber: 329,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                    lineNumber: 309,
+                                    lineNumber: 325,
+                                    columnNumber: 15
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "space-y-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: "block text-sm font-medium text-neutral-300",
+                                            children: "Categories"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/AdSubmissionForm.tsx",
+                                            lineNumber: 342,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-xs text-neutral-500",
+                                            children: "Select one or more categories that best describe this campaign."
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/AdSubmissionForm.tsx",
+                                            lineNumber: 345,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex flex-wrap gap-2",
+                                            children: [
+                                                'SaaS',
+                                                'E-commerce',
+                                                'AI',
+                                                'Fintech',
+                                                'Developer Tools',
+                                                'Health & Wellness',
+                                                'Education',
+                                                'Consumer Apps'
+                                            ].map((category)=>{
+                                                const selected = formData.categories.includes(category);
+                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    type: "button",
+                                                    onClick: ()=>toggleCategory(category),
+                                                    className: `px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${selected ? 'bg-blue-500 text-white border-blue-500' : 'bg-neutral-800/60 text-neutral-300 border-neutral-700 hover:border-blue-500/60 hover:text-white'}`,
+                                                    children: category
+                                                }, category, false, {
+                                                    fileName: "[project]/app/components/AdSubmissionForm.tsx",
+                                                    lineNumber: 361,
+                                                    columnNumber: 23
+                                                }, this);
+                                            })
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/AdSubmissionForm.tsx",
+                                            lineNumber: 348,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/AdSubmissionForm.tsx",
+                                    lineNumber: 341,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 277,
+                            lineNumber: 293,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -635,7 +704,7 @@ function AdSubmissionForm() {
                                             className: "animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 333,
+                                            lineNumber: 387,
                                             columnNumber: 21
                                         }, this),
                                         "Processing..."
@@ -646,7 +715,7 @@ function AdSubmissionForm() {
                                             size: 20
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                            lineNumber: 338,
+                                            lineNumber: 392,
                                             columnNumber: 21
                                         }, this),
                                         "Launch Campaign"
@@ -654,33 +723,33 @@ function AdSubmissionForm() {
                                 }, void 0, true)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                                lineNumber: 326,
+                                lineNumber: 380,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                            lineNumber: 325,
+                            lineNumber: 379,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/AdSubmissionForm.tsx",
-                    lineNumber: 160,
+                    lineNumber: 176,
                     columnNumber: 11
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/components/AdSubmissionForm.tsx",
-            lineNumber: 145,
+            lineNumber: 161,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/components/AdSubmissionForm.tsx",
-        lineNumber: 144,
+        lineNumber: 160,
         columnNumber: 5
     }, this);
 }
-_s(AdSubmissionForm, "5jlQ6FTky5wFEvKI2ZhPk8wI4yo=");
+_s(AdSubmissionForm, "zMWZ3fhyKnN46OB816vogQHhrnc=");
 _c = AdSubmissionForm;
 var _c;
 __turbopack_context__.k.register(_c, "AdSubmissionForm");
