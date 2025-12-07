@@ -1,0 +1,22 @@
+{
+  "name": "xai-ad-injection",
+  "version": "1.0.0",
+  "main": "adCard.js",
+  "scripts": {
+    "build": "esbuild content.js --bundle --outfile=dist/content.bundle.js --format=iife --platform=browser",
+    "watch": "esbuild content.js --bundle --outfile=dist/content.bundle.js --format=iife --platform=browser --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "chrome-extension",
+    "xai",
+    "grok",
+    "attention-model"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "XAI Ad Intelligence - Attention-based ad injection for X/Twitter",
+  "devDependencies": {
+    "esbuild": "^0.27.1"
+  }
+}
