@@ -67,11 +67,11 @@ class AsyncCTRCriticAgent:
             "Authorization": f"Bearer {self.api_key}"
         }
 
-    def _persona_prompt(self, persona: dict) -> str:
-        posts = "\n".join(f"- {p}" for p in persona.get("context", []))
+    def _persona_prompt(self, context_card: dict) -> str:
+        posts = "\n".join(f"- {post.get('text', '')}" for post in context_card.get("top_25_reranked_posts", []))
         return f"""You ARE this person:
-INTERESTS: {persona.get('fav_topic')}
-VIBE: {persona.get('tone')}
+INTERESTS: {context_card.get('general_topic', '')}
+VIBE: {context_card.get('user_persona_tone', '')}
 POSTS:
 {posts}
 
@@ -89,14 +89,14 @@ Would you click? JSON only:
         client: httpx.AsyncClient,
         ad: str, 
         product: str, 
-        persona: dict,
+        context_card: dict,
         temp: float
     ) -> dict:
         """Single async CTR evaluation."""
         payload = {
             "model": self.model,
             "messages": [
-                {"role": "system", "content": self._persona_prompt(persona)},
+                {"role": "system", "content": self._persona_prompt(context_card)},
                 {"role": "user", "content": self._ctr_prompt(ad, product)}
             ],
             "temperature": temp,
@@ -119,13 +119,13 @@ Would you click? JSON only:
         ad: str,
         ad_idx: int,
         product: str,
-        persona: dict
+        context_card: dict
     ) -> EnsembleCTRScore:
         """Run multiple simulations for one ad."""
         temps = [0.5 + (i * 0.15) for i in range(self.ensemble_runs)]
         
         results = await asyncio.gather(*[
-            self._eval_once(client, ad, product, persona, t) for t in temps
+            self._eval_once(client, ad, product, context_card, t) for t in temps
         ])
         
         clicks = [r["click_probability"] for r in results]
@@ -147,15 +147,14 @@ Would you click? JSON only:
             num_runs=len(results)
         )
 
-    async def predict_async(self, user_data: dict, persona: dict) -> EnsembleCTRPrediction:
+    async def predict_async(self, context_card: dict, remixed_ads: dict, product: str = "") -> EnsembleCTRPrediction:
         """Run full ensemble CTR prediction."""
-        user_id = user_data.get("user_id", "unknown")
-        product = user_data.get("product", "")
-        ads = user_data.get("suggested_ads", [])
+        user_id = remixed_ads.get("user_id", context_card.get("username", "unknown"))
+        ads = remixed_ads.get("rewritten_ads", [])
         
         async with httpx.AsyncClient(timeout=60.0) as client:
             scores = await asyncio.gather(*[
-                self._ensemble_eval(client, ad, idx, product, persona)
+                self._ensemble_eval(client, ad, idx, product, context_card)
                 for idx, ad in enumerate(ads)
             ])
         
@@ -177,42 +176,27 @@ Would you click? JSON only:
             total_simulations=sum(s.num_runs for s in scores)
         )
 
-    def predict(self, user_data: dict, persona: dict) -> EnsembleCTRPrediction:
+    def predict(self, context_card: dict, remixed_ads: dict, product: str = "") -> EnsembleCTRPrediction:
         """Sync wrapper."""
-        return asyncio.run(self.predict_async(user_data, persona))
+        return asyncio.run(self.predict_async(context_card, remixed_ads, product))
 
 
 if __name__ == "__main__":
-    user_data = {
-        "user_id": "user_008",
-        "product": "Gentle 7-day screen-time reset program",
-        "suggested_ads": [
-        "did a quiet 7-day digital detox thing and remembered sunsets are free. turns out the world is still kinda beautiful",
-        "spent a week with limited phone and actually called friends with my voice. felt weirdly human again",
-        "no preaching just gentle daily nudges. came back calmer and kept most of the habits. small quiet glow-up"
-        ]
-    }
+    # Load context card JSON file
+    context_card_path = "user_data_DotVignesh_1009524384351096833_context_card.json"
+    with open(context_card_path, "r") as f:
+        context_card = json.load(f)
     
-    persona = {
-        "user_id": "user_008",
-        "fav_topic": "wholesome & anti-doomer",
-        "tone": "genuinely positive, anti-cope, warm but not cringe",
-        "context": [
-        "told my dad i loved him today. he cried. do it coward",
-        "helped an old lady with groceries and she called me a good boy. injecting this dopamine directly into my veins",
-        "deleted twitter for 3 days and remembered birds exist",
-        "gym pb + made someone laugh + didn’t doomscroll before bed. triple threat",
-        "called my mom just to say hi and she said she was proud of me. brb crying",
-        "sunset was beautiful today. no filter needed",
-        "told my friend i was struggling and he just showed up with beer and silence. real one",
-        "ate vegetables and didn’t hate myself. small victories",
-        "life’s actually not that bad when you log off and touch grass",
-        "be the light you want to see in the timeline"
-        ]
-    }
+    # Load remixed ads output JSON file
+    remixed_ads_path = "remixed_ads_output.json"
+    with open(remixed_ads_path, "r") as f:
+        remixed_ads = json.load(f)
+    
+    # Product name (can be extracted from remixed ads or passed separately)
+    product = "ZetaBook Pro"  # Extract from remixed ads or pass as parameter
     
     critic = AsyncCTRCriticAgent(ensemble_runs=10)
-    result = critic.predict(user_data, persona)
+    result = critic.predict(context_card, remixed_ads, product)
     
     print(f"\n{'='*55}")
     print(f"ENSEMBLE CTR PREDICTION | {result.total_simulations} simulations")
