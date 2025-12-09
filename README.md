@@ -1,4 +1,4 @@
-# xAI Ad Intelligence Platform
+# xAI Ad Intelligence Engine
 
 A comprehensive AI-powered advertising platform that delivers hyper-personalized ads by analyzing user behavior, generating style-matched ad variants, and predicting click-through rates using Grok AI models.
 
